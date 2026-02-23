@@ -212,9 +212,21 @@ body{
 .toolbar{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;gap:8px;
+  position:sticky; top:0; z-index:12;
+  background:var(--bg);
+  padding:8px 0 6px;
+  backdrop-filter:saturate(120%) blur(6px);
 }
 .toolbar-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--txt3);}
 .toolbar-actions{display:flex;gap:6px;}
+.schedule-summary{
+  margin:-2px 0 10px;
+  background:var(--surf); border:1.5px solid var(--b);
+  border-radius:10px; padding:8px 10px;
+  font-size:11px; color:var(--txt2);
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  box-shadow:var(--sh);
+}
 
 /* Buttons */
 .btn-pill{
@@ -381,6 +393,27 @@ body{
 .actions-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
 .actions-row .btn-pill{flex:1;min-width:90px;justify-content:center;height:40px;}
 
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:2px;
+}
+.slot.reveal{animation:slot-in .24s cubic-bezier(.2,.8,.2,1) both;}
+@keyframes slot-in{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+#toast{
+  position:fixed; left:50%; bottom:78px; transform:translateX(-50%);
+  background:var(--surf); color:var(--txt);
+  border:1.5px solid var(--b2); border-radius:12px;
+  padding:10px 14px; font-size:12px; font-weight:600;
+  box-shadow:var(--sh2); z-index:999;
+  opacity:0; pointer-events:none; transition:opacity .2s,transform .2s;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+
 /* ══ STATS PAGE ═══════════════════════════════════════════ */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .stat-card{
@@ -435,6 +468,9 @@ body{
 @media(max-width:380px){
   .slot{grid-template-columns:46px 1fr auto;gap:8px;}
   .tl.edit-mode .slot{grid-template-columns:20px 46px 1fr auto;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important;}
 }
 </style>
 </head>
@@ -512,6 +548,7 @@ body{
       </div>
     </div>
     <div class="edit-hint" id="editHint">✦ Drag ⠿ to reorder · Tap text to edit · Auto-saves</div>
+    <div class="schedule-summary" id="scheduleSummary">Done 0/0 <span>Idle</span></div>
     <div class="tl" id="tl"></div>
     <div class="actions-row">
       <button class="btn-pill ghost" onclick="resetDay()">↺ Reset Day</button>
@@ -580,23 +617,24 @@ body{
 
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="goPage('home')">
+  <button class="nav-btn active" id="nav-home" onclick="goPage('home')" aria-label="Open Home">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Home</span>
   </button>
-  <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')">
+  <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')" aria-label="Open Schedule">
     <span class="nav-icon">📋</span>
     <span class="nav-label">Schedule</span>
   </button>
-  <button class="nav-btn" id="nav-stats" onclick="goPage('stats')">
+  <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
     <span class="nav-icon">📊</span>
     <span class="nav-label">Stats</span>
   </button>
-  <button class="nav-btn" id="nav-widget" onclick="goPage('widget')">
+  <button class="nav-btn" id="nav-widget" onclick="goPage('widget')" aria-label="Open Widget">
     <span class="nav-icon">🔲</span>
     <span class="nav-label">Widget</span>
   </button>
 </div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ══ DATA ════════════════════════════════════════════════ */
@@ -618,6 +656,7 @@ let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));ret
 let editMode=false,dragSrc=null,openNotes={},idCtr=200;
 let currentPage='home';
 let lastRenderedMinute=null;
+let toastTimer=null;
 
 const saveSchedule=()=>localStorage.setItem('rdt_sched',JSON.stringify(schedule));
 const loadData=()=>{try{return JSON.parse(localStorage.getItem('rdt_data')||'{}')}catch{return{}}};
@@ -785,6 +824,8 @@ function buildTimeline(){
 
     const el=document.createElement('div');
     el.className='slot'+(isDone&&!editMode?' done':'')+(isActive?' active-now':'');
+    el.classList.add('reveal');
+    el.style.animationDelay=`${Math.min(i*20,180)}ms`;
     el.dataset.idx=i;
 
     el.innerHTML=`
@@ -852,6 +893,10 @@ function buildTimeline(){
   addInline.innerHTML='＋ &nbsp;Add New Block';
   addInline.onclick=addBlock;
   tl.appendChild(addInline);
+  const summaryEl=document.getElementById('scheduleSummary');
+  const doneCount=done.length;
+  const activeText=(ai>=0&&!done.includes(schedule[ai]?.id))?`Now: ${schedule[ai].a}`:'Idle';
+  if(summaryEl)summaryEl.innerHTML=`Done ${doneCount}/${schedule.length} <span>${activeText}</span>`;
   lastRenderedMinute=nowMin();
 }
 
@@ -861,6 +906,7 @@ function toggleDone(id){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const idx=day.done.indexOf(id);
   if(idx>=0)day.done.splice(idx,1);else day.done.push(id);
+  if(navigator.vibrate)navigator.vibrate(10);
   saveData(data);buildTimeline();updateHome();
 }
 function toggleNote(id){
@@ -881,10 +927,12 @@ function deleteBlock(i){
   if(schedule.length<=1){alert('Need at least one block.');return;}
   if(!confirm(`Remove "${schedule[i].a}"?`))return;
   schedule.splice(i,1);saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
+  showToast('Block removed');
 }
 function addBlock(){
   schedule.push({id:'s'+(++idCtr),t:"00:00–00:00",a:"New Block",f:"Describe the focus of this block.",i:"📌",s:0,e:0});
   saveSchedule();normalizeAllData();buildTimeline();
+  showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
 }
 function toggleEdit(){
@@ -902,10 +950,12 @@ function resetDay(){
   if(!confirm('Reset today\'s progress?'))return;
   const data=normalizeAllData();data[todayKey()]={done:[],notes:{}};saveData(data);
   openNotes={};buildTimeline();updateHome();
+  showToast('Today reset');
 }
 function resetSchedule(){
   if(!confirm('Restore default schedule?'))return;
   schedule=JSON.parse(JSON.stringify(DEFAULT));saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
+  showToast('Default schedule restored');
 }
 function exportLog(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
@@ -918,6 +968,7 @@ function exportLog(){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
   a.download=`research-log-${k}.txt`;a.click();
+  showToast('Log exported');
 }
 
 /* ══ STATS PAGE ═══════════════════════════════════════════ */
@@ -995,9 +1046,17 @@ function updateWidgetPreview(){
   const d=getWidgetData();
   document.getElementById('widgetDataPreview').textContent=JSON.stringify(d,null,2);
 }
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=msg;
+  t.classList.add('show');
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1600);
+}
 function copyUrl(){
   const url=window.location.origin+window.location.pathname.replace('index.html','')+'widget-data.json';
-  navigator.clipboard?.writeText(url).then(()=>alert('URL copied!')).catch(()=>alert('Copy: '+url));
+  navigator.clipboard?.writeText(url).then(()=>showToast('URL copied')).catch(()=>showToast('Copy: '+url));
 }
 
 /* ══ INSTALL PWA ═════════════════════════════════════════ */
