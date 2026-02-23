@@ -9,12 +9,12 @@ const STATE_FILE = path.join(ROOT, 'widget-state.json');
 
 const FALLBACK_STATE = {
   active_name: 'Free time',
-  active_icon: '⏸',
+  active_icon: '-',
   active_focus: '',
-  time_left: '—',
+  time_left: '-',
   time_left_min: 0,
   next_name: 'No more blocks',
-  next_icon: '✅',
+  next_icon: 'N',
   next_time: '',
   progress_pct: 0,
   progress_str: '0/0',

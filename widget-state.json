@@ -1,11 +1,11 @@
 {
   "active_name": "Morning Essentials",
-  "active_icon": "🌙",
+  "active_icon": "M",
   "active_focus": "Wake up, shower, suhoor, and Subah prayer.",
   "time_left": "45 min",
   "time_left_min": 45,
   "next_name": "Spiritual Start",
-  "next_icon": "📖",
+  "next_icon": "S",
   "next_time": "06:15",
   "progress_pct": 9,
   "progress_str": "1/11",

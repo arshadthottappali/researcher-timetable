@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 <title>The Researcher's Timetable</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* â•â• TOKENS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â TOKENS Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 [data-theme="dark"] {
   --bg:#0f1117; --surf:#181b24; --surf2:#1e2130;
   --b:#272c3d; --b2:#313650;
@@ -44,7 +44,7 @@
   --sh2:0 6px 24px rgba(0,0,0,.12);
 }
 
-/* â•â• RESET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â RESET Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{height:100%;overflow:hidden;}
 body{
@@ -55,7 +55,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* â•â• INSTALL BANNER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â INSTALL BANNER Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 #install-banner{
   display:none; align-items:center; justify-content:space-between;
   gap:10px; padding:10px 16px;
@@ -72,7 +72,7 @@ body{
   cursor:pointer; white-space:nowrap;
 }
 
-/* â•â• PAGES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â PAGES Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 #pages{flex:1;overflow:hidden;position:relative;}
 .page{
   position:absolute; inset:0;
@@ -85,7 +85,7 @@ body{
 .page.active{transform:translateX(0);}
 .page.left{transform:translateX(-100%);}
 
-/* â•â• BOTTOM NAV â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â BOTTOM NAV Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 #bottom-nav{
   flex-shrink:0;
   display:flex;
@@ -111,12 +111,12 @@ body{
   filter:drop-shadow(0 0 6px var(--gold-g));
 }
 
-/* â•â• SECTION LABEL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â SECTION LABEL Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 .eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
 .page-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px);line-height:1.1;margin-bottom:16px;}
 .page-title em{font-style:italic;color:var(--gold);}
 
-/* â•â• HOME PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â HOME PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 
 /* Status bar */
 .status-bar{
@@ -208,7 +208,7 @@ body{
 .sdot{width:9px;height:9px;border-radius:50%;background:var(--b2);transition:background .3s;}
 .sdot.lit{background:var(--gold);box-shadow:0 0 6px var(--gold-g);}
 
-/* â•â• SCHEDULE PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â SCHEDULE PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 .toolbar{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;gap:8px;
@@ -273,14 +273,14 @@ body{
 .slot.drag-over{border-color:var(--teal);border-style:dashed;box-shadow:0 0 0 3px var(--teal-d);}
 
 /* Edit mode slot */
-.tl.edit-mode .slot{grid-template-columns:22px 52px 1fr auto;padding-left:8px;cursor:default;border-color:var(--b2);}
+.tl.edit-mode .slot{grid-template-columns:24px 112px 1fr auto;padding-left:8px;cursor:default;border-color:var(--b2);}
 .tl.edit-mode .slot:hover{border-color:var(--teal);}
 .tl.edit-mode .slot::after{display:none;}
 
 /* Drag grip */
 .drag-grip{
   display:none;flex-direction:column;align-items:center;
-  justify-content:center;gap:3px;width:20px;
+  justify-content:center;gap:3px;width:22px;
   cursor:grab;opacity:.4;transition:opacity .15s;
   align-self:center;flex-shrink:0;
 }
@@ -302,14 +302,26 @@ body{
 .time-inp-wrap{display:none;}
 .tl.edit-mode .tc .tc-display{display:none;}
 .tl.edit-mode .tc .time-inp-wrap{display:block;}
+.time-edit-ico{font-size:14px;color:var(--txt2);margin-bottom:4px;}
+.time-row{display:flex;align-items:center;gap:4px;}
+.time-sep{font-size:10px;color:var(--txt3);}
 .time-inp{
   background:var(--surf2);border:1.5px solid var(--b2);
   border-radius:6px;color:var(--txt);
-  font-family:'DM Sans',sans-serif;font-size:10px;
-  padding:4px 6px;width:68px;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:11px;
+  padding:5px 6px;width:48px;outline:none;
   transition:border-color .18s;
+  text-align:center;
 }
 .time-inp:focus{border-color:var(--teal);}
+.tl.edit-mode .slot-content .editable{
+  background:var(--surf2);
+  border:1px solid var(--b2);
+  border-radius:7px;
+  padding:6px 8px;
+  margin-top:4px;
+}
+.tl.edit-mode .slot-content .act-inp{margin-top:0;}
 
 /* Content */
 .slot-content{min-width:0;}
@@ -414,7 +426,7 @@ input:focus-visible{
 }
 #toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
 
-/* â•â• STATS PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â STATS PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .stat-card{
   background:var(--surf);border:1.5px solid var(--b);
@@ -438,7 +450,7 @@ input:focus-visible{
 .history-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:5px;}
 .history-pct{font-size:12px;font-weight:600;color:var(--gold);min-width:32px;text-align:right;}
 
-/* â•â• WIDGET INFO PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â WIDGET INFO PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 .widget-card{
   background:var(--surf);border:1.5px solid var(--b);
   border-radius:16px;padding:16px;
@@ -464,10 +476,10 @@ input:focus-visible{
 }
 .copy-btn:active{background:var(--gold);color:#1a1200;}
 
-/* â•â• UTIL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â UTIL Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 @media(max-width:380px){
   .slot{grid-template-columns:46px 1fr auto;gap:8px;}
-  .tl.edit-mode .slot{grid-template-columns:20px 46px 1fr auto;}
+  .tl.edit-mode .slot{grid-template-columns:20px 102px 1fr auto;}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important;}
@@ -478,9 +490,9 @@ input:focus-visible{
 
 <!-- INSTALL BANNER -->
 <div id="install-banner">
-  <span>đź“˛ Add to Home Screen for the full app experience</span>
+  <span>Add to Home Screen for the full app experience</span>
   <button onclick="installApp()">Install</button>
-  <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">âś•</button>
+  <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">X</button>
 </div>
 
 <!-- PAGES -->
@@ -494,8 +506,8 @@ input:focus-visible{
         <div class="clock-str" id="clkEl"></div>
       </div>
       <div class="theme-toggle" onclick="toggleTheme()">
-        <button class="t-pill" id="darkPill">đźŚ™</button>
-        <button class="t-pill" id="lightPill">â€ď¸Ź</button>
+        <button class="t-pill" id="darkPill">D</button>
+        <button class="t-pill" id="lightPill">L</button>
       </div>
     </div>
 
@@ -503,9 +515,9 @@ input:focus-visible{
     <div class="hero-card idle" id="heroCard">
       <div class="hero-top">
         <span class="hero-label idle-lbl" id="heroLabel">NO ACTIVE BLOCK</span>
-        <span class="hero-time-left idle-time" id="heroTimeLeft">â€”</span>
+        <span class="hero-time-left idle-time" id="heroTimeLeft">-</span>
       </div>
-      <div class="hero-block-name" id="heroName"><span id="heroIcon">âŹ¸</span><span id="heroTitle">Rest time</span></div>
+      <div class="hero-block-name" id="heroName"><span id="heroIcon">-</span><span id="heroTitle">Rest time</span></div>
       <div class="hero-focus" id="heroFocus">No scheduled block right now.</div>
       <div class="hero-progress-row">
         <div class="hero-prog-track"><div class="hero-prog-fill" id="heroProg" style="width:0%"></div></div>
@@ -515,11 +527,11 @@ input:focus-visible{
 
     <!-- NEXT BLOCK -->
     <div class="next-card" id="nextCard" style="display:none">
-      <div class="next-icon" id="nextIcon">đź“Ś</div>
+      <div class="next-icon" id="nextIcon">N</div>
       <div class="next-content">
         <div class="next-label">Up Next</div>
-        <div class="next-name" id="nextName">â€”</div>
-        <div class="next-time" id="nextTime">â€”</div>
+        <div class="next-name" id="nextName">-</div>
+        <div class="next-time" id="nextTime">-</div>
       </div>
     </div>
 
@@ -527,7 +539,7 @@ input:focus-visible{
     <div class="streak-row">
       <div class="mini-stat"><div class="mini-stat-val" id="mToday">0%</div><div class="mini-stat-lbl">Today</div></div>
       <div class="mini-stat"><div class="mini-stat-val" id="mStreak">0</div><div class="mini-stat-lbl">Streak</div></div>
-      <div class="mini-stat"><div class="mini-stat-val" id="mAvg">â€”</div><div class="mini-stat-lbl">7-Day Avg</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="mAvg">-</div><div class="mini-stat-lbl">7-Day Avg</div></div>
     </div>
 
     <!-- STREAK DOTS -->
@@ -543,17 +555,17 @@ input:focus-visible{
     <div class="toolbar">
       <span class="toolbar-label" id="toolbarLabel">Blocks</span>
       <div class="toolbar-actions">
-        <button class="btn-pill" id="editBtn" onclick="toggleEdit()">âśŽ Edit</button>
-        <button class="btn-pill teal" id="addBtn" onclick="addBlock()" style="display:none">ďĽ‹ Add</button>
+        <button class="btn-pill" id="editBtn" onclick="toggleEdit()">Edit</button>
+        <button class="btn-pill teal" id="addBtn" onclick="addBlock()" style="display:none">+ Add</button>
       </div>
     </div>
-    <div class="edit-hint" id="editHint">âś¦ Drag â ż to reorder Â· Tap text to edit Â· Auto-saves</div>
+    <div class="edit-hint" id="editHint">Drag to reorder | Choose start/end times | Tap text to edit</div>
     <div class="schedule-summary" id="scheduleSummary">Done 0/0 <span>Idle</span></div>
     <div class="tl" id="tl"></div>
     <div class="actions-row">
-      <button class="btn-pill ghost" onclick="resetDay()">â†ş Reset Day</button>
-      <button class="btn-pill teal" onclick="exportLog()">â†“ Export</button>
-      <button class="btn-pill danger" id="resetSchedBtn" onclick="resetSchedule()" style="display:none">âš  Reset</button>
+      <button class="btn-pill ghost" onclick="resetDay()">Reset Day</button>
+      <button class="btn-pill teal" onclick="exportLog()">Export</button>
+      <button class="btn-pill danger" id="resetSchedBtn" onclick="resetSchedule()" style="display:none">Reset</button>
     </div>
   </div>
 
@@ -564,7 +576,7 @@ input:focus-visible{
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-v" id="st-today">0%</div><div class="stat-l">Today</div></div>
-      <div class="stat-card"><div class="stat-v" id="st-avg">â€”</div><div class="stat-l">7-Day Avg</div></div>
+      <div class="stat-card"><div class="stat-v" id="st-avg">-</div><div class="stat-l">7-Day Avg</div></div>
       <div class="stat-card"><div class="stat-v" id="st-streak">0</div><div class="stat-l">Streak</div><div class="stat-sub" id="st-streak-sub"></div></div>
       <div class="stat-card"><div class="stat-v" id="st-days">0</div><div class="stat-l">Days Logged</div></div>
       <div class="stat-card wide"><div class="stat-v" id="st-best">0</div><div class="stat-l">Best Streak</div></div>
@@ -580,7 +592,7 @@ input:focus-visible{
     <p class="page-title"><em>Native</em> Widget Setup</p>
 
     <div class="widget-card">
-      <h3>📦 What you need</h3>
+      <h3>What you need</h3>
       <ol>
         <li>Install the native Android app from <strong>android-widget-starter</strong></li>
         <li>Set your endpoint URL in <strong>WidgetRepository.kt</strong></li>
@@ -589,15 +601,15 @@ input:focus-visible{
     </div>
 
     <div class="widget-card">
-      <h3>🔗 Your Widget Data URL</h3>
+      <h3>Your Widget Data URL</h3>
       <p>Your runtime endpoint serves JSON at this path for external widgets.</p>
       <p style="margin-top:6px">Paste this URL into <strong>app/src/main/java/com/researchertimetable/widget/WidgetRepository.kt</strong>.</p>
       <div class="code-block" id="widgetUrl">https://YOUR-DOMAIN.com/widget-data.json</div>
-      <button class="copy-btn" onclick="copyUrl()">📋 Copy URL</button>
+      <button class="copy-btn" onclick="copyUrl()">Copy URL</button>
     </div>
 
     <div class="widget-card">
-      <h3>⚙️ Native App Flow</h3>
+      <h3>Ă˘Ĺˇâ„˘ÄŹÂ¸Ĺą Native App Flow</h3>
       <p>1. Open <strong>android-widget-starter</strong> in Android Studio.</p>
       <p>2. Set endpoint URL in <strong>WidgetRepository.kt</strong>.</p>
       <p>3. Install app on phone and add the widget.</p>
@@ -605,9 +617,9 @@ input:focus-visible{
     </div>
 
     <div class="widget-card">
-      <h3>📄 Widget Data Preview</h3>
+      <h3>Ä‘Ĺşâ€śâ€ž Widget Data Preview</h3>
       <p>Preview payload. Your native widget reads the deployed endpoint URL.</p>
-      <div class="code-block" id="widgetDataPreview">Loadingâ€¦</div>
+      <div class="code-block" id="widgetDataPreview">Loading...</div>
     </div>
   </div>
 
@@ -616,38 +628,38 @@ input:focus-visible{
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="goPage('home')" aria-label="Open Home">
-    <span class="nav-icon">đźŹ </span>
+    <span class="nav-icon">H</span>
     <span class="nav-label">Home</span>
   </button>
   <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')" aria-label="Open Schedule">
-    <span class="nav-icon">đź“‹</span>
+    <span class="nav-icon">S</span>
     <span class="nav-label">Schedule</span>
   </button>
   <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
-    <span class="nav-icon">đź“Š</span>
+    <span class="nav-icon">T</span>
     <span class="nav-label">Stats</span>
   </button>
   <button class="nav-btn" id="nav-widget" onclick="goPage('widget')" aria-label="Open Widget">
-    <span class="nav-icon">đź”˛</span>
+    <span class="nav-icon">W</span>
     <span class="nav-label">Widget</span>
   </button>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* â•â• DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â DATA Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 const DEFAULT=[
-  {id:'s0',t:"05:00â€“06:15",a:"Morning Essentials",     f:"Wake up, Shower, Suhoor, Subah Swala.",    i:"đźŚ™",s:300, e:375},
-  {id:'s1',t:"06:15â€“06:30",a:"Spiritual Start",        f:"Adkar & Quran.",                           i:"đź“–",s:375, e:390},
-  {id:'s2',t:"06:30â€“07:00",a:"Commute",                f:"Research podcast or plan top 3 goals.",    i:"đźš—",s:390, e:420},
-  {id:'s3',t:"07:00â€“07:30",a:"Institute Arrival",      f:"Call Mom & settle in at your desk.",       i:"đźŹ›",s:420, e:450},
-  {id:'s4',t:"07:30â€“09:30",a:"Theoretical Study",      f:"LASER Spectroscopy & Singlet Fission.",    i:"đź”¬",s:450, e:570},
-  {id:'s5',t:"09:30â€“10:30",a:"Research Reading",       f:"Reviewing relevant papers / journals.",    i:"đź“„",s:570, e:630},
-  {id:'s6',t:"10:30â€“12:00",a:"Glotaran Analysis",      f:"Deep dive into data analysis & fitting.",  i:"đź“Š",s:630, e:720},
-  {id:'s7',t:"12:00â€“01:00",a:"Hugging Face Block",     f:"AI model dev, fine-tuning, NLP tasks.",    i:"đź¤—",s:720, e:780},
-  {id:'s8',t:"01:00â€“02:00",a:"Break & Dhuhr Prayer",   f:"Dhuhr prayer and light lunch / rest.",     i:"đź•Ś",s:780, e:840},
-  {id:'s9',t:"02:00â€“05:00",a:"Main Experiment Block",  f:"Active LASER lab time & data collection.", i:"âš—ď¸Ź",s:840, e:1020},
-  {id:'s10',t:"05:00â€“05:30",a:"Lab Wrap-up",           f:"Cleanup, power-down, log entry.",          i:"âś…",s:1020,e:1050},
+  {id:'s0',t:"05:00-06:15",a:"Morning Essentials",     f:"Wake up, Shower, Suhoor, Subah Swala.",    i:"M",s:300, e:375},
+  {id:'s1',t:"06:15-06:30",a:"Spiritual Start",        f:"Adkar & Quran.",                           i:"S",s:375, e:390},
+  {id:'s2',t:"06:30-07:00",a:"Commute",                f:"Research podcast or plan top 3 goals.",    i:"C",s:390, e:420},
+  {id:'s3',t:"07:00-07:30",a:"Institute Arrival",      f:"Call Mom & settle in at your desk.",       i:"I",s:420, e:450},
+  {id:'s4',t:"07:30-09:30",a:"Theoretical Study",      f:"LASER Spectroscopy & Singlet Fission.",    i:"T",s:450, e:570},
+  {id:'s5',t:"09:30-10:30",a:"Research Reading",       f:"Reviewing relevant papers / journals.",    i:"R",s:570, e:630},
+  {id:'s6',t:"10:30-12:00",a:"Glotaran Analysis",      f:"Deep dive into data analysis & fitting.",  i:"G",s:630, e:720},
+  {id:'s7',t:"12:00-01:00",a:"Hugging Face Block",     f:"AI model dev, fine-tuning, NLP tasks.",    i:"H",s:720, e:780},
+  {id:'s8',t:"01:00-02:00",a:"Break & Dhuhr Prayer",   f:"Dhuhr prayer and light lunch / rest.",     i:"B",s:780, e:840},
+  {id:'s9',t:"02:00-05:00",a:"Main Experiment Block",  f:"Active LASER lab time & data collection.", i:"X",s:840, e:1020},
+  {id:'s10',t:"05:00-05:30",a:"Lab Wrap-up",           f:"Cleanup, power-down, log entry.",          i:"W",s:1020,e:1050},
 ];
 
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
@@ -661,6 +673,8 @@ const loadData=()=>{try{return JSON.parse(localStorage.getItem('rdt_data')||'{}'
 const saveData=d=>localStorage.setItem('rdt_data',JSON.stringify(d));
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
+const minsToTime=m=>`${String(Math.floor((Math.max(0,Math.min(1439,m)))/60)).padStart(2,'0')}:${String(Math.max(0,Math.min(1439,m))%60).padStart(2,'0')}`;
+const parseTime=v=>{const m=(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],mm=+m[2];if(h>23||mm>59)return null;return h*60+mm;};
 const activeIdx=()=>{const m=nowMin();return schedule.findIndex(s=>m>=s.s&&m<s.e);};
 const getDay=(data,k)=>{if(!data[k])data[k]={done:[],notes:{}};return data[k];};
 const validIdSet=()=>new Set(schedule.map(s=>s.id));
@@ -702,7 +716,7 @@ function getStreakStats(data,totalBlocks){
   return{keys,currentStreak,bestStreak};
 }
 
-/* â•â• NAVIGATION â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â NAVIGATION Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function goPage(name){
   const prev=currentPage;
   if(prev===name)return;
@@ -720,7 +734,7 @@ function goPage(name){
   if(name==='widget')updateWidgetPreview();
 }
 
-/* â•â• THEME â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â THEME Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 let theme=localStorage.getItem('rdt_theme')||'dark';
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme',t);
@@ -731,7 +745,7 @@ function applyTheme(t){
 function toggleTheme(){applyTheme(theme==='dark'?'light':'dark');}
 applyTheme(theme);
 
-/* â•â• HOME PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â HOME PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function updateHome(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
@@ -756,9 +770,9 @@ function updateHome(){
     hero.classList.add('idle');
     document.getElementById('heroLabel').textContent='NO ACTIVE BLOCK';
     document.getElementById('heroLabel').className='hero-label idle-lbl';
-    document.getElementById('heroTimeLeft').textContent='â€”';
+    document.getElementById('heroTimeLeft').textContent='-';
     document.getElementById('heroTimeLeft').className='hero-time-left idle-time';
-    document.getElementById('heroIcon').textContent='âŹ¸';
+    document.getElementById('heroIcon').textContent='-';
     document.getElementById('heroTitle').textContent='Free time';
     document.getElementById('heroFocus').textContent='No scheduled block right now.';
   }
@@ -783,7 +797,7 @@ function updateHome(){
     nc.style.display='flex';
     document.getElementById('nextIcon').textContent=ns.i;
     document.getElementById('nextName').textContent=ns.a;
-    document.getElementById('nextTime').textContent='Starts '+ns.t.split('â€“')[0];
+    document.getElementById('nextTime').textContent='Starts '+ns.t.split('-')[0];
   } else nc.style.display='none';
 
   // Stats
@@ -794,7 +808,7 @@ function updateHome(){
   const streak=streakStats.currentStreak;
   document.getElementById('mToday').textContent=pct+'%';
   document.getElementById('mStreak').textContent=streak;
-  document.getElementById('mAvg').textContent=avg!==null?avg+'%':'â€”';
+  document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
@@ -805,7 +819,7 @@ function updateHome(){
   }
 }
 
-/* â•â• SCHEDULE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â SCHEDULE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function buildTimeline(){
   const tl=document.getElementById('tl');
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
@@ -833,12 +847,15 @@ function buildTimeline(){
       <div class="tc">
         <div class="tc-display">
           <div class="tc-icon">${s.i}</div>
-          <div class="tc-time">${s.t.replace('â€“','â€“<br>')}</div>
+          <div class="tc-time">${s.t.replace('-','-<br>')}</div>
         </div>
         <div class="time-inp-wrap">
-          <div style="font-size:9px;color:var(--txt3);margin-bottom:3px">${s.i}</div>
-          <input class="time-inp" type="text" value="${s.t}"
-            onchange="updateField(${i},'t',this.value)" placeholder="07:30â€“09:30">
+          <div class="time-edit-ico">${s.i}</div>
+          <div class="time-row">
+            <input class="time-inp" type="time" value="${minsToTime(s.s)}" onchange="updateTime(${i},'s',this.value)">
+            <span class="time-sep">-</span>
+            <input class="time-inp" type="time" value="${minsToTime(s.e)}" onchange="updateTime(${i},'e',this.value)">
+          </div>
         </div>
       </div>
       <div class="slot-content">
@@ -852,15 +869,15 @@ function buildTimeline(){
           ${editMode?'':'readonly'}
           oninput="autoResize(this);updateField(${i},'f',this.value)">${s.f}</textarea>
         <div class="note-area${isOpen?' open':''}" id="na-${s.id}">
-          <textarea class="note-inp" rows="2" placeholder="Add a noteâ€¦"
+          <textarea class="note-inp" rows="2" placeholder="Add a note..."
             onfocus="openNotes['${s.id}']=true"
             oninput="saveNote('${s.id}',this.value)">${note}</textarea>
         </div>
       </div>
       <div class="slot-ctrl">
-        <button class="chk-btn" onclick="toggleDone('${s.id}')">âś“</button>
-        <button class="note-btn${hasNote?' has':''}" onclick="toggleNote('${s.id}')">âśŽ</button>
-        <button class="del-btn" onclick="deleteBlock(${i})">âś•</button>
+        <button class="chk-btn" onclick="toggleDone('${s.id}')">OK</button>
+        <button class="note-btn${hasNote?' has':''}" onclick="toggleNote('${s.id}')">N</button>
+        <button class="del-btn" onclick="deleteBlock(${i})">X</button>
       </div>
     `;
 
@@ -888,7 +905,7 @@ function buildTimeline(){
   const addInline=document.createElement('button');
   addInline.className='add-inline';
   addInline.style.display=editMode?'block':'none';
-  addInline.innerHTML='ďĽ‹ &nbsp;Add New Block';
+  addInline.innerHTML='+ &nbsp;Add New Block';
   addInline.onclick=addBlock;
   tl.appendChild(addInline);
   const summaryEl=document.getElementById('scheduleSummary');
@@ -918,8 +935,26 @@ function saveNote(id,val){
 }
 function updateField(i,field,val){
   schedule[i][field]=val;
-  if(field==='t'){const m=val.match(/(\d{1,2}):(\d{2})\s*[â€“\-]\s*(\d{1,2}):(\d{2})/);if(m){schedule[i].s=+m[1]*60+ +m[2];schedule[i].e=+m[3]*60+ +m[4];}}
+  if(field==='t'){
+    const m=val.match(/(\d{1,2}):(\d{2})\s*[â€“-]\s*(\d{1,2}):(\d{2})/);
+    if(m){schedule[i].s=+m[1]*60+ +m[2];schedule[i].e=+m[3]*60+ +m[4];}
+  }
   saveSchedule();
+}
+function updateTime(i,which,val){
+  const mins=parseTime(val);
+  if(mins===null)return;
+  if(which==='s')schedule[i].s=mins;else schedule[i].e=mins;
+  if(schedule[i].e<=schedule[i].s){
+    if(which==='s')schedule[i].e=Math.min(1439,schedule[i].s+30);
+    else schedule[i].s=Math.max(0,schedule[i].e-30);
+    showToast('Adjusted to keep end after start');
+  }
+  schedule[i].t=`${minsToTime(schedule[i].s)}-${minsToTime(schedule[i].e)}`;
+  saveSchedule();
+  buildTimeline();
+  updateHome();
+  if(currentPage==='stats')renderStatsPage();
 }
 function deleteBlock(i){
   if(schedule.length<=1){alert('Need at least one block.');return;}
@@ -928,7 +963,7 @@ function deleteBlock(i){
   showToast('Block removed');
 }
 function addBlock(){
-  schedule.push({id:'s'+(++idCtr),t:"00:00â€“00:00",a:"New Block",f:"Describe the focus of this block.",i:"đź“Ś",s:0,e:0});
+  schedule.push({id:'s'+(++idCtr),t:"00:00-00:00",a:"New Block",f:"Describe the focus of this block.",i:"N",s:0,e:0});
   saveSchedule();normalizeAllData();buildTimeline();
   showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
@@ -936,12 +971,13 @@ function addBlock(){
 function toggleEdit(){
   editMode=!editMode;
   const btn=document.getElementById('editBtn');
-  btn.textContent=editMode?'âś“ Done':'âśŽ Edit';
+  btn.textContent=editMode?'Done':'Edit';
   btn.className='btn-pill'+(editMode?' gold':'');
   document.getElementById('addBtn').style.display=editMode?'inline-flex':'none';
   document.getElementById('resetSchedBtn').style.display=editMode?'inline-flex':'none';
   document.getElementById('toolbarLabel').textContent=editMode?'Edit Mode':'Blocks';
   document.getElementById('editHint').classList.toggle('on',editMode);
+  showToast(editMode?'Edit mode on: choose times with pickers':'Edit mode saved');
   buildTimeline();
 }
 function resetDay(){
@@ -957,19 +993,19 @@ function resetSchedule(){
 }
 function exportLog(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
-  let txt=`RESEARCHER'S LOG â€” ${k}\n${'â”€'.repeat(36)}\n\n`;
+  let txt=`RESEARCHER'S LOG - ${k}\n${'-'.repeat(36)}\n\n`;
   schedule.forEach(s=>{
-    txt+=(day.done.includes(s.id)?'âś“':'â—‹')+` [${s.t}] ${s.a}\n`;
-    if(day.notes[s.id]?.trim())txt+=`   â†ł ${day.notes[s.id].trim()}\n`;
+    txt+=(day.done.includes(s.id)?'[x]':'[ ]')+` [${s.t}] ${s.a}\n`;
+    if(day.notes[s.id]?.trim())txt+=`   -> ${day.notes[s.id].trim()}\n`;
   });
-  txt+=`\n${'â”€'.repeat(36)}\nDone: ${day.done.length}/${N} (${Math.round(day.done.length/(N||1)*100)}%)\n`;
+  txt+=`\n${'-'.repeat(36)}\nDone: ${day.done.length}/${N} (${Math.round(day.done.length/(N||1)*100)}%)\n`;
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
   a.download=`research-log-${k}.txt`;a.click();
   showToast('Log exported');
 }
 
-/* â•â• STATS PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â STATS PAGE Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function renderStatsPage(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,pct=Math.round(day.done.length/N*100);
@@ -980,9 +1016,9 @@ function renderStatsPage(){
   const streak=streakStats.currentStreak;
   const best=streakStats.bestStreak;
   document.getElementById('st-today').textContent=pct+'%';
-  document.getElementById('st-avg').textContent=avg!==null?avg+'%':'â€”';
+  document.getElementById('st-avg').textContent=avg!==null?avg+'%':'-';
   document.getElementById('st-streak').textContent=streak;
-  document.getElementById('st-streak-sub').textContent=streak>=3?'đź”Ą On a roll!':streak>=1?'Keep going!':'Start today';
+  document.getElementById('st-streak-sub').textContent=streak>=3?'On a roll!':streak>=1?'Keep going!':'Start today';
   document.getElementById('st-days').textContent=keys.length;
   document.getElementById('st-best').textContent=best;
 
@@ -1004,7 +1040,7 @@ function renderStatsPage(){
   });
 }
 
-/* â•â• WIDGET DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â WIDGET DATA Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function getWidgetData(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
@@ -1026,13 +1062,13 @@ function getWidgetData(){
   }
   return{
     active_name:active?active.name:'Free time',
-    active_icon:active?active.icon:'âŹ¸',
+    active_icon:active?active.icon:'-',
     active_focus:active?active.focus:'',
-    time_left:active?active.time_left:'â€”',
+    time_left:active?active.time_left:'-',
     time_left_min:active?active.time_left_min:0,
     next_name:next?next.name:'No more blocks',
-    next_icon:next?next.icon:'âś…',
-    next_time:next?next.time.split('â€“')[0]:'',
+    next_icon:next?next.icon:'N',
+    next_time:next?next.time.split('-')[0]:'',
     progress_pct:pct,
     progress_str:`${done.length}/${N}`,
     done_count:done.length,
@@ -1057,7 +1093,7 @@ function copyUrl(){
   navigator.clipboard?.writeText(url).then(()=>showToast('URL copied')).catch(()=>showToast('Copy: '+url));
 }
 
-/* â•â• INSTALL PWA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â INSTALL PWA Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();deferredPrompt=e;
@@ -1075,12 +1111,12 @@ window.addEventListener('appinstalled',()=>{
   document.getElementById('install-banner').classList.remove('show');
 });
 
-/* â•â• SERVICE WORKER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â SERVICE WORKER Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
-/* â•â• TICK â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â TICK Ä‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚ÂÄ‚ËĂ˘â‚¬ËĂ‚Â */
 function tick(){
   const now=new Date();
   const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
