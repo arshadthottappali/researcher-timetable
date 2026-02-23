@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 <title>The Researcher's Timetable</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ══ TOKENS ══════════════════════════════════════════════ */
+/* â•â• TOKENS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 [data-theme="dark"] {
   --bg:#0f1117; --surf:#181b24; --surf2:#1e2130;
   --b:#272c3d; --b2:#313650;
@@ -44,7 +44,7 @@
   --sh2:0 6px 24px rgba(0,0,0,.12);
 }
 
-/* ══ RESET ═══════════════════════════════════════════════ */
+/* â•â• RESET â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{height:100%;overflow:hidden;}
 body{
@@ -55,7 +55,7 @@ body{
   transition:background .3s,color .3s;
 }
 
-/* ══ INSTALL BANNER ══════════════════════════════════════ */
+/* â•â• INSTALL BANNER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #install-banner{
   display:none; align-items:center; justify-content:space-between;
   gap:10px; padding:10px 16px;
@@ -72,7 +72,7 @@ body{
   cursor:pointer; white-space:nowrap;
 }
 
-/* ══ PAGES ════════════════════════════════════════════════ */
+/* â•â• PAGES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #pages{flex:1;overflow:hidden;position:relative;}
 .page{
   position:absolute; inset:0;
@@ -85,7 +85,7 @@ body{
 .page.active{transform:translateX(0);}
 .page.left{transform:translateX(-100%);}
 
-/* ══ BOTTOM NAV ══════════════════════════════════════════ */
+/* â•â• BOTTOM NAV â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #bottom-nav{
   flex-shrink:0;
   display:flex;
@@ -111,12 +111,12 @@ body{
   filter:drop-shadow(0 0 6px var(--gold-g));
 }
 
-/* ══ SECTION LABEL ════════════════════════════════════════ */
+/* â•â• SECTION LABEL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
 .page-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px);line-height:1.1;margin-bottom:16px;}
 .page-title em{font-style:italic;color:var(--gold);}
 
-/* ══ HOME PAGE ════════════════════════════════════════════ */
+/* â•â• HOME PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 /* Status bar */
 .status-bar{
@@ -208,7 +208,7 @@ body{
 .sdot{width:9px;height:9px;border-radius:50%;background:var(--b2);transition:background .3s;}
 .sdot.lit{background:var(--gold);box-shadow:0 0 6px var(--gold-g);}
 
-/* ══ SCHEDULE PAGE ════════════════════════════════════════ */
+/* â•â• SCHEDULE PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .toolbar{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;gap:8px;
@@ -414,7 +414,7 @@ input:focus-visible{
 }
 #toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
 
-/* ══ STATS PAGE ═══════════════════════════════════════════ */
+/* â•â• STATS PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .stat-card{
   background:var(--surf);border:1.5px solid var(--b);
@@ -438,7 +438,7 @@ input:focus-visible{
 .history-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:5px;}
 .history-pct{font-size:12px;font-weight:600;color:var(--gold);min-width:32px;text-align:right;}
 
-/* ══ WIDGET INFO PAGE ═════════════════════════════════════ */
+/* â•â• WIDGET INFO PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .widget-card{
   background:var(--surf);border:1.5px solid var(--b);
   border-radius:16px;padding:16px;
@@ -464,7 +464,7 @@ input:focus-visible{
 }
 .copy-btn:active{background:var(--gold);color:#1a1200;}
 
-/* ══ UTIL ════════════════════════════════════════════════ */
+/* â•â• UTIL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media(max-width:380px){
   .slot{grid-template-columns:46px 1fr auto;gap:8px;}
   .tl.edit-mode .slot{grid-template-columns:20px 46px 1fr auto;}
@@ -478,9 +478,9 @@ input:focus-visible{
 
 <!-- INSTALL BANNER -->
 <div id="install-banner">
-  <span>📲 Add to Home Screen for the full app experience</span>
+  <span>đź“˛ Add to Home Screen for the full app experience</span>
   <button onclick="installApp()">Install</button>
-  <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">✕</button>
+  <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">âś•</button>
 </div>
 
 <!-- PAGES -->
@@ -494,8 +494,8 @@ input:focus-visible{
         <div class="clock-str" id="clkEl"></div>
       </div>
       <div class="theme-toggle" onclick="toggleTheme()">
-        <button class="t-pill" id="darkPill">🌙</button>
-        <button class="t-pill" id="lightPill">☀️</button>
+        <button class="t-pill" id="darkPill">đźŚ™</button>
+        <button class="t-pill" id="lightPill">â€ď¸Ź</button>
       </div>
     </div>
 
@@ -503,9 +503,9 @@ input:focus-visible{
     <div class="hero-card idle" id="heroCard">
       <div class="hero-top">
         <span class="hero-label idle-lbl" id="heroLabel">NO ACTIVE BLOCK</span>
-        <span class="hero-time-left idle-time" id="heroTimeLeft">—</span>
+        <span class="hero-time-left idle-time" id="heroTimeLeft">â€”</span>
       </div>
-      <div class="hero-block-name" id="heroName"><span id="heroIcon">⏸</span><span id="heroTitle">Rest time</span></div>
+      <div class="hero-block-name" id="heroName"><span id="heroIcon">âŹ¸</span><span id="heroTitle">Rest time</span></div>
       <div class="hero-focus" id="heroFocus">No scheduled block right now.</div>
       <div class="hero-progress-row">
         <div class="hero-prog-track"><div class="hero-prog-fill" id="heroProg" style="width:0%"></div></div>
@@ -515,11 +515,11 @@ input:focus-visible{
 
     <!-- NEXT BLOCK -->
     <div class="next-card" id="nextCard" style="display:none">
-      <div class="next-icon" id="nextIcon">📌</div>
+      <div class="next-icon" id="nextIcon">đź“Ś</div>
       <div class="next-content">
         <div class="next-label">Up Next</div>
-        <div class="next-name" id="nextName">—</div>
-        <div class="next-time" id="nextTime">—</div>
+        <div class="next-name" id="nextName">â€”</div>
+        <div class="next-time" id="nextTime">â€”</div>
       </div>
     </div>
 
@@ -527,7 +527,7 @@ input:focus-visible{
     <div class="streak-row">
       <div class="mini-stat"><div class="mini-stat-val" id="mToday">0%</div><div class="mini-stat-lbl">Today</div></div>
       <div class="mini-stat"><div class="mini-stat-val" id="mStreak">0</div><div class="mini-stat-lbl">Streak</div></div>
-      <div class="mini-stat"><div class="mini-stat-val" id="mAvg">—</div><div class="mini-stat-lbl">7-Day Avg</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="mAvg">â€”</div><div class="mini-stat-lbl">7-Day Avg</div></div>
     </div>
 
     <!-- STREAK DOTS -->
@@ -543,17 +543,17 @@ input:focus-visible{
     <div class="toolbar">
       <span class="toolbar-label" id="toolbarLabel">Blocks</span>
       <div class="toolbar-actions">
-        <button class="btn-pill" id="editBtn" onclick="toggleEdit()">✎ Edit</button>
-        <button class="btn-pill teal" id="addBtn" onclick="addBlock()" style="display:none">＋ Add</button>
+        <button class="btn-pill" id="editBtn" onclick="toggleEdit()">âśŽ Edit</button>
+        <button class="btn-pill teal" id="addBtn" onclick="addBlock()" style="display:none">ďĽ‹ Add</button>
       </div>
     </div>
-    <div class="edit-hint" id="editHint">✦ Drag ⠿ to reorder · Tap text to edit · Auto-saves</div>
+    <div class="edit-hint" id="editHint">âś¦ Drag â ż to reorder Â· Tap text to edit Â· Auto-saves</div>
     <div class="schedule-summary" id="scheduleSummary">Done 0/0 <span>Idle</span></div>
     <div class="tl" id="tl"></div>
     <div class="actions-row">
-      <button class="btn-pill ghost" onclick="resetDay()">↺ Reset Day</button>
-      <button class="btn-pill teal" onclick="exportLog()">↓ Export</button>
-      <button class="btn-pill danger" id="resetSchedBtn" onclick="resetSchedule()" style="display:none">⚠ Reset</button>
+      <button class="btn-pill ghost" onclick="resetDay()">â†ş Reset Day</button>
+      <button class="btn-pill teal" onclick="exportLog()">â†“ Export</button>
+      <button class="btn-pill danger" id="resetSchedBtn" onclick="resetSchedule()" style="display:none">âš  Reset</button>
     </div>
   </div>
 
@@ -564,7 +564,7 @@ input:focus-visible{
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-v" id="st-today">0%</div><div class="stat-l">Today</div></div>
-      <div class="stat-card"><div class="stat-v" id="st-avg">—</div><div class="stat-l">7-Day Avg</div></div>
+      <div class="stat-card"><div class="stat-v" id="st-avg">â€”</div><div class="stat-l">7-Day Avg</div></div>
       <div class="stat-card"><div class="stat-v" id="st-streak">0</div><div class="stat-l">Streak</div><div class="stat-sub" id="st-streak-sub"></div></div>
       <div class="stat-card"><div class="stat-v" id="st-days">0</div><div class="stat-l">Days Logged</div></div>
       <div class="stat-card wide"><div class="stat-v" id="st-best">0</div><div class="stat-l">Best Streak</div></div>
@@ -577,39 +577,37 @@ input:focus-visible{
   <!-- WIDGET -->
   <div class="page" id="page-widget">
     <p class="eyebrow">Android Widget</p>
-    <p class="page-title"><em>KWGT</em> Setup</p>
+    <p class="page-title"><em>Native</em> Widget Setup</p>
 
     <div class="widget-card">
       <h3>📦 What you need</h3>
       <ol>
-        <li>Install <strong>KWGT Kustom Widget</strong> from Play Store (free)</li>
-        <li>Install <strong>KWGT Pro Key</strong> (paid, ~$3 — needed for HTTP fetching)</li>
-        <li>Host with a runtime-capable service (for example <strong>Render</strong>, <strong>Railway</strong>, or <strong>Vercel</strong>)</li>
+        <li>Install the native Android app from <strong>android-widget-starter</strong></li>
+        <li>Set your endpoint URL in <strong>WidgetRepository.kt</strong></li>
+        <li>Add the <strong>Researcher Timetable</strong> widget from your home screen</li>
       </ol>
     </div>
 
     <div class="widget-card">
       <h3>🔗 Your Widget Data URL</h3>
       <p>Your runtime endpoint serves JSON at this path for external widgets.</p>
-      <p style="margin-top:6px">Note: in-app edits are device-local unless you add sync/storage on the server.</p>
+      <p style="margin-top:6px">Paste this URL into <strong>app/src/main/java/com/researchertimetable/widget/WidgetRepository.kt</strong>.</p>
       <div class="code-block" id="widgetUrl">https://YOUR-DOMAIN.com/widget-data.json</div>
       <button class="copy-btn" onclick="copyUrl()">📋 Copy URL</button>
     </div>
 
     <div class="widget-card">
-      <h3>⚙️ KWGT Formula</h3>
-      <p>In KWGT, create a text element and use this formula to show the active block:</p>
-      <div class="code-block">$si(read, "https://YOUR-DOMAIN.com/widget-data.json", "active_name")$</div>
-      <p style="margin-top:6px">For time remaining:</p>
-      <div class="code-block">$si(read, "https://YOUR-DOMAIN.com/widget-data.json", "time_left")$</div>
-      <p style="margin-top:6px">For progress percentage:</p>
-      <div class="code-block">$si(read, "https://YOUR-DOMAIN.com/widget-data.json", "progress_pct")$</div>
+      <h3>⚙️ Native App Flow</h3>
+      <p>1. Open <strong>android-widget-starter</strong> in Android Studio.</p>
+      <p>2. Set endpoint URL in <strong>WidgetRepository.kt</strong>.</p>
+      <p>3. Install app on phone and add the widget.</p>
+      <p>4. Use <strong>Refresh Widget Now</strong> for immediate sync.</p>
     </div>
 
     <div class="widget-card">
       <h3>📄 Widget Data Preview</h3>
-      <p>Live preview from this device. External widgets read the runtime endpoint URL.</p>
-      <div class="code-block" id="widgetDataPreview">Loading…</div>
+      <p>Preview payload. Your native widget reads the deployed endpoint URL.</p>
+      <div class="code-block" id="widgetDataPreview">Loadingâ€¦</div>
     </div>
   </div>
 
@@ -618,38 +616,38 @@ input:focus-visible{
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="goPage('home')" aria-label="Open Home">
-    <span class="nav-icon">🏠</span>
+    <span class="nav-icon">đźŹ </span>
     <span class="nav-label">Home</span>
   </button>
   <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')" aria-label="Open Schedule">
-    <span class="nav-icon">📋</span>
+    <span class="nav-icon">đź“‹</span>
     <span class="nav-label">Schedule</span>
   </button>
   <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
-    <span class="nav-icon">📊</span>
+    <span class="nav-icon">đź“Š</span>
     <span class="nav-label">Stats</span>
   </button>
   <button class="nav-btn" id="nav-widget" onclick="goPage('widget')" aria-label="Open Widget">
-    <span class="nav-icon">🔲</span>
+    <span class="nav-icon">đź”˛</span>
     <span class="nav-label">Widget</span>
   </button>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* ══ DATA ════════════════════════════════════════════════ */
+/* â•â• DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const DEFAULT=[
-  {id:'s0',t:"05:00–06:15",a:"Morning Essentials",     f:"Wake up, Shower, Suhoor, Subah Swala.",    i:"🌙",s:300, e:375},
-  {id:'s1',t:"06:15–06:30",a:"Spiritual Start",        f:"Adkar & Quran.",                           i:"📖",s:375, e:390},
-  {id:'s2',t:"06:30–07:00",a:"Commute",                f:"Research podcast or plan top 3 goals.",    i:"🚗",s:390, e:420},
-  {id:'s3',t:"07:00–07:30",a:"Institute Arrival",      f:"Call Mom & settle in at your desk.",       i:"🏛",s:420, e:450},
-  {id:'s4',t:"07:30–09:30",a:"Theoretical Study",      f:"LASER Spectroscopy & Singlet Fission.",    i:"🔬",s:450, e:570},
-  {id:'s5',t:"09:30–10:30",a:"Research Reading",       f:"Reviewing relevant papers / journals.",    i:"📄",s:570, e:630},
-  {id:'s6',t:"10:30–12:00",a:"Glotaran Analysis",      f:"Deep dive into data analysis & fitting.",  i:"📊",s:630, e:720},
-  {id:'s7',t:"12:00–01:00",a:"Hugging Face Block",     f:"AI model dev, fine-tuning, NLP tasks.",    i:"🤗",s:720, e:780},
-  {id:'s8',t:"01:00–02:00",a:"Break & Dhuhr Prayer",   f:"Dhuhr prayer and light lunch / rest.",     i:"🕌",s:780, e:840},
-  {id:'s9',t:"02:00–05:00",a:"Main Experiment Block",  f:"Active LASER lab time & data collection.", i:"⚗️",s:840, e:1020},
-  {id:'s10',t:"05:00–05:30",a:"Lab Wrap-up",           f:"Cleanup, power-down, log entry.",          i:"✅",s:1020,e:1050},
+  {id:'s0',t:"05:00â€“06:15",a:"Morning Essentials",     f:"Wake up, Shower, Suhoor, Subah Swala.",    i:"đźŚ™",s:300, e:375},
+  {id:'s1',t:"06:15â€“06:30",a:"Spiritual Start",        f:"Adkar & Quran.",                           i:"đź“–",s:375, e:390},
+  {id:'s2',t:"06:30â€“07:00",a:"Commute",                f:"Research podcast or plan top 3 goals.",    i:"đźš—",s:390, e:420},
+  {id:'s3',t:"07:00â€“07:30",a:"Institute Arrival",      f:"Call Mom & settle in at your desk.",       i:"đźŹ›",s:420, e:450},
+  {id:'s4',t:"07:30â€“09:30",a:"Theoretical Study",      f:"LASER Spectroscopy & Singlet Fission.",    i:"đź”¬",s:450, e:570},
+  {id:'s5',t:"09:30â€“10:30",a:"Research Reading",       f:"Reviewing relevant papers / journals.",    i:"đź“„",s:570, e:630},
+  {id:'s6',t:"10:30â€“12:00",a:"Glotaran Analysis",      f:"Deep dive into data analysis & fitting.",  i:"đź“Š",s:630, e:720},
+  {id:'s7',t:"12:00â€“01:00",a:"Hugging Face Block",     f:"AI model dev, fine-tuning, NLP tasks.",    i:"đź¤—",s:720, e:780},
+  {id:'s8',t:"01:00â€“02:00",a:"Break & Dhuhr Prayer",   f:"Dhuhr prayer and light lunch / rest.",     i:"đź•Ś",s:780, e:840},
+  {id:'s9',t:"02:00â€“05:00",a:"Main Experiment Block",  f:"Active LASER lab time & data collection.", i:"âš—ď¸Ź",s:840, e:1020},
+  {id:'s10',t:"05:00â€“05:30",a:"Lab Wrap-up",           f:"Cleanup, power-down, log entry.",          i:"âś…",s:1020,e:1050},
 ];
 
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
@@ -704,7 +702,7 @@ function getStreakStats(data,totalBlocks){
   return{keys,currentStreak,bestStreak};
 }
 
-/* ══ NAVIGATION ══════════════════════════════════════════ */
+/* â•â• NAVIGATION â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function goPage(name){
   const prev=currentPage;
   if(prev===name)return;
@@ -722,7 +720,7 @@ function goPage(name){
   if(name==='widget')updateWidgetPreview();
 }
 
-/* ══ THEME ═══════════════════════════════════════════════ */
+/* â•â• THEME â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let theme=localStorage.getItem('rdt_theme')||'dark';
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme',t);
@@ -733,7 +731,7 @@ function applyTheme(t){
 function toggleTheme(){applyTheme(theme==='dark'?'light':'dark');}
 applyTheme(theme);
 
-/* ══ HOME PAGE ════════════════════════════════════════════ */
+/* â•â• HOME PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function updateHome(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
@@ -758,9 +756,9 @@ function updateHome(){
     hero.classList.add('idle');
     document.getElementById('heroLabel').textContent='NO ACTIVE BLOCK';
     document.getElementById('heroLabel').className='hero-label idle-lbl';
-    document.getElementById('heroTimeLeft').textContent='—';
+    document.getElementById('heroTimeLeft').textContent='â€”';
     document.getElementById('heroTimeLeft').className='hero-time-left idle-time';
-    document.getElementById('heroIcon').textContent='⏸';
+    document.getElementById('heroIcon').textContent='âŹ¸';
     document.getElementById('heroTitle').textContent='Free time';
     document.getElementById('heroFocus').textContent='No scheduled block right now.';
   }
@@ -785,7 +783,7 @@ function updateHome(){
     nc.style.display='flex';
     document.getElementById('nextIcon').textContent=ns.i;
     document.getElementById('nextName').textContent=ns.a;
-    document.getElementById('nextTime').textContent='Starts '+ns.t.split('–')[0];
+    document.getElementById('nextTime').textContent='Starts '+ns.t.split('â€“')[0];
   } else nc.style.display='none';
 
   // Stats
@@ -796,7 +794,7 @@ function updateHome(){
   const streak=streakStats.currentStreak;
   document.getElementById('mToday').textContent=pct+'%';
   document.getElementById('mStreak').textContent=streak;
-  document.getElementById('mAvg').textContent=avg!==null?avg+'%':'—';
+  document.getElementById('mAvg').textContent=avg!==null?avg+'%':'â€”';
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
@@ -807,7 +805,7 @@ function updateHome(){
   }
 }
 
-/* ══ SCHEDULE ════════════════════════════════════════════ */
+/* â•â• SCHEDULE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function buildTimeline(){
   const tl=document.getElementById('tl');
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
@@ -835,12 +833,12 @@ function buildTimeline(){
       <div class="tc">
         <div class="tc-display">
           <div class="tc-icon">${s.i}</div>
-          <div class="tc-time">${s.t.replace('–','–<br>')}</div>
+          <div class="tc-time">${s.t.replace('â€“','â€“<br>')}</div>
         </div>
         <div class="time-inp-wrap">
           <div style="font-size:9px;color:var(--txt3);margin-bottom:3px">${s.i}</div>
           <input class="time-inp" type="text" value="${s.t}"
-            onchange="updateField(${i},'t',this.value)" placeholder="07:30–09:30">
+            onchange="updateField(${i},'t',this.value)" placeholder="07:30â€“09:30">
         </div>
       </div>
       <div class="slot-content">
@@ -854,15 +852,15 @@ function buildTimeline(){
           ${editMode?'':'readonly'}
           oninput="autoResize(this);updateField(${i},'f',this.value)">${s.f}</textarea>
         <div class="note-area${isOpen?' open':''}" id="na-${s.id}">
-          <textarea class="note-inp" rows="2" placeholder="Add a note…"
+          <textarea class="note-inp" rows="2" placeholder="Add a noteâ€¦"
             onfocus="openNotes['${s.id}']=true"
             oninput="saveNote('${s.id}',this.value)">${note}</textarea>
         </div>
       </div>
       <div class="slot-ctrl">
-        <button class="chk-btn" onclick="toggleDone('${s.id}')">✓</button>
-        <button class="note-btn${hasNote?' has':''}" onclick="toggleNote('${s.id}')">✎</button>
-        <button class="del-btn" onclick="deleteBlock(${i})">✕</button>
+        <button class="chk-btn" onclick="toggleDone('${s.id}')">âś“</button>
+        <button class="note-btn${hasNote?' has':''}" onclick="toggleNote('${s.id}')">âśŽ</button>
+        <button class="del-btn" onclick="deleteBlock(${i})">âś•</button>
       </div>
     `;
 
@@ -890,7 +888,7 @@ function buildTimeline(){
   const addInline=document.createElement('button');
   addInline.className='add-inline';
   addInline.style.display=editMode?'block':'none';
-  addInline.innerHTML='＋ &nbsp;Add New Block';
+  addInline.innerHTML='ďĽ‹ &nbsp;Add New Block';
   addInline.onclick=addBlock;
   tl.appendChild(addInline);
   const summaryEl=document.getElementById('scheduleSummary');
@@ -920,7 +918,7 @@ function saveNote(id,val){
 }
 function updateField(i,field,val){
   schedule[i][field]=val;
-  if(field==='t'){const m=val.match(/(\d{1,2}):(\d{2})\s*[–\-]\s*(\d{1,2}):(\d{2})/);if(m){schedule[i].s=+m[1]*60+ +m[2];schedule[i].e=+m[3]*60+ +m[4];}}
+  if(field==='t'){const m=val.match(/(\d{1,2}):(\d{2})\s*[â€“\-]\s*(\d{1,2}):(\d{2})/);if(m){schedule[i].s=+m[1]*60+ +m[2];schedule[i].e=+m[3]*60+ +m[4];}}
   saveSchedule();
 }
 function deleteBlock(i){
@@ -930,7 +928,7 @@ function deleteBlock(i){
   showToast('Block removed');
 }
 function addBlock(){
-  schedule.push({id:'s'+(++idCtr),t:"00:00–00:00",a:"New Block",f:"Describe the focus of this block.",i:"📌",s:0,e:0});
+  schedule.push({id:'s'+(++idCtr),t:"00:00â€“00:00",a:"New Block",f:"Describe the focus of this block.",i:"đź“Ś",s:0,e:0});
   saveSchedule();normalizeAllData();buildTimeline();
   showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
@@ -938,7 +936,7 @@ function addBlock(){
 function toggleEdit(){
   editMode=!editMode;
   const btn=document.getElementById('editBtn');
-  btn.textContent=editMode?'✓ Done':'✎ Edit';
+  btn.textContent=editMode?'âś“ Done':'âśŽ Edit';
   btn.className='btn-pill'+(editMode?' gold':'');
   document.getElementById('addBtn').style.display=editMode?'inline-flex':'none';
   document.getElementById('resetSchedBtn').style.display=editMode?'inline-flex':'none';
@@ -959,19 +957,19 @@ function resetSchedule(){
 }
 function exportLog(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
-  let txt=`RESEARCHER'S LOG — ${k}\n${'─'.repeat(36)}\n\n`;
+  let txt=`RESEARCHER'S LOG â€” ${k}\n${'â”€'.repeat(36)}\n\n`;
   schedule.forEach(s=>{
-    txt+=(day.done.includes(s.id)?'✓':'○')+` [${s.t}] ${s.a}\n`;
-    if(day.notes[s.id]?.trim())txt+=`   ↳ ${day.notes[s.id].trim()}\n`;
+    txt+=(day.done.includes(s.id)?'âś“':'â—‹')+` [${s.t}] ${s.a}\n`;
+    if(day.notes[s.id]?.trim())txt+=`   â†ł ${day.notes[s.id].trim()}\n`;
   });
-  txt+=`\n${'─'.repeat(36)}\nDone: ${day.done.length}/${N} (${Math.round(day.done.length/(N||1)*100)}%)\n`;
+  txt+=`\n${'â”€'.repeat(36)}\nDone: ${day.done.length}/${N} (${Math.round(day.done.length/(N||1)*100)}%)\n`;
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
   a.download=`research-log-${k}.txt`;a.click();
   showToast('Log exported');
 }
 
-/* ══ STATS PAGE ═══════════════════════════════════════════ */
+/* â•â• STATS PAGE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function renderStatsPage(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,pct=Math.round(day.done.length/N*100);
@@ -982,9 +980,9 @@ function renderStatsPage(){
   const streak=streakStats.currentStreak;
   const best=streakStats.bestStreak;
   document.getElementById('st-today').textContent=pct+'%';
-  document.getElementById('st-avg').textContent=avg!==null?avg+'%':'—';
+  document.getElementById('st-avg').textContent=avg!==null?avg+'%':'â€”';
   document.getElementById('st-streak').textContent=streak;
-  document.getElementById('st-streak-sub').textContent=streak>=3?'🔥 On a roll!':streak>=1?'Keep going!':'Start today';
+  document.getElementById('st-streak-sub').textContent=streak>=3?'đź”Ą On a roll!':streak>=1?'Keep going!':'Start today';
   document.getElementById('st-days').textContent=keys.length;
   document.getElementById('st-best').textContent=best;
 
@@ -1006,7 +1004,7 @@ function renderStatsPage(){
   });
 }
 
-/* ══ WIDGET DATA ═════════════════════════════════════════ */
+/* â•â• WIDGET DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function getWidgetData(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
@@ -1028,13 +1026,13 @@ function getWidgetData(){
   }
   return{
     active_name:active?active.name:'Free time',
-    active_icon:active?active.icon:'⏸',
+    active_icon:active?active.icon:'âŹ¸',
     active_focus:active?active.focus:'',
-    time_left:active?active.time_left:'—',
+    time_left:active?active.time_left:'â€”',
     time_left_min:active?active.time_left_min:0,
     next_name:next?next.name:'No more blocks',
-    next_icon:next?next.icon:'✅',
-    next_time:next?next.time.split('–')[0]:'',
+    next_icon:next?next.icon:'âś…',
+    next_time:next?next.time.split('â€“')[0]:'',
     progress_pct:pct,
     progress_str:`${done.length}/${N}`,
     done_count:done.length,
@@ -1059,7 +1057,7 @@ function copyUrl(){
   navigator.clipboard?.writeText(url).then(()=>showToast('URL copied')).catch(()=>showToast('Copy: '+url));
 }
 
-/* ══ INSTALL PWA ═════════════════════════════════════════ */
+/* â•â• INSTALL PWA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();deferredPrompt=e;
@@ -1077,12 +1075,12 @@ window.addEventListener('appinstalled',()=>{
   document.getElementById('install-banner').classList.remove('show');
 });
 
-/* ══ SERVICE WORKER ══════════════════════════════════════ */
+/* â•â• SERVICE WORKER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
-/* ══ TICK ════════════════════════════════════════════════ */
+/* â•â• TICK â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function tick(){
   const now=new Date();
   const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1105,3 +1103,4 @@ setInterval(tick,1000);
 </script>
 </body>
 </html>
+
