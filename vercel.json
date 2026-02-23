@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/widget-data.json", "destination": "/api/widget-data" }
+  ]
+}

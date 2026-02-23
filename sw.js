@@ -1,4 +1,4 @@
-const CACHE = 'researcher-timetable-v1';
+const CACHE = 'researcher-timetable-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -22,10 +22,13 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fresh = fetch(e.request).then(res => {
-        if(res.ok && e.request.url.startsWith('http')) {
+        const reqUrl = new URL(e.request.url);
+        if(res.ok && reqUrl.origin === self.location.origin) {
           caches.open(CACHE).then(c => c.put(e.request, res.clone()));
         }
         return res;

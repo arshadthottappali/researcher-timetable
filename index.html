@@ -547,13 +547,14 @@ body{
       <ol>
         <li>Install <strong>KWGT Kustom Widget</strong> from Play Store (free)</li>
         <li>Install <strong>KWGT Pro Key</strong> (paid, ~$3 — needed for HTTP fetching)</li>
-        <li>Host your timetable files on a server or use a free host like <strong>Netlify</strong> or <strong>GitHub Pages</strong></li>
+        <li>Host with a runtime-capable service (for example <strong>Render</strong>, <strong>Railway</strong>, or <strong>Vercel</strong>)</li>
       </ol>
     </div>
 
     <div class="widget-card">
       <h3>🔗 Your Widget Data URL</h3>
-      <p>Your app exposes a live JSON feed at this path. Host your files and replace the URL below:</p>
+      <p>Your runtime endpoint serves JSON at this path for external widgets.</p>
+      <p style="margin-top:6px">Note: in-app edits are device-local unless you add sync/storage on the server.</p>
       <div class="code-block" id="widgetUrl">https://YOUR-DOMAIN.com/widget-data.json</div>
       <button class="copy-btn" onclick="copyUrl()">📋 Copy URL</button>
     </div>
@@ -570,7 +571,7 @@ body{
 
     <div class="widget-card">
       <h3>📄 Widget Data Preview</h3>
-      <p>Live data that your widget reads:</p>
+      <p>Live preview from this device. External widgets read the runtime endpoint URL.</p>
       <div class="code-block" id="widgetDataPreview">Loading…</div>
     </div>
   </div>
@@ -616,6 +617,7 @@ const DEFAULT=[
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
 let editMode=false,dragSrc=null,openNotes={},idCtr=200;
 let currentPage='home';
+let lastRenderedMinute=null;
 
 const saveSchedule=()=>localStorage.setItem('rdt_sched',JSON.stringify(schedule));
 const loadData=()=>{try{return JSON.parse(localStorage.getItem('rdt_data')||'{}')}catch{return{}}};
@@ -624,6 +626,44 @@ const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
 const activeIdx=()=>{const m=nowMin();return schedule.findIndex(s=>m>=s.s&&m<s.e);};
 const getDay=(data,k)=>{if(!data[k])data[k]={done:[],notes:{}};return data[k];};
+const validIdSet=()=>new Set(schedule.map(s=>s.id));
+function normalizeDayData(day,validIds){
+  day.done=Array.isArray(day.done)?day.done.filter(id=>validIds.has(id)):[];
+  const notes=(day.notes&&typeof day.notes==='object')?day.notes:{};
+  const cleanNotes={};
+  Object.keys(notes).forEach(id=>{if(validIds.has(id))cleanNotes[id]=notes[id];});
+  day.notes=cleanNotes;
+  return day;
+}
+function normalizeAllData(){
+  const data=loadData();
+  const ids=validIdSet();
+  let changed=false;
+  Object.keys(data).forEach(k=>{
+    const day=getDay(data,k);
+    const beforeDone=JSON.stringify(day.done||[]);
+    const beforeNotes=JSON.stringify(day.notes||{});
+    normalizeDayData(day,ids);
+    if(beforeDone!==JSON.stringify(day.done)||beforeNotes!==JSON.stringify(day.notes))changed=true;
+  });
+  if(changed)saveData(data);
+  return data;
+}
+function getStreakStats(data,totalBlocks){
+  const keys=Object.keys(data).sort();
+  const threshold=Math.ceil(totalBlocks*0.7);
+  let currentStreak=0;
+  for(let i=keys.length-1;i>=0;i--){
+    if((data[keys[i]]?.done?.length||0)>=threshold)currentStreak++;
+    else break;
+  }
+  let bestStreak=0,run=0;
+  for(let i=0;i<keys.length;i++){
+    if((data[keys[i]]?.done?.length||0)>=threshold){run++;if(run>bestStreak)bestStreak=run;}
+    else run=0;
+  }
+  return{keys,currentStreak,bestStreak};
+}
 
 /* ══ NAVIGATION ══════════════════════════════════════════ */
 function goPage(name){
@@ -639,7 +679,7 @@ function goPage(name){
   document.getElementById('nav-'+name).classList.add('active');
   currentPage=name;
   if(name==='stats')renderStatsPage();
-  if(name==='schedule')buildTimeline();
+  if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
   if(name==='widget')updateWidgetPreview();
 }
 
@@ -656,7 +696,7 @@ applyTheme(theme);
 
 /* ══ HOME PAGE ════════════════════════════════════════════ */
 function updateHome(){
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
   const pct=Math.round(done.length/N*100);
   const ai=activeIdx();
@@ -710,13 +750,11 @@ function updateHome(){
   } else nc.style.display='none';
 
   // Stats
-  const keys=Object.keys(data).sort(),last7=keys.slice(-7);
+  const streakStats=getStreakStats(data,N);
+  const keys=streakStats.keys,last7=keys.slice(-7);
   const avgs=last7.map(kk=>(data[kk]?.done?.length||0)/N*100);
   const avg=avgs.length?Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length):null;
-  let streak=0,best=0;
-  for(let i=keys.length-1;i>=0;i--){
-    if((data[keys[i]]?.done?.length||0)>=Math.ceil(N*.7)){streak++;best=Math.max(best,streak);}else break;
-  }
+  const streak=streakStats.currentStreak;
   document.getElementById('mToday').textContent=pct+'%';
   document.getElementById('mStreak').textContent=streak;
   document.getElementById('mAvg').textContent=avg!==null?avg+'%':'—';
@@ -733,7 +771,7 @@ function updateHome(){
 /* ══ SCHEDULE ════════════════════════════════════════════ */
 function buildTimeline(){
   const tl=document.getElementById('tl');
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const done=day.done,notes=day.notes,ai=activeIdx();
   tl.innerHTML='';
   tl.classList.toggle('edit-mode',editMode);
@@ -801,7 +839,7 @@ function buildTimeline(){
       if(dragSrc===null||dragSrc===i)return;
       const moved=schedule.splice(dragSrc,1)[0];
       schedule.splice(i,0,moved);
-      dragSrc=null;saveSchedule();buildTimeline();
+      dragSrc=null;saveSchedule();normalizeAllData();buildTimeline();
     });
 
     tl.appendChild(el);
@@ -814,12 +852,13 @@ function buildTimeline(){
   addInline.innerHTML='＋ &nbsp;Add New Block';
   addInline.onclick=addBlock;
   tl.appendChild(addInline);
+  lastRenderedMinute=nowMin();
 }
 
 function autoResize(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
 
 function toggleDone(id){
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const idx=day.done.indexOf(id);
   if(idx>=0)day.done.splice(idx,1);else day.done.push(id);
   saveData(data);buildTimeline();updateHome();
@@ -830,7 +869,7 @@ function toggleNote(id){
   if(na){na.classList.toggle('open',openNotes[id]);if(openNotes[id])na.querySelector('textarea').focus();}
 }
 function saveNote(id,val){
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   day.notes[id]=val;saveData(data);
 }
 function updateField(i,field,val){
@@ -841,11 +880,11 @@ function updateField(i,field,val){
 function deleteBlock(i){
   if(schedule.length<=1){alert('Need at least one block.');return;}
   if(!confirm(`Remove "${schedule[i].a}"?`))return;
-  schedule.splice(i,1);saveSchedule();buildTimeline();
+  schedule.splice(i,1);saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
 }
 function addBlock(){
   schedule.push({id:'s'+(++idCtr),t:"00:00–00:00",a:"New Block",f:"Describe the focus of this block.",i:"📌",s:0,e:0});
-  saveSchedule();buildTimeline();
+  saveSchedule();normalizeAllData();buildTimeline();
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
 }
 function toggleEdit(){
@@ -861,15 +900,15 @@ function toggleEdit(){
 }
 function resetDay(){
   if(!confirm('Reset today\'s progress?'))return;
-  const data=loadData();data[todayKey()]={done:[],notes:{}};saveData(data);
+  const data=normalizeAllData();data[todayKey()]={done:[],notes:{}};saveData(data);
   openNotes={};buildTimeline();updateHome();
 }
 function resetSchedule(){
   if(!confirm('Restore default schedule?'))return;
-  schedule=JSON.parse(JSON.stringify(DEFAULT));saveSchedule();buildTimeline();
+  schedule=JSON.parse(JSON.stringify(DEFAULT));saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
 }
 function exportLog(){
-  const data=loadData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
   let txt=`RESEARCHER'S LOG — ${k}\n${'─'.repeat(36)}\n\n`;
   schedule.forEach(s=>{
     txt+=(day.done.includes(s.id)?'✓':'○')+` [${s.t}] ${s.a}\n`;
@@ -883,15 +922,14 @@ function exportLog(){
 
 /* ══ STATS PAGE ═══════════════════════════════════════════ */
 function renderStatsPage(){
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,pct=Math.round(day.done.length/N*100);
-  const keys=Object.keys(data).sort(),last7=keys.slice(-7);
+  const streakStats=getStreakStats(data,N);
+  const keys=streakStats.keys,last7=keys.slice(-7);
   const avgs=last7.map(kk=>(data[kk]?.done?.length||0)/N*100);
   const avg=avgs.length?Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length):null;
-  let streak=0,best=0;
-  for(let i=keys.length-1;i>=0;i--){
-    if((data[keys[i]]?.done?.length||0)>=Math.ceil(N*.7)){streak++;best=Math.max(best,streak);}else break;
-  }
+  const streak=streakStats.currentStreak;
+  const best=streakStats.bestStreak;
   document.getElementById('st-today').textContent=pct+'%';
   document.getElementById('st-avg').textContent=avg!==null?avg+'%':'—';
   document.getElementById('st-streak').textContent=streak;
@@ -919,7 +957,7 @@ function renderStatsPage(){
 
 /* ══ WIDGET DATA ═════════════════════════════════════════ */
 function getWidgetData(){
-  const data=loadData(),k=todayKey(),day=getDay(data,k);
+  const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const N=schedule.length||1,done=day.done;
   const pct=Math.round(done.length/N*100);
   const ai=activeIdx();
@@ -990,13 +1028,21 @@ function tick(){
   const now=new Date();
   const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const minuteStamp=now.getHours()*60+now.getMinutes();
   document.getElementById('dateEl').textContent=`${DS[now.getDay()]}, ${MS[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
   document.getElementById('clkEl').textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   if(currentPage==='home')updateHome();
-  if(currentPage==='schedule')buildTimeline();
+  if(currentPage==='schedule'&&minuteStamp!==lastRenderedMinute){
+    buildTimeline();
+    lastRenderedMinute=minuteStamp;
+  }
 }
 
-buildTimeline();tick();setInterval(tick,1000);
+normalizeAllData();
+buildTimeline();
+lastRenderedMinute=nowMin();
+tick();
+setInterval(tick,1000);
 </script>
 </body>
 </html>
