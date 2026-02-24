@@ -326,6 +326,13 @@ body.onboard-open{overflow:hidden;}
   background:linear-gradient(180deg,var(--gold),var(--teal));
 }
 .ins-fill.last{background:linear-gradient(180deg,var(--gold),#f2c46a);}
+.ins-col.today .ins-track{border:1px solid var(--gold);box-shadow:0 0 0 2px var(--gold-d);}
+.ins-col.today .ins-val{color:var(--gold);}
+.ins-col.today .ins-lbl{color:var(--gold);}
+.ins-today-tag{
+  margin-top:2px;font-size:8px;line-height:1;color:var(--gold);
+  letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+}
 .ins-lbl{font-size:9px;color:var(--txt3);line-height:1;}
 .ins-bars.month .ins-lbl{font-size:8px;line-height:1.05;white-space:normal;text-align:center;}
 .ins-meta{
@@ -926,8 +933,8 @@ input:focus-visible{
         <div class="conflict-title">Sync conflict detected</div>
         <p class="auth-help" id="conflictMsg">Both local and cloud changed recently.</p>
         <div class="auth-row">
-          <button class="btn-pill teal" onclick="resolveConflict('cloud')">Use Cloud</button>
-          <button class="btn-pill" onclick="resolveConflict('local')">Keep Local</button>
+          <button class="btn-pill teal" onclick="resolveConflict('cloud')">Use Cloud (Overwrite Local)</button>
+          <button class="btn-pill" onclick="resolveConflict('local')">Upload Local to Cloud</button>
           <button class="btn-pill danger" onclick="dismissConflict()">Dismiss</button>
         </div>
       </div>
@@ -1201,7 +1208,7 @@ function updateOnboardingStep(){
   const back=document.getElementById('onbBackBtn');
   const next=document.getElementById('onbNextBtn');
   if(back)back.style.display=onboardStep===0?'none':'inline-flex';
-  if(next)next.textContent=onboardStep===2?'Finish':'Next';
+  if(next)next.textContent=onboardStep===2?'Create Schedule':'Next';
 }
 function openOnboarding(){
   const root=document.getElementById('onboard');
@@ -1297,6 +1304,7 @@ function renderInsightsGraph(data,N){
     ? lastDateKeys(30).filter((_,i)=>i%3===0) // 10 bars across last 30 days
     : lastDateKeys(7); // fixed 7 bars (Sun..Sat labels by date key)
   const points=periodKeys.map(k=>({k,p:Math.round(((data[k]?.done?.length||0)/(N||1))*100)}));
+  const today=todayKey();
   graph.innerHTML=`
     <div class="ins-bars ${isMonth?'month':'week'}">
       ${points.map((x,idx)=>{
@@ -1306,7 +1314,8 @@ function renderInsightsGraph(data,N){
         const lbl=isMonth?`${d.getDate()} ${mon3}`:day3;
         const h=Math.max(4,Math.min(100,x.p));
         const last=idx===points.length-1;
-        return `<div class="ins-col"><span class="ins-val">${x.p}%</span><div class="ins-track"><div class="ins-fill ${last?'last':''}" style="height:${h}%"></div></div><span class="ins-lbl">${lbl}</span></div>`;
+        const isToday=x.k===today;
+        return `<div class="ins-col ${isToday?'today':''}"><span class="ins-val">${x.p}%</span><div class="ins-track"><div class="ins-fill ${last?'last':''}" style="height:${h}%"></div></div><span class="ins-lbl">${lbl}</span>${isToday?'<span class="ins-today-tag">Today</span>':'<span class="ins-today-tag">&nbsp;</span>'}</div>`;
       }).join('')}
     </div>
   `;
