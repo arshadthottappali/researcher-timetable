@@ -128,6 +128,8 @@ body.onboard-open{overflow:hidden;}
 .onb-shot-line{height:7px;background:var(--b2);border-radius:999px;margin:6px 0;}
 .onb-shot-line.gold{background:linear-gradient(90deg,var(--gold),var(--teal));}
 .onb-auth{max-width:430px;}
+.onb-time-row{display:flex;gap:8px;margin-top:8px;}
+.onb-time-row input[type="time"]{flex:1;}
 .onb-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;}
 .onb-dots{display:flex;gap:6px;}
 .onb-dot{width:7px;height:7px;border-radius:50%;background:var(--b2);}
@@ -136,8 +138,7 @@ body.onboard-open{overflow:hidden;}
 .onb-only{display:none;}
 #onboard[data-step="0"] .onb-step-0,
 #onboard[data-step="1"] .onb-step-1,
-#onboard[data-step="2"] .onb-step-2,
-#onboard[data-step="3"] .onb-step-3{display:block;}
+#onboard[data-step="2"] .onb-step-2{display:block;}
 @media(max-width:760px){
   .onb-title{font-size:24px;}
   .onb-grid{grid-template-columns:1fr;}
@@ -667,7 +668,7 @@ input:focus-visible{
 <div id="onboard" data-step="0" aria-modal="true" role="dialog">
   <div class="onb-shell">
     <div class="onb-head">
-      <span class="onb-step" id="onbStepLabel">Step 1 of 4</span>
+      <span class="onb-step" id="onbStepLabel">Step 1 of 3</span>
       <button class="onb-skip" onclick="startLocalMode()">Use Local Only</button>
     </div>
 
@@ -706,36 +707,28 @@ input:focus-visible{
     </section>
 
     <section class="onb-only onb-step-1">
-      <h2 class="onb-title">What you can do</h2>
-      <p class="onb-sub">Build your routine, edit times with pickers, reorder blocks, keep notes, and monitor streaks.</p>
-      <div class="onb-grid">
-        <div class="onb-card"><h4>Schedule control</h4><p>Edit block titles, focus, and times. Drag to reorder in edit mode.</p></div>
-        <div class="onb-card"><h4>Progress + streaks</h4><p>Track daily percent, current streak, and best streak from your history.</p></div>
-        <div class="onb-card"><h4>Quick notes</h4><p>Add context notes per block to capture outcomes and next actions.</p></div>
-        <div class="onb-card"><h4>Export log</h4><p>Export your daily log text file for review or reporting.</p></div>
-      </div>
-    </section>
-
-    <section class="onb-only onb-step-2">
-      <h2 class="onb-title">Widget and sync</h2>
-      <p class="onb-sub">Home-screen widget setup is separate. Sign in keeps your data safe across reinstall and multiple devices.</p>
-      <div class="onb-grid">
-        <div class="onb-card"><h4>Widget setup</h4><p>Use the Widget tab to copy your endpoint URL and connect the Android widget app.</p></div>
-        <div class="onb-card"><h4>Cloud sync</h4><p>Sign in to keep progress across devices and after reinstall.</p></div>
-      </div>
-    </section>
-
-    <section class="onb-only onb-step-3">
       <h2 class="onb-title">Sign in to sync</h2>
-      <p class="onb-sub">Sign in to keep progress across devices. You can continue without account, but progress may be lost after reinstall, browser reset, or device change.</p>
+      <p class="onb-sub">Login keeps your progress across devices. You can also continue local-only and sync later.</p>
       <div class="onb-auth">
         <input class="name-inp" id="onbEmail" type="email" placeholder="Email address" autocomplete="email">
         <input class="name-inp" id="onbPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password" style="margin-top:8px;">
         <div class="auth-row">
-          <button class="btn-pill" onclick="signIn('onbEmail','onbPass',true)">Sign In</button>
+          <button class="btn-pill" onclick="signIn('onbEmail','onbPass')">Sign In</button>
           <button class="btn-pill teal" onclick="signUp('onbEmail','onbPass')">Sign Up</button>
           <button class="btn-pill" onclick="startLocalMode()">Continue Local</button>
           <button class="btn-pill" onclick="sendReset('onbEmail')">Reset Password</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="onb-only onb-step-2">
+      <h2 class="onb-title">Set your first schedule block</h2>
+      <p class="onb-sub">Use time pickers to create your first block. You can edit all blocks later in Schedule.</p>
+      <div class="onb-auth">
+        <input class="name-inp" id="onbTask" placeholder="First task (e.g., Deep Work)">
+        <div class="onb-time-row">
+          <input class="name-inp" id="onbStart" type="time" value="09:00">
+          <input class="name-inp" id="onbEnd" type="time" value="10:00">
         </div>
       </div>
     </section>
@@ -745,7 +738,6 @@ input:focus-visible{
         <span class="onb-dot" id="onbDot0"></span>
         <span class="onb-dot" id="onbDot1"></span>
         <span class="onb-dot" id="onbDot2"></span>
-        <span class="onb-dot" id="onbDot3"></span>
       </div>
       <div class="onb-actions">
         <button class="btn-pill" id="onbBackBtn" onclick="prevOnboarding()">Back</button>
@@ -1036,19 +1028,7 @@ input:focus-visible{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /*  DATA  */
-const DEFAULT=[
-  {id:'s0',t:"05:00-06:15",a:"Morning Essentials",     f:"Wake up, Shower, Suhoor, Subah Swala.",    i:"M",s:300, e:375},
-  {id:'s1',t:"06:15-06:30",a:"Spiritual Start",        f:"Adkar & Quran.",                           i:"S",s:375, e:390},
-  {id:'s2',t:"06:30-07:00",a:"Commute",                f:"Research podcast or plan top 3 goals.",    i:"C",s:390, e:420},
-  {id:'s3',t:"07:00-07:30",a:"Institute Arrival",      f:"Call Mom & settle in at your desk.",       i:"I",s:420, e:450},
-  {id:'s4',t:"07:30-09:30",a:"Theoretical Study",      f:"LASER Spectroscopy & Singlet Fission.",    i:"T",s:450, e:570},
-  {id:'s5',t:"09:30-10:30",a:"Research Reading",       f:"Reviewing relevant papers / journals.",    i:"R",s:570, e:630},
-  {id:'s6',t:"10:30-12:00",a:"Glotaran Analysis",      f:"Deep dive into data analysis & fitting.",  i:"G",s:630, e:720},
-  {id:'s7',t:"12:00-01:00",a:"Hugging Face Block",     f:"AI model dev, fine-tuning, NLP tasks.",    i:"H",s:720, e:780},
-  {id:'s8',t:"01:00-02:00",a:"Break & Dhuhr Prayer",   f:"Dhuhr prayer and light lunch / rest.",     i:"B",s:780, e:840},
-  {id:'s9',t:"02:00-05:00",a:"Main Experiment Block",  f:"Active LASER lab time & data collection.", i:"X",s:840, e:1020},
-  {id:'s10',t:"05:00-05:30",a:"Lab Wrap-up",           f:"Cleanup, power-down, log entry.",          i:"W",s:1020,e:1050},
-];
+const DEFAULT=[];
 
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
 let editMode=false,dragSrc=null,openNotes={},idCtr=200;
@@ -1213,15 +1193,15 @@ function updateOnboardingStep(){
   if(!root)return;
   root.dataset.step=String(onboardStep);
   const stepLbl=document.getElementById('onbStepLabel');
-  if(stepLbl)stepLbl.textContent=`Step ${onboardStep+1} of 4`;
-  for(let i=0;i<4;i++){
+  if(stepLbl)stepLbl.textContent=`Step ${onboardStep+1} of 3`;
+  for(let i=0;i<3;i++){
     const dot=document.getElementById('onbDot'+i);
     if(dot)dot.classList.toggle('on',i===onboardStep);
   }
   const back=document.getElementById('onbBackBtn');
   const next=document.getElementById('onbNextBtn');
   if(back)back.style.display=onboardStep===0?'none':'inline-flex';
-  if(next)next.textContent=onboardStep===3?'Finish':'Next';
+  if(next)next.textContent=onboardStep===2?'Finish':'Next';
 }
 function openOnboarding(){
   const root=document.getElementById('onboard');
@@ -1232,12 +1212,19 @@ function openOnboarding(){
   updateOnboardingStep();
 }
 function nextOnboarding(){
-  if(onboardStep>=3){
-    if(currentUser){finishOnboarding();return;}
-    showToast('Sign in for cloud sync, or choose Continue Local');
+  if(onboardStep===1&&!currentUser&&localStorage.getItem(LOCAL_ONLY_KEY)!=='1'){
+    showToast('Sign in or choose Continue Local');
     return;
   }
-  onboardStep=Math.min(3,onboardStep+1);
+  if(onboardStep>=2){
+    if(!seedScheduleFromOnboarding()){
+      showToast('Add first task and time to continue');
+      return;
+    }
+    finishOnboarding();
+    return;
+  }
+  onboardStep=Math.min(2,onboardStep+1);
   updateOnboardingStep();
 }
 function prevOnboarding(){
@@ -1251,7 +1238,7 @@ function maybeShowOnboarding(){
   }
   if(!currentUser&&localStorage.getItem(LOCAL_ONLY_KEY)!=='1'){
     openOnboarding();
-    onboardStep=3;
+    onboardStep=1;
     updateOnboardingStep();
   }
 }
@@ -1260,6 +1247,23 @@ function replayOnboarding(){
   localStorage.removeItem(LOCAL_ONLY_KEY);
   openOnboarding();
   showToast('Onboarding replay started');
+}
+function seedScheduleFromOnboarding(){
+  if(schedule.length>0)return true;
+  const name=(document.getElementById('onbTask')?.value||'').trim();
+  if(!name)return false;
+  const s=parseTime(document.getElementById('onbStart')?.value||'');
+  const e=parseTime(document.getElementById('onbEnd')?.value||'');
+  if(s===null||e===null)return false;
+  const ss=Math.min(s,e);
+  const ee=(e<=s)?Math.min(1439,ss+60):e;
+  const ico=(name[0]||'N').toUpperCase();
+  schedule=[{id:'s'+(++idCtr),t:`${minsToTime(ss)}-${minsToTime(ee)}`,a:name,f:'Focus session',i:ico,s:ss,e:ee}];
+  saveSchedule();
+  normalizeAllData();
+  buildTimeline();
+  updateHome();
+  return true;
 }
 function toggleAdvancedWidget(){
   const wrap=document.getElementById('advancedWidgetWrap');
@@ -1378,9 +1382,16 @@ function startLocalMode(){
   const ok=confirm('Continue without account?\n\nYour progress stays only on this device and can be lost after reinstall, clearing browser data, or changing device.');
   if(!ok)return;
   localStorage.setItem(LOCAL_ONLY_KEY,'1');
-  finishOnboarding();
-  setSyncStatus('Cloud sync: local-only mode (no account)');
-  showToast('Local-only mode enabled');
+  const onboardOpen=!!document.getElementById('onboard')?.classList.contains('show');
+  if(onboardOpen){
+    onboardStep=2;
+    updateOnboardingStep();
+    showToast('Local-only mode enabled. Set first schedule block.');
+  }else{
+    finishOnboarding();
+    setSyncStatus('Cloud sync: local-only mode (no account)');
+    showToast('Local-only mode enabled');
+  }
 }
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
@@ -1624,7 +1635,13 @@ async function initSupabase(){
       currentUser=sessionNow?.user||null;
       renderAuthState();
       if(currentUser){
-        finishOnboarding();
+        const onboardOpen=!!document.getElementById('onboard')?.classList.contains('show');
+        if(onboardOpen&&!onboardingDone()){
+          onboardStep=2;
+          updateOnboardingStep();
+        }else{
+          finishOnboarding();
+        }
         setSyncStatus('Cloud sync: signed in, syncing...');
         await pullCloudState('login');
       }else{
@@ -1644,7 +1661,15 @@ async function signIn(emailId='authEmail',passId='authPass',finishAfter=false){
   const {error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error){showToast(error.message||'Sign in failed');return;}
   localStorage.removeItem(LOCAL_ONLY_KEY);
-  if(finishAfter)finishOnboarding();
+  const onboardOpen=!!document.getElementById('onboard')?.classList.contains('show');
+  if(onboardOpen&&!onboardingDone()){
+    onboardStep=2;
+    updateOnboardingStep();
+  }
+  if(finishAfter){
+    seedScheduleFromOnboarding();
+    finishOnboarding();
+  }
   showToast('Signed in');
 }
 async function signUp(emailId='authEmail',passId='authPass'){
@@ -1858,6 +1883,16 @@ function buildTimeline(){
   const done=day.done,notes=day.notes,ai=activeIdx();
   tl.innerHTML='';
   tl.classList.toggle('edit-mode',editMode);
+  if(!schedule.length){
+    const empty=document.createElement('div');
+    empty.className='widget-card';
+    empty.innerHTML=`<h3>No schedule yet</h3><p>Create your first block to start tracking.</p><div class="auth-row"><button class="btn-pill teal" onclick="addBlock()">Add First Block</button></div>`;
+    tl.appendChild(empty);
+    const summaryEl=document.getElementById('scheduleSummary');
+    if(summaryEl)summaryEl.innerHTML='No blocks yet <span>Create your first block</span>';
+    lastRenderedMinute=nowMin();
+    return;
+  }
 
   schedule.forEach((s,i)=>{
     const isDone=done.includes(s.id);
@@ -1995,13 +2030,12 @@ function updateTime(i,which,val){
   if(currentPage==='stats')renderStatsPage();
 }
 function deleteBlock(i){
-  if(schedule.length<=1){alert('Need at least one block.');return;}
   if(!confirm(`Remove "${schedule[i].a}"?`))return;
   schedule.splice(i,1);saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
   showToast('Block removed');
 }
 function addBlock(){
-  schedule.push({id:'s'+(++idCtr),t:"00:00-00:00",a:"New Block",f:"Describe the focus of this block.",i:"N",s:0,e:0});
+  schedule.push({id:'s'+(++idCtr),t:"09:00-10:00",a:"New Block",f:"Describe the focus of this block.",i:"N",s:540,e:600});
   saveSchedule();normalizeAllData();buildTimeline();
   showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
@@ -2025,9 +2059,9 @@ function resetDay(){
   showToast('Today reset');
 }
 function resetSchedule(){
-  if(!confirm('Restore default schedule?'))return;
+  if(!confirm('Clear schedule and start fresh?'))return;
   schedule=JSON.parse(JSON.stringify(DEFAULT));saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
-  showToast('Default schedule restored');
+  showToast('Schedule cleared');
 }
 function exportLog(){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k),N=schedule.length;
