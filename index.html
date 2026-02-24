@@ -475,6 +475,14 @@ input:focus-visible{
   border-radius:8px;cursor:pointer;transition:all .18s;
 }
 .copy-btn:active{background:var(--gold);color:#1a1200;}
+.name-row{margin-top:8px;}
+.name-inp{
+  width:100%;padding:10px 12px;border-radius:8px;
+  border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt);
+  font:500 13px 'DM Sans',sans-serif;outline:none;
+}
+.name-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-d);}
+.name-btns{display:flex;gap:8px;margin-top:10px;}
 
 /*  UTIL  */
 @media(max-width:380px){
@@ -490,7 +498,7 @@ input:focus-visible{
 
 <!-- INSTALL BANNER -->
 <div id="install-banner">
-  <span>Add to Home Screen for the full app experience</span>
+  <span id="installText">Add to Home Screen for the full app experience</span>
   <button onclick="installApp()">Install</button>
   <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">X</button>
 </div>
@@ -500,6 +508,7 @@ input:focus-visible{
 
   <!-- HOME -->
   <div class="page active" id="page-home">
+    <p class="eyebrow" id="appNameLabel">Researcher Timetable</p>
     <div class="status-bar">
       <div class="date-time-block">
         <div class="date-str" id="dateEl"></div>
@@ -596,8 +605,20 @@ input:focus-visible{
       <ol>
         <li>Install the native Android app from <strong>android-widget-starter</strong></li>
         <li>Set your endpoint URL in <strong>WidgetRepository.kt</strong></li>
-        <li>Add the <strong>Researcher Timetable</strong> widget from your home screen</li>
+        <li>Add the <strong id="widgetAppName">Researcher Timetable</strong> widget from your home screen</li>
       </ol>
+    </div>
+
+    <div class="widget-card">
+      <h3>App Name</h3>
+      <p>Set a custom name for this device. This updates in-app labels only.</p>
+      <div class="name-row">
+        <input class="name-inp" id="appNameInput" maxlength="40" placeholder="Enter app name">
+      </div>
+      <div class="name-btns">
+        <button class="btn-pill" onclick="saveAppName()">Save Name</button>
+        <button class="btn-pill danger" onclick="resetAppName()">Reset</button>
+      </div>
     </div>
 
     <div class="widget-card">
@@ -667,10 +688,47 @@ let editMode=false,dragSrc=null,openNotes={},idCtr=200;
 let currentPage='home';
 let lastRenderedMinute=null;
 let toastTimer=null;
+const APP_NAME_KEY='rdt_app_name';
+const DEFAULT_APP_NAME='Researcher Timetable';
 
 const saveSchedule=()=>localStorage.setItem('rdt_sched',JSON.stringify(schedule));
 const loadData=()=>{try{return JSON.parse(localStorage.getItem('rdt_data')||'{}')}catch{return{}}};
 const saveData=d=>localStorage.setItem('rdt_data',JSON.stringify(d));
+const cleanName=v=>(v||'').replace(/\s+/g,' ').trim().slice(0,40);
+function getAppName(){
+  const n=cleanName(localStorage.getItem(APP_NAME_KEY)||'');
+  return n||DEFAULT_APP_NAME;
+}
+function applyAppName(){
+  const name=getAppName();
+  document.title=name;
+  const appleTitle=document.querySelector('meta[name="apple-mobile-web-app-title"]');
+  if(appleTitle)appleTitle.setAttribute('content',name);
+  const lbl=document.getElementById('appNameLabel');
+  if(lbl)lbl.textContent=name;
+  const widgetName=document.getElementById('widgetAppName');
+  if(widgetName)widgetName.textContent=name;
+  const installText=document.getElementById('installText');
+  if(installText)installText.textContent=`Add ${name} to Home Screen for the full app experience`;
+  const inp=document.getElementById('appNameInput');
+  if(inp&&document.activeElement!==inp)inp.value=(name===DEFAULT_APP_NAME?'':name);
+}
+function saveAppName(){
+  const inp=document.getElementById('appNameInput');
+  if(!inp)return;
+  const next=cleanName(inp.value);
+  if(next)localStorage.setItem(APP_NAME_KEY,next);
+  else localStorage.removeItem(APP_NAME_KEY);
+  applyAppName();
+  showToast(next?'App name saved':'App name reset');
+}
+function resetAppName(){
+  localStorage.removeItem(APP_NAME_KEY);
+  const inp=document.getElementById('appNameInput');
+  if(inp)inp.value='';
+  applyAppName();
+  showToast('App name reset');
+}
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
 const minsToTime=m=>`${String(Math.floor((Math.max(0,Math.min(1439,m)))/60)).padStart(2,'0')}:${String(Math.max(0,Math.min(1439,m))%60).padStart(2,'0')}`;
@@ -1132,6 +1190,7 @@ function tick(){
 }
 
 normalizeAllData();
+applyAppName();
 buildTimeline();
 lastRenderedMinute=nowMin();
 tick();
