@@ -130,6 +130,7 @@ body.onboard-open{overflow:hidden;}
 .onb-auth{max-width:430px;}
 .onb-time-row{display:flex;gap:8px;margin-top:8px;}
 .onb-time-row input[type="time"]{flex:1;}
+.time-inp,input[type="time"]{cursor:pointer;}
 .onb-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;}
 .onb-dots{display:flex;gap:6px;}
 .onb-dot{width:7px;height:7px;border-radius:50%;background:var(--b2);}
@@ -738,8 +739,8 @@ input:focus-visible{
       <div class="onb-auth">
         <input class="name-inp" id="onbTask" placeholder="First task (e.g., Deep Work)">
         <div class="onb-time-row">
-          <input class="name-inp" id="onbStart" type="time" value="09:00">
-          <input class="name-inp" id="onbEnd" type="time" value="10:00">
+          <input class="name-inp" id="onbStart" type="time" value="09:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+          <input class="name-inp" id="onbEnd" type="time" value="10:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
         </div>
       </div>
     </section>
@@ -1452,6 +1453,21 @@ function dateKeyFromOffset(daysBack){
   d.setDate(d.getDate()-daysBack);
   return toLocalKey(d);
 }
+function blockTimeTyping(e){
+  if(!e)return false;
+  const k=e.key||'';
+  if(k==='Tab'||k==='Shift'||k==='Escape'||k==='Enter'||k==='ArrowLeft'||k==='ArrowRight')return true;
+  e.preventDefault();
+  return false;
+}
+function openTimePicker(el,e){
+  if(e)e.preventDefault();
+  if(!el)return false;
+  if(typeof el.showPicker==='function'){
+    try{el.showPicker();}catch{}
+  }
+  return false;
+}
 function lastDateKeys(days){
   const out=[];
   for(let i=days-1;i>=0;i--)out.push(dateKeyFromOffset(i));
@@ -1951,9 +1967,9 @@ function buildTimeline(){
         <div class="time-inp-wrap">
           <div class="time-edit-ico">${s.i}</div>
           <div class="time-row">
-            <input class="time-inp" type="time" value="${minsToTime(s.s)}" onchange="updateTime(${i},'s',this.value)">
+            <input class="time-inp" type="time" value="${minsToTime(s.s)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" onchange="updateTime(${i},'s',this.value)">
             <span class="time-sep">-</span>
-            <input class="time-inp" type="time" value="${minsToTime(s.e)}" onchange="updateTime(${i},'e',this.value)">
+            <input class="time-inp" type="time" value="${minsToTime(s.e)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" onchange="updateTime(${i},'e',this.value)">
           </div>
         </div>
       </div>
