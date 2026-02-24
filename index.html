@@ -292,22 +292,28 @@ body.onboard-open{overflow:hidden;}
 }
 .ins-tab.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
 .ins-graph{
-  margin-top:10px;height:146px;border:1px solid var(--b2);border-radius:10px;
-  background:linear-gradient(180deg,var(--surf2),var(--surf));padding:8px 8px 6px;
-  position:relative;overflow:hidden;
+  margin-top:10px;min-height:138px;border:1px solid var(--b2);border-radius:10px;
+  background:linear-gradient(180deg,var(--surf2),var(--surf));padding:10px 10px 8px;
 }
-.ins-svg{width:100%;height:116px;display:block;}
-.ins-grid{stroke:var(--b2);stroke-width:1;opacity:.7;}
-.ins-area{fill:url(#insGrad);opacity:.22;}
-.ins-line{fill:none;stroke:var(--gold);stroke-width:2.4;filter:drop-shadow(0 0 5px var(--gold-g));}
-.ins-dot{fill:var(--teal);}
-.ins-dot.last{fill:var(--gold);}
-.ins-xlabels{
-  margin-top:4px;display:grid;gap:6px;color:var(--txt3);
-  font-size:9px;line-height:1;text-align:center;
+.ins-bars{
+  height:98px;display:grid;gap:7px;align-items:end;
 }
-.ins-xlabels.month{grid-template-columns:repeat(10,1fr);}
-.ins-xlabels.week{grid-template-columns:repeat(7,1fr);}
+.ins-bars.week{grid-template-columns:repeat(7,1fr);}
+.ins-bars.month{grid-template-columns:repeat(10,1fr);}
+.ins-col{
+  min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.ins-val{font-size:9px;color:var(--txt3);line-height:1;}
+.ins-track{
+  width:100%;max-width:16px;height:76px;border-radius:999px;
+  background:var(--b2);position:relative;overflow:hidden;
+}
+.ins-fill{
+  position:absolute;left:0;right:0;bottom:0;min-height:4px;border-radius:999px;
+  background:linear-gradient(180deg,var(--gold),var(--teal));
+}
+.ins-fill.last{background:linear-gradient(180deg,var(--gold),#f2c46a);}
+.ins-lbl{font-size:9px;color:var(--txt3);line-height:1;}
 .home-insights .actions-row{margin-top:10px;}
 
 /*  SCHEDULE PAGE  */
@@ -835,38 +841,6 @@ input:focus-visible{
     <div class="history-list" id="historyList"></div>
   </div>
 
-  <!-- WIDGET -->
-  <div class="page" id="page-widget">
-    <p class="eyebrow">Widget</p>
-    <p class="page-title">Home Screen <em>Widget</em></p>
-
-    <div class="widget-card">
-      <h3>Simple Setup</h3>
-      <p>Use this app daily and keep your schedule updated. Your progress and current block are always visible in-app.</p>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="goPage('schedule')">Update Today</button>
-        <button class="btn-pill teal" onclick="goPage('settings')">Open Settings</button>
-      </div>
-    </div>
-
-    <div class="widget-card">
-      <h3>Status</h3>
-      <p id="widgetSimpleStatus">Checking sync and endpoint status...</p>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="syncNow()">Sync Now</button>
-        <button class="btn-pill teal" onclick="testWidgetEndpoint()">Test Widget Link</button>
-      </div>
-    </div>
-
-    <div class="widget-card">
-      <h3>Need Native Android Widget?</h3>
-      <p>Advanced Android widget setup is available in Settings. Most users can skip it and use this app directly.</p>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="goPage('settings')">Open Advanced Setup</button>
-      </div>
-    </div>
-  </div>
-
   <!-- SETTINGS -->
   <div class="page" id="page-settings">
     <p class="eyebrow">Settings</p>
@@ -1009,10 +983,6 @@ input:focus-visible{
   <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
     <span class="nav-icon">T</span>
     <span class="nav-label">Stats</span>
-  </button>
-  <button class="nav-btn" id="nav-widget" onclick="goPage('widget')" aria-label="Open Widget">
-    <span class="nav-icon">W</span>
-    <span class="nav-label">Widget</span>
   </button>
   <button class="nav-btn" id="nav-settings" onclick="goPage('settings')" aria-label="Open Settings">
     <span class="nav-icon">E</span>
@@ -1264,12 +1234,6 @@ function renderAdvancedWidget(){
   wrap.style.display=open?'block':'none';
   if(open)updateWidgetPreview();
 }
-function renderWidgetSimpleStatus(){
-  const el=document.getElementById('widgetSimpleStatus');
-  if(!el)return;
-  const who=currentUser?`Signed in as ${currentUser.email}`:'Using local-only mode';
-  el.textContent=`${who}. For detailed Android widget setup, open Settings -> Advanced Widget Setup.`;
-}
 function setInsightsPeriod(p){
   insightsPeriod=(p==='month')?'month':'week';
   const wb=document.getElementById('insWeekBtn');
@@ -1299,39 +1263,19 @@ function renderInsightsGraph(data,N){
     if(summary)summary.textContent=isMonth?'Monthly completion trend.':'Weekly completion trend.';
     return;
   }
-  const W=300,H=116,P=8,CH=H-P*2,CW=W-P*2;
-  const n=points.length;
-  const xy=points.map((pt,i)=>{
-    const x=P+(n===1?CW/2:(i*(CW/(n-1))));
-    const y=P+((100-Math.max(0,Math.min(100,pt.p)))/100)*CH;
-    return {...pt,x,y};
-  });
-  const linePath=xy.map((pt,i)=>`${i===0?'M':'L'} ${pt.x.toFixed(2)} ${pt.y.toFixed(2)}`).join(' ');
-  const areaPath=`M ${xy[0].x.toFixed(2)} ${H-P} ${linePath.slice(1)} L ${xy[n-1].x.toFixed(2)} ${H-P} Z`;
-  const grid=[25,50,75].map(v=>{
-    const gy=P+((100-v)/100)*CH;
-    return `<line class="ins-grid" x1="${P}" y1="${gy.toFixed(2)}" x2="${W-P}" y2="${gy.toFixed(2)}"></line>`;
-  }).join('');
-  const dots=xy.map((pt,i)=>`<circle class="ins-dot ${i===n-1?'last':''}" cx="${pt.x.toFixed(2)}" cy="${pt.y.toFixed(2)}" r="${i===n-1?3.1:2.2}"></circle>`).join('');
-  const labels=xy.map((x,idx)=>{
-    const d=new Date(x.k+'T00:00:00');
-    const lbl=isMonth?String(d.getDate()):['S','M','T','W','T','F','S'][d.getDay()];
-    return idx<cols?`<span>${lbl}</span>`:'';
-  }).join('');
+  const padded=[...points];
+  while(padded.length<cols)padded.unshift({k:'',p:0,empty:true});
   graph.innerHTML=`
-    <svg class="ins-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="Completion trend">
-      <defs>
-        <linearGradient id="insGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--gold)"></stop>
-          <stop offset="100%" stop-color="var(--teal)"></stop>
-        </linearGradient>
-      </defs>
-      ${grid}
-      <path class="ins-area" d="${areaPath}"></path>
-      <path class="ins-line" d="${linePath}"></path>
-      ${dots}
-    </svg>
-    <div class="ins-xlabels ${isMonth?'month':'week'}">${labels}</div>
+    <div class="ins-bars ${isMonth?'month':'week'}">
+      ${padded.map((x,idx)=>{
+        if(x.empty)return `<div class="ins-col"><span class="ins-val">&nbsp;</span><div class="ins-track"><div class="ins-fill" style="height:0%"></div></div><span class="ins-lbl">&nbsp;</span></div>`;
+        const d=new Date(x.k+'T00:00:00');
+        const lbl=isMonth?String(d.getDate()):['S','M','T','W','T','F','S'][d.getDay()];
+        const h=Math.max(4,Math.min(100,x.p));
+        const last=idx===padded.length-1;
+        return `<div class="ins-col"><span class="ins-val">${x.p}%</span><div class="ins-track"><div class="ins-fill ${last?'last':''}" style="height:${h}%"></div></div><span class="ins-lbl">${lbl}</span></div>`;
+      }).join('')}
+    </div>
   `;
   const avg=Math.round(points.reduce((a,b)=>a+b.p,0)/points.length);
   if(summary)summary.textContent=`${isMonth?'Month':'Week'} avg completion: ${avg}%`;
@@ -1415,7 +1359,6 @@ function renderAuthState(){
   if(setAuth)setAuth.textContent=currentUser?`Signed in as ${currentUser.email}`:'Not signed in';
   const pw=document.getElementById('newPass');
   if(pw&&currentUser)pw.value='';
-  renderWidgetSimpleStatus();
 }
 function collectLocalState(){
   return {
@@ -1442,7 +1385,6 @@ function applyRemoteState(row){
     buildTimeline();
     updateHome();
     if(currentPage==='stats')renderStatsPage();
-    if(currentPage==='widget')updateWidgetPreview();
     if(currentPage==='settings')refreshSnapshotPreview();
   } finally {
     suppressCloudSync=false;
@@ -1628,17 +1570,14 @@ async function syncNow(){
 async function testWidgetEndpoint(){
   const url=window.location.origin+window.location.pathname.replace('index.html','')+'widget-data.json';
   const out=document.getElementById('widgetAssistState');
-  const simple=document.getElementById('widgetSimpleStatus');
   if(out)out.textContent='Assistant: testing endpoint...';
   try{
     const r=await fetch(url,{cache:'no-store'});
     const d=await r.json();
     const ok=r.ok&&typeof d==='object'&&d.updated;
     if(out)out.textContent=ok?`Assistant: endpoint OK (updated ${d.updated})`:'Assistant: endpoint returned invalid payload';
-    if(simple&&ok)simple.textContent=`Endpoint healthy (updated ${d.updated}). Open Settings -> Advanced Widget Setup for technical details.`;
   }catch{
     if(out)out.textContent='Assistant: endpoint test failed';
-    if(simple)simple.textContent='Endpoint test failed. Check deployment and try again from Settings.';
   }
 }
 async function runDiagnostics(){
@@ -1662,7 +1601,7 @@ async function runDiagnostics(){
 function goPage(name){
   const prev=currentPage;
   if(prev===name)return;
-  const pages=['home','schedule','stats','widget','settings'];
+  const pages=['home','schedule','stats','settings'];
   const pi=pages.indexOf(prev),ni=pages.indexOf(name);
   document.getElementById('page-'+prev).classList.remove('active');
   document.getElementById('page-'+prev).classList.toggle('left',pi<ni);
@@ -1673,7 +1612,6 @@ function goPage(name){
   currentPage=name;
   if(name==='stats')renderStatsPage();
   if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
-  if(name==='widget')renderWidgetSimpleStatus();
   if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();}
 }
 
@@ -2088,7 +2026,6 @@ if(!localUpdatedMs()&&hasMeaningfulLocalState()){
 }
 initSupabase();
 renderAdvancedWidget();
-renderWidgetSimpleStatus();
 refreshSnapshotPreview();
 </script>
 </body>
