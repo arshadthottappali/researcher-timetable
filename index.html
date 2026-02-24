@@ -71,6 +71,79 @@ body{
   font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700;
   cursor:pointer; white-space:nowrap;
 }
+body.onboard-open{overflow:hidden;}
+
+/*  ONBOARDING  */
+#onboard{
+  position:fixed;inset:0;z-index:300;
+  display:none;align-items:center;justify-content:center;
+  padding:14px;
+  background:linear-gradient(180deg,rgba(6,9,16,.86),rgba(8,12,22,.96));
+}
+#onboard.show{display:flex;}
+.onb-shell{
+  width:min(940px,100%);max-height:92vh;overflow:auto;
+  background:linear-gradient(180deg,var(--surf),var(--surf2));
+  border:1.5px solid var(--b2);border-radius:18px;
+  box-shadow:0 18px 48px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+  padding:18px;
+}
+.onb-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.onb-step{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.onb-skip{border:none;background:transparent;color:var(--txt2);cursor:pointer;font-size:12px;}
+.onb-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1;margin-bottom:8px;}
+.onb-sub{color:var(--txt2);font-size:14px;margin-bottom:14px;max-width:70ch;}
+.onb-hero{
+  border:1.5px solid var(--gold);border-radius:14px;padding:14px;
+  background:linear-gradient(140deg,var(--active-bg),var(--surf));
+  box-shadow:0 0 0 3px var(--gold-d);
+  margin-bottom:12px;
+}
+.onb-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.onb-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;}
+.onb-hero h3{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.1;}
+.onb-time{
+  font-family:'DM Serif Display',serif;font-size:32px;line-height:1;
+  color:var(--gold);white-space:nowrap;
+}
+.onb-progress{
+  height:6px;border-radius:999px;background:var(--b2);
+  margin-top:12px;overflow:hidden;
+}
+.onb-progress > span{
+  display:block;height:100%;width:48%;
+  background:linear-gradient(90deg,var(--gold),var(--teal));
+}
+.onb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.onb-card{
+  background:linear-gradient(180deg,var(--surf2),var(--surf));
+  border:1px solid var(--b2);border-radius:12px;padding:12px;
+}
+.onb-card h4{font-size:13px;margin-bottom:6px;color:var(--txt);}
+.onb-card p{font-size:12px;color:var(--txt2);}
+.onb-shot{
+  border:1px solid var(--b2);background:linear-gradient(150deg,var(--surf),var(--surf2));
+  border-radius:10px;padding:10px;margin-top:8px;
+}
+.onb-shot-line{height:7px;background:var(--b2);border-radius:999px;margin:6px 0;}
+.onb-shot-line.gold{background:linear-gradient(90deg,var(--gold),var(--teal));}
+.onb-auth{max-width:430px;}
+.onb-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;}
+.onb-dots{display:flex;gap:6px;}
+.onb-dot{width:7px;height:7px;border-radius:50%;background:var(--b2);}
+.onb-dot.on{background:var(--gold);}
+.onb-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+.onb-only{display:none;}
+#onboard[data-step="0"] .onb-step-0,
+#onboard[data-step="1"] .onb-step-1,
+#onboard[data-step="2"] .onb-step-2,
+#onboard[data-step="3"] .onb-step-3{display:block;}
+@media(max-width:760px){
+  .onb-title{font-size:24px;}
+  .onb-grid{grid-template-columns:1fr;}
+  .onb-hero h3{font-size:20px;}
+  .onb-time{font-size:26px;}
+}
 
 /*  PAGES  */
 #pages{flex:1;overflow:hidden;position:relative;}
@@ -207,6 +280,14 @@ body{
 .dots-wrap{display:flex;gap:5px;}
 .sdot{width:9px;height:9px;border-radius:50%;background:var(--b2);transition:background .3s;}
 .sdot.lit{background:var(--gold);box-shadow:0 0 6px var(--gold-g);}
+.home-insights{
+  background:var(--surf);border:1.5px solid var(--b);
+  border-radius:14px;padding:12px;box-shadow:var(--sh);
+}
+.home-insights .stats-grid{margin-top:8px;}
+.home-insights .stat-card{min-height:92px;}
+.home-insights .stat-v{font-size:30px;}
+.home-insights .actions-row{margin-top:10px;}
 
 /*  SCHEDULE PAGE  */
 .toolbar{
@@ -486,16 +567,36 @@ input:focus-visible{
 .auth-grid{display:grid;gap:8px;margin-top:8px;}
 .auth-help{font-size:12px;color:var(--txt2);}
 .auth-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.auth-row .btn-pill{font-size:11px;}
 .sync-status{
   margin-top:8px;padding:8px 10px;border-radius:8px;
   border:1px solid var(--b2);background:var(--surf2);
   font-size:12px;color:var(--txt2);
 }
+.assist-list{margin:8px 0 0;padding-left:18px;}
+.assist-list li{margin-bottom:4px;}
+.assist-state{
+  margin-top:8px;padding:8px 10px;border-radius:8px;
+  border:1px dashed var(--b2);background:var(--surf2);font-size:12px;color:var(--txt2);
+}
+.conflict-box{
+  margin-top:10px;padding:10px;border-radius:8px;
+  border:1px solid var(--red);background:var(--red-d);
+}
+.conflict-title{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.diag-list{display:grid;gap:6px;margin-top:8px;}
+.diag-item{
+  padding:8px 10px;border-radius:8px;border:1px solid var(--b2);
+  background:var(--surf2);font-size:12px;color:var(--txt2);
+}
+.diag-item.ok{border-color:var(--green);background:var(--green-d);}
+.diag-item.warn{border-color:var(--red);background:var(--red-d);}
 
 /*  UTIL  */
 @media(max-width:380px){
   .slot{grid-template-columns:46px 1fr auto;gap:8px;}
-  .tl.edit-mode .slot{grid-template-columns:20px 102px 1fr auto;}
+  .tl.edit-mode .slot{grid-template-columns:20px 96px 1fr auto;}
+  .nav-label{font-size:8px;}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important;}
@@ -509,6 +610,97 @@ input:focus-visible{
   <span id="installText">Add to Home Screen for the full app experience</span>
   <button onclick="installApp()">Install</button>
   <button onclick="document.getElementById('install-banner').classList.remove('show')" style="background:transparent;border:none;font-size:16px;padding:2px 6px;">X</button>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboard" data-step="0" aria-modal="true" role="dialog">
+  <div class="onb-shell">
+    <div class="onb-head">
+      <span class="onb-step" id="onbStepLabel">Step 1 of 4</span>
+      <span class="onb-skip">Sign in required</span>
+    </div>
+
+    <section class="onb-only onb-step-0">
+      <h2 class="onb-title">Track your day in real time</h2>
+      <p class="onb-sub">Researcher Timetable shows what you should do now, what is next, and how much progress you have made today.</p>
+      <div class="onb-hero">
+        <div class="onb-kicker">Now Active</div>
+        <div class="onb-hero-top">
+          <h3>Theoretical Study</h3>
+          <div class="onb-time">47 min</div>
+        </div>
+        <p class="onb-sub" style="margin:6px 0 0;">LASER spectroscopy and singlet fission focus session.</p>
+        <div class="onb-progress"><span></span></div>
+      </div>
+      <div class="onb-grid">
+        <div class="onb-card">
+          <h4>Live focus guidance</h4>
+          <p>See your active block, remaining time, and next block instantly.</p>
+          <div class="onb-shot">
+            <div class="onb-shot-line gold" style="width:64%"></div>
+            <div class="onb-shot-line" style="width:85%"></div>
+            <div class="onb-shot-line" style="width:52%"></div>
+          </div>
+        </div>
+        <div class="onb-card">
+          <h4>Simple daily completion</h4>
+          <p>Mark blocks done as you finish to keep accurate progress.</p>
+          <div class="onb-shot">
+            <div class="onb-shot-line" style="width:78%"></div>
+            <div class="onb-shot-line gold" style="width:35%"></div>
+            <div class="onb-shot-line" style="width:66%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="onb-only onb-step-1">
+      <h2 class="onb-title">What you can do</h2>
+      <p class="onb-sub">Build your routine, edit times with pickers, reorder blocks, keep notes, and monitor streaks.</p>
+      <div class="onb-grid">
+        <div class="onb-card"><h4>Schedule control</h4><p>Edit block titles, focus, and times. Drag to reorder in edit mode.</p></div>
+        <div class="onb-card"><h4>Progress + streaks</h4><p>Track daily percent, current streak, and best streak from your history.</p></div>
+        <div class="onb-card"><h4>Quick notes</h4><p>Add context notes per block to capture outcomes and next actions.</p></div>
+        <div class="onb-card"><h4>Export log</h4><p>Export your daily log text file for review or reporting.</p></div>
+      </div>
+    </section>
+
+    <section class="onb-only onb-step-2">
+      <h2 class="onb-title">Widget and sync</h2>
+      <p class="onb-sub">Home-screen widget setup is separate. Sign in keeps your data safe across reinstall and multiple devices.</p>
+      <div class="onb-grid">
+        <div class="onb-card"><h4>Widget setup</h4><p>Use the Widget tab to copy your endpoint URL and connect the Android widget app.</p></div>
+        <div class="onb-card"><h4>Cloud sync</h4><p>Sign in to keep progress across devices and after reinstall.</p></div>
+      </div>
+    </section>
+
+    <section class="onb-only onb-step-3">
+      <h2 class="onb-title">Sign in to sync</h2>
+      <p class="onb-sub">Sign in is required to finish setup and use cloud-backed tracking.</p>
+      <div class="onb-auth">
+        <input class="name-inp" id="onbEmail" type="email" placeholder="Email address" autocomplete="email">
+        <input class="name-inp" id="onbPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password" style="margin-top:8px;">
+        <div class="auth-row">
+          <button class="btn-pill" onclick="signIn('onbEmail','onbPass',true)">Sign In</button>
+          <button class="btn-pill teal" onclick="signUp('onbEmail','onbPass')">Sign Up</button>
+          <button class="btn-pill" onclick="sendReset('onbEmail')">Reset Password</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="onb-foot">
+      <div class="onb-dots">
+        <span class="onb-dot" id="onbDot0"></span>
+        <span class="onb-dot" id="onbDot1"></span>
+        <span class="onb-dot" id="onbDot2"></span>
+        <span class="onb-dot" id="onbDot3"></span>
+      </div>
+      <div class="onb-actions">
+        <button class="btn-pill" id="onbBackBtn" onclick="prevOnboarding()">Back</button>
+        <button class="btn-pill gold" id="onbNextBtn" onclick="nextOnboarding()">Next</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- PAGES -->
@@ -563,6 +755,21 @@ input:focus-visible{
     <div class="dots-row">
       <span class="dots-label">Last 7 Days</span>
       <div class="dots-wrap" id="dotsEl"></div>
+    </div>
+
+    <div class="home-insights">
+      <p class="eyebrow" style="margin-bottom:2px">Insights</p>
+      <p class="page-title" style="font-size:20px;margin-bottom:8px">Your <em>Stats</em></p>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-v" id="hmToday">0%</div><div class="stat-l">Today</div></div>
+        <div class="stat-card"><div class="stat-v" id="hmAvg">-</div><div class="stat-l">7-Day Avg</div></div>
+        <div class="stat-card"><div class="stat-v" id="hmStreak">0</div><div class="stat-l">Current Streak</div></div>
+        <div class="stat-card"><div class="stat-v" id="hmDays">0</div><div class="stat-l">Days Logged</div></div>
+        <div class="stat-card wide"><div class="stat-v" id="hmBest">0</div><div class="stat-l">Best Streak</div></div>
+      </div>
+      <div class="actions-row">
+        <button class="btn-pill teal" onclick="goPage('stats')">View Full Stats</button>
+      </div>
     </div>
   </div>
 
@@ -631,23 +838,53 @@ input:focus-visible{
 
     <div class="widget-card">
       <h3>Cloud Sync</h3>
-      <p>Sign in to sync progress across devices. Local mode still works offline.</p>
+      <p>Sign in to sync progress across devices, updates, and reinstalls.</p>
       <div class="auth-grid" id="authOut">
         <input class="name-inp" id="authEmail" type="email" placeholder="Email address" autocomplete="email">
         <input class="name-inp" id="authPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password">
         <div class="auth-row">
           <button class="btn-pill" onclick="signIn()">Sign In</button>
           <button class="btn-pill teal" onclick="signUp()">Sign Up</button>
+          <button class="btn-pill" onclick="sendReset()">Reset Password</button>
+          <button class="btn-pill" onclick="resendVerification()">Resend Verify</button>
         </div>
       </div>
       <div id="authIn" style="display:none">
         <p class="auth-help">Signed in as <strong id="authUserEmail">-</strong></p>
+        <input class="name-inp" id="newPass" type="password" placeholder="New password (optional)" autocomplete="new-password">
         <div class="auth-row">
           <button class="btn-pill" onclick="syncNow()">Sync Now</button>
+          <button class="btn-pill" onclick="changePassword()">Update Password</button>
+          <button class="btn-pill danger" onclick="undoLastSnapshot()">Undo Last Local Snapshot</button>
           <button class="btn-pill danger" onclick="signOut()">Sign Out</button>
         </div>
       </div>
       <div class="sync-status" id="syncStatus">Cloud sync: local only</div>
+      <div class="conflict-box" id="conflictBox" style="display:none">
+        <div class="conflict-title">Sync conflict detected</div>
+        <p class="auth-help" id="conflictMsg">Both local and cloud changed recently.</p>
+        <div class="auth-row">
+          <button class="btn-pill teal" onclick="resolveConflict('cloud')">Use Cloud</button>
+          <button class="btn-pill" onclick="resolveConflict('local')">Keep Local</button>
+          <button class="btn-pill danger" onclick="dismissConflict()">Dismiss</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="widget-card">
+      <h3>Widget Setup Assistant</h3>
+      <p>Native Android widget still needs one-time setup in the Android app, but this assistant validates your endpoint and guides each step.</p>
+      <ol class="assist-list">
+        <li>Copy your Widget Data URL.</li>
+        <li>Paste URL in <strong>WidgetRepository.kt</strong>.</li>
+        <li>Install widget app and add widget on phone home screen.</li>
+        <li>Use widget refresh action after schedule updates.</li>
+      </ol>
+      <div class="auth-row">
+        <button class="btn-pill" onclick="copyUrl()">Copy Endpoint URL</button>
+        <button class="btn-pill teal" onclick="testWidgetEndpoint()">Test Endpoint</button>
+      </div>
+      <div class="assist-state" id="widgetAssistState">Assistant: waiting for endpoint test</div>
     </div>
 
     <div class="widget-card">
@@ -673,6 +910,37 @@ input:focus-visible{
     </div>
   </div>
 
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <p class="eyebrow">Settings</p>
+    <p class="page-title">App <em>Controls</em></p>
+    <div class="widget-card">
+      <h3>Onboarding</h3>
+      <p>Replay the guided onboarding anytime.</p>
+      <div class="auth-row">
+        <button class="btn-pill" onclick="replayOnboarding()">Replay Onboarding</button>
+      </div>
+    </div>
+    <div class="widget-card">
+      <h3>QA Diagnostics</h3>
+      <p>Run a quick smoke-check for key app systems.</p>
+      <div class="auth-row">
+        <button class="btn-pill teal" onclick="runDiagnostics()">Run Diagnostics</button>
+      </div>
+      <div class="diag-list" id="diagList">
+        <div class="diag-item">Diagnostics not run yet.</div>
+      </div>
+    </div>
+    <div class="widget-card">
+      <h3>Sync History</h3>
+      <p>Recent local snapshots (for conflict recovery/undo).</p>
+      <div class="code-block" id="snapshotPreview">No snapshots yet.</div>
+      <div class="auth-row">
+        <button class="btn-pill" onclick="refreshSnapshotPreview()">Refresh History</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- BOTTOM NAV -->
@@ -692,6 +960,10 @@ input:focus-visible{
   <button class="nav-btn" id="nav-widget" onclick="goPage('widget')" aria-label="Open Widget">
     <span class="nav-icon">W</span>
     <span class="nav-label">Widget</span>
+  </button>
+  <button class="nav-btn" id="nav-settings" onclick="goPage('settings')" aria-label="Open Settings">
+    <span class="nav-icon">E</span>
+    <span class="nav-label">Settings</span>
   </button>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -721,12 +993,17 @@ let toastTimer=null;
 const APP_NAME_KEY='rdt_app_name';
 const DEFAULT_APP_NAME='Researcher Timetable';
 const STATE_UPDATED_KEY='rdt_state_updated_at';
+const ONBOARD_KEY='rdt_onboarding_done';
+const SNAP_KEY='rdt_state_snapshots';
 let supabaseClient=null;
 let currentUser=null;
 let cloudSyncTimer=null;
 let cloudBusy=false;
 let applyingRemote=false;
 let suppressCloudSync=false;
+let onboardStep=0;
+let pendingConflictRow=null;
+let lastSnapshotMs=0;
 
 const saveSchedule=(opts={})=>{
   localStorage.setItem('rdt_sched',JSON.stringify(schedule));
@@ -740,6 +1017,11 @@ const saveData=(d,opts={})=>{
 const cleanName=v=>(v||'').replace(/\s+/g,' ').trim().slice(0,40);
 function markLocalStateUpdated(){
   localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
+  const now=Date.now();
+  if(now-lastSnapshotMs>120000){
+    saveLocalSnapshot('auto');
+    lastSnapshotMs=now;
+  }
   if(!applyingRemote)queueCloudPush();
 }
 function localUpdatedMs(){
@@ -753,6 +1035,64 @@ function hasMeaningfulLocalState(){
   const hasTheme=(localStorage.getItem('rdt_theme')||'dark')!=='dark';
   const hasCustomSched=JSON.stringify(schedule)!==JSON.stringify(DEFAULT);
   return hasData||hasName||hasTheme||hasCustomSched;
+}
+function readSnapshots(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(SNAP_KEY)||'[]');
+    return Array.isArray(arr)?arr:[];
+  }catch{return[];}
+}
+function writeSnapshots(arr){
+  localStorage.setItem(SNAP_KEY,JSON.stringify(arr.slice(0,12)));
+}
+function saveLocalSnapshot(reason='manual'){
+  const snap={
+    at:new Date().toISOString(),
+    reason,
+    sched:schedule,
+    data:loadData(),
+    app_name:cleanName(localStorage.getItem(APP_NAME_KEY)||''),
+    theme:localStorage.getItem('rdt_theme')||'dark'
+  };
+  const arr=readSnapshots();
+  arr.unshift(snap);
+  writeSnapshots(arr);
+}
+function restoreSnapshot(snap){
+  if(!snap)return;
+  applyingRemote=true;
+  suppressCloudSync=true;
+  try{
+    schedule=Array.isArray(snap.sched)&&snap.sched.length?snap.sched:JSON.parse(JSON.stringify(DEFAULT));
+    saveSchedule({silent:true});
+    saveData((snap.data&&typeof snap.data==='object')?snap.data:{},{silent:true});
+    if(snap.app_name)localStorage.setItem(APP_NAME_KEY,cleanName(snap.app_name));else localStorage.removeItem(APP_NAME_KEY);
+    applyTheme(snap.theme==='light'?'light':'dark',{silent:true});
+    localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
+    applyAppName();
+    normalizeAllData();
+    buildTimeline();
+    updateHome();
+    if(currentPage==='stats')renderStatsPage();
+  } finally {
+    suppressCloudSync=false;
+    applyingRemote=false;
+  }
+}
+function undoLastSnapshot(){
+  const arr=readSnapshots();
+  if(!arr.length){showToast('No snapshot available');return;}
+  restoreSnapshot(arr[0]);
+  markLocalStateUpdated();
+  refreshSnapshotPreview();
+  showToast('Restored latest snapshot');
+}
+function refreshSnapshotPreview(){
+  const el=document.getElementById('snapshotPreview');
+  if(!el)return;
+  const arr=readSnapshots().slice(0,6);
+  if(!arr.length){el.textContent='No snapshots yet.';return;}
+  el.textContent=arr.map((s,i)=>`${i+1}. ${s.at} (${s.reason||'saved'})`).join('\n');
 }
 function getAppName(){
   const n=cleanName(localStorage.getItem(APP_NAME_KEY)||'');
@@ -790,6 +1130,68 @@ function resetAppName(){
   applyAppName();
   showToast('App name reset');
 }
+function onboardingDone(){return localStorage.getItem(ONBOARD_KEY)==='1';}
+function closeOnboarding(){
+  const root=document.getElementById('onboard');
+  if(root)root.classList.remove('show');
+  document.body.classList.remove('onboard-open');
+}
+function finishOnboarding(){
+  localStorage.setItem(ONBOARD_KEY,'1');
+  closeOnboarding();
+}
+function updateOnboardingStep(){
+  const root=document.getElementById('onboard');
+  if(!root)return;
+  root.dataset.step=String(onboardStep);
+  const stepLbl=document.getElementById('onbStepLabel');
+  if(stepLbl)stepLbl.textContent=`Step ${onboardStep+1} of 4`;
+  for(let i=0;i<4;i++){
+    const dot=document.getElementById('onbDot'+i);
+    if(dot)dot.classList.toggle('on',i===onboardStep);
+  }
+  const back=document.getElementById('onbBackBtn');
+  const next=document.getElementById('onbNextBtn');
+  if(back)back.style.display=onboardStep===0?'none':'inline-flex';
+  if(next)next.textContent=onboardStep===3?'Finish':'Next';
+}
+function openOnboarding(){
+  const root=document.getElementById('onboard');
+  if(!root)return;
+  onboardStep=0;
+  root.classList.add('show');
+  document.body.classList.add('onboard-open');
+  updateOnboardingStep();
+}
+function nextOnboarding(){
+  if(onboardStep>=3){
+    if(currentUser){finishOnboarding();return;}
+    showToast('Sign in is required to continue');
+    return;
+  }
+  onboardStep=Math.min(3,onboardStep+1);
+  updateOnboardingStep();
+}
+function prevOnboarding(){
+  onboardStep=Math.max(0,onboardStep-1);
+  updateOnboardingStep();
+}
+function maybeShowOnboarding(){
+  if(!onboardingDone()){
+    openOnboarding();
+    return;
+  }
+  if(!currentUser){
+    openOnboarding();
+    onboardStep=3;
+    updateOnboardingStep();
+  }
+}
+function replayOnboarding(){
+  localStorage.removeItem(ONBOARD_KEY);
+  openOnboarding();
+  showToast('Onboarding replay started');
+}
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
 const minsToTime=m=>`${String(Math.floor((Math.max(0,Math.min(1439,m)))/60)).padStart(2,'0')}:${String(Math.max(0,Math.min(1439,m))%60).padStart(2,'0')}`;
@@ -816,7 +1218,7 @@ function normalizeAllData(){
     normalizeDayData(day,ids);
     if(beforeDone!==JSON.stringify(day.done)||beforeNotes!==JSON.stringify(day.notes))changed=true;
   });
-  if(changed)saveData(data);
+  if(changed)saveData(data,{silent:true});
   return data;
 }
 function getStreakStats(data,totalBlocks){
@@ -840,6 +1242,16 @@ function setSyncStatus(msg){
   const el=document.getElementById('syncStatus');
   if(el)el.textContent=msg;
 }
+function setConflictBox(show,msg=''){
+  const box=document.getElementById('conflictBox');
+  const txt=document.getElementById('conflictMsg');
+  if(txt&&msg)txt.textContent=msg;
+  if(box)box.style.display=show?'block':'none';
+}
+function dismissConflict(){
+  pendingConflictRow=null;
+  setConflictBox(false);
+}
 function renderAuthState(){
   const out=document.getElementById('authOut');
   const inn=document.getElementById('authIn');
@@ -847,6 +1259,8 @@ function renderAuthState(){
   if(out)out.style.display=currentUser?'none':'grid';
   if(inn)inn.style.display=currentUser?'block':'none';
   if(em)em.textContent=currentUser?.email||'-';
+  const pw=document.getElementById('newPass');
+  if(pw&&currentUser)pw.value='';
 }
 function collectLocalState(){
   return {
@@ -860,6 +1274,7 @@ function applyRemoteState(row){
   applyingRemote=true;
   suppressCloudSync=true;
   try{
+    saveLocalSnapshot('pre-remote');
     schedule=Array.isArray(row.sched)&&row.sched.length?row.sched:JSON.parse(JSON.stringify(DEFAULT));
     saveSchedule({silent:true});
     saveData((row.data&&typeof row.data==='object')?row.data:{},{silent:true});
@@ -873,10 +1288,34 @@ function applyRemoteState(row){
     updateHome();
     if(currentPage==='stats')renderStatsPage();
     if(currentPage==='widget')updateWidgetPreview();
+    if(currentPage==='settings')refreshSnapshotPreview();
   } finally {
     suppressCloudSync=false;
     applyingRemote=false;
   }
+}
+function statesDiffer(a,b){
+  return JSON.stringify(a.sched||[])!==JSON.stringify(b.sched||[])||
+    JSON.stringify(a.data||{})!==JSON.stringify(b.data||{})||
+    cleanName(a.app_name||'')!==cleanName(b.app_name||'')||
+    (a.theme||'dark')!==(b.theme||'dark');
+}
+function showConflict(row){
+  pendingConflictRow=row;
+  setConflictBox(true,'Local and cloud changed recently. Choose which version to keep.');
+  setSyncStatus('Cloud sync: conflict requires action');
+}
+async function resolveConflict(mode){
+  if(!pendingConflictRow){setConflictBox(false);return;}
+  const row=pendingConflictRow;
+  pendingConflictRow=null;
+  if(mode==='cloud'){
+    applyRemoteState(row);
+    setSyncStatus('Cloud sync: cloud version applied');
+  }else{
+    await pushCloudState('conflict-local');
+  }
+  setConflictBox(false);
 }
 async function pushCloudState(reason='sync'){
   if(!supabaseClient||!currentUser||cloudBusy||suppressCloudSync)return;
@@ -907,6 +1346,11 @@ async function pullCloudState(reason='sync'){
     }
     const remoteMs=Date.parse(row.updated_at||'');
     const localMs=localUpdatedMs();
+    const localState=collectLocalState();
+    if(remoteMs>0&&localMs>0&&Math.abs(remoteMs-localMs)<=15*60*1000&&statesDiffer(row,localState)){
+      showConflict(row);
+      return;
+    }
     if(!localMs){
       if(hasMeaningfulLocalState()&&remoteMs<=0)await pushCloudState(reason);
       else applyRemoteState(row);
@@ -951,37 +1395,68 @@ async function initSupabase(){
     renderAuthState();
     if(currentUser)await pullCloudState('startup');
     else setSyncStatus('Cloud sync: signed out');
+    maybeShowOnboarding();
     supabaseClient.auth.onAuthStateChange(async(_evt,sessionNow)=>{
       currentUser=sessionNow?.user||null;
       renderAuthState();
       if(currentUser){
+        finishOnboarding();
         setSyncStatus('Cloud sync: signed in, syncing...');
         await pullCloudState('login');
       }else{
         setSyncStatus('Cloud sync: signed out');
+        maybeShowOnboarding();
       }
     });
   }catch(err){
     setSyncStatus(`Cloud sync unavailable: ${err.message||'init failed'}`);
   }
 }
-async function signIn(){
+async function signIn(emailId='authEmail',passId='authPass',finishAfter=false){
   if(!supabaseClient){showToast('Cloud sync not ready');return;}
-  const email=(document.getElementById('authEmail')?.value||'').trim();
-  const password=(document.getElementById('authPass')?.value||'').trim();
+  const email=(document.getElementById(emailId)?.value||'').trim();
+  const password=(document.getElementById(passId)?.value||'').trim();
   if(!email||!password){showToast('Enter email and password');return;}
   const {error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error){showToast(error.message||'Sign in failed');return;}
+  if(finishAfter)finishOnboarding();
   showToast('Signed in');
 }
-async function signUp(){
+async function signUp(emailId='authEmail',passId='authPass'){
   if(!supabaseClient){showToast('Cloud sync not ready');return;}
-  const email=(document.getElementById('authEmail')?.value||'').trim();
-  const password=(document.getElementById('authPass')?.value||'').trim();
+  const email=(document.getElementById(emailId)?.value||'').trim();
+  const password=(document.getElementById(passId)?.value||'').trim();
   if(!email||!password){showToast('Enter email and password');return;}
   const {error}=await supabaseClient.auth.signUp({email,password});
   if(error){showToast(error.message||'Sign up failed');return;}
   showToast('Sign up successful. Verify email if prompted.');
+}
+async function sendReset(emailId='authEmail'){
+  if(!supabaseClient){showToast('Cloud sync not ready');return;}
+  const email=(document.getElementById(emailId)?.value||'').trim();
+  if(!email){showToast('Enter your email first');return;}
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+    redirectTo:window.location.origin+window.location.pathname
+  });
+  if(error){showToast(error.message||'Reset request failed');return;}
+  showToast('Password reset email sent');
+}
+async function resendVerification(emailId='authEmail'){
+  if(!supabaseClient){showToast('Cloud sync not ready');return;}
+  const email=(document.getElementById(emailId)?.value||'').trim();
+  if(!email){showToast('Enter your email first');return;}
+  const {error}=await supabaseClient.auth.resend({type:'signup',email});
+  if(error){showToast(error.message||'Resend failed');return;}
+  showToast('Verification email sent');
+}
+async function changePassword(){
+  if(!supabaseClient||!currentUser){showToast('Sign in first');return;}
+  const pwd=(document.getElementById('newPass')?.value||'').trim();
+  if(!pwd||pwd.length<6){showToast('New password must be 6+ chars');return;}
+  const {error}=await supabaseClient.auth.updateUser({password:pwd});
+  if(error){showToast(error.message||'Update failed');return;}
+  document.getElementById('newPass').value='';
+  showToast('Password updated');
 }
 async function signOut(){
   if(!supabaseClient)return;
@@ -994,12 +1469,41 @@ async function syncNow(){
   await pullCloudState('manual');
   showToast('Sync complete');
 }
+async function testWidgetEndpoint(){
+  const url=window.location.origin+window.location.pathname.replace('index.html','')+'widget-data.json';
+  const out=document.getElementById('widgetAssistState');
+  if(out)out.textContent='Assistant: testing endpoint...';
+  try{
+    const r=await fetch(url,{cache:'no-store'});
+    const d=await r.json();
+    const ok=r.ok&&typeof d==='object'&&d.updated;
+    if(out)out.textContent=ok?`Assistant: endpoint OK (updated ${d.updated})`:'Assistant: endpoint returned invalid payload';
+  }catch{
+    if(out)out.textContent='Assistant: endpoint test failed';
+  }
+}
+async function runDiagnostics(){
+  const list=document.getElementById('diagList');
+  if(!list)return;
+  const rows=[];
+  const push=(label,ok,detail='')=>rows.push({label,ok,detail});
+  push('Supabase client ready',!!supabaseClient,!!supabaseClient?'connected config':'missing config');
+  push('User signed in',!!currentUser,currentUser?.email||'not signed in');
+  try{
+    const u=window.location.origin+window.location.pathname.replace('index.html','')+'widget-data.json';
+    const r=await fetch(u,{cache:'no-store'});
+    push('Widget endpoint',r.ok,r.ok?'reachable':'request failed');
+  }catch{push('Widget endpoint',false,'request exception');}
+  push('Service worker support','serviceWorker' in navigator,('serviceWorker' in navigator)?'supported':'unsupported');
+  push('Local storage access',(()=>{try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true;}catch{return false;}})(),'');
+  list.innerHTML=rows.map(r=>`<div class="diag-item ${r.ok?'ok':'warn'}">${r.label}: ${r.ok?'OK':'Issue'}${r.detail?` (${r.detail})`:''}</div>`).join('');
+}
 
 /*  NAVIGATION  */
 function goPage(name){
   const prev=currentPage;
   if(prev===name)return;
-  const pages=['home','schedule','stats','widget'];
+  const pages=['home','schedule','stats','widget','settings'];
   const pi=pages.indexOf(prev),ni=pages.indexOf(name);
   document.getElementById('page-'+prev).classList.remove('active');
   document.getElementById('page-'+prev).classList.toggle('left',pi<ni);
@@ -1011,6 +1515,7 @@ function goPage(name){
   if(name==='stats')renderStatsPage();
   if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
   if(name==='widget')updateWidgetPreview();
+  if(name==='settings')refreshSnapshotPreview();
 }
 
 /*  THEME  */
@@ -1086,9 +1591,20 @@ function updateHome(){
   const avgs=last7.map(kk=>(data[kk]?.done?.length||0)/N*100);
   const avg=avgs.length?Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length):null;
   const streak=streakStats.currentStreak;
+  const best=streakStats.bestStreak;
   document.getElementById('mToday').textContent=pct+'%';
   document.getElementById('mStreak').textContent=streak;
   document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
+  const hmToday=document.getElementById('hmToday');
+  const hmAvg=document.getElementById('hmAvg');
+  const hmStreak=document.getElementById('hmStreak');
+  const hmBest=document.getElementById('hmBest');
+  const hmDays=document.getElementById('hmDays');
+  if(hmToday)hmToday.textContent=pct+'%';
+  if(hmAvg)hmAvg.textContent=avg!==null?avg+'%':'-';
+  if(hmStreak)hmStreak.textContent=streak;
+  if(hmBest)hmBest.textContent=best;
+  if(hmDays)hmDays.textContent=keys.length;
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
@@ -1421,6 +1937,7 @@ if(!localUpdatedMs()&&hasMeaningfulLocalState()){
   localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
 }
 initSupabase();
+refreshSnapshotPreview();
 </script>
 </body>
 </html>
