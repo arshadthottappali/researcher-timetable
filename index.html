@@ -254,7 +254,11 @@ body.onboard-open{overflow:hidden;}
 .next-content{flex:1;min-width:0;}
 .next-label{font-size:10px;color:var(--txt3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
 .next-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--txt);margin-top:1px;}
-.next-time{font-size:11px;color:var(--teal);margin-top:1px;}
+.next-time{
+  font-size:11px;color:var(--teal);margin-top:1px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.next-time .nt-end{text-align:right;margin-left:auto;}
 
 /* Streak mini */
 .streak-row{
@@ -289,11 +293,10 @@ body.onboard-open{overflow:hidden;}
   width:100%;margin-top:4px;
   background:var(--surf2);border:1px solid var(--b2);border-radius:10px;padding:8px 9px;
 }
-.ins-remain-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.ins-remain-top b{font-size:10px;color:var(--txt3);letter-spacing:.05em;text-transform:uppercase;}
-.ins-remain-top span{font-size:12px;color:var(--txt);}
+.ins-remain-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--txt2);}
 .ins-remain-track{height:6px;border-radius:999px;background:var(--b2);margin-top:7px;overflow:hidden;}
 .ins-remain-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--teal));}
+.ins-remain-now{margin-top:6px;font-size:12px;color:var(--txt);}
 .ins-tabs{display:flex;gap:6px;}
 .ins-tab{
   border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt2);
@@ -777,7 +780,15 @@ input:focus-visible{
       </div>
       <div class="hero-block-name" id="heroName"><span id="heroIcon">-</span><span id="heroTitle">Rest time</span></div>
       <div class="hero-focus" id="heroFocus">No scheduled block right now.</div>
-      <div class="hero-progress-row">
+      <div class="ins-remain" style="margin-top:0">
+        <div class="ins-remain-top">
+          <span id="insStartText">Starts --:--</span>
+          <span id="insEndText">Ends --:--</span>
+        </div>
+        <div class="ins-remain-track"><div class="ins-remain-fill" id="insRemainFill"></div></div>
+        <div class="ins-remain-now" id="insRemainText">No active block</div>
+      </div>
+      <div class="hero-progress-row" style="margin-top:10px">
         <div class="hero-prog-track"><div class="hero-prog-fill" id="heroProg" style="width:0%"></div></div>
         <span class="hero-prog-pct" id="heroPct">0%</span>
       </div>
@@ -810,13 +821,6 @@ input:focus-visible{
       <div class="ins-head">
         <div>
           <p class="eyebrow" style="margin-bottom:2px">Insights</p>
-          <div class="ins-remain">
-            <div class="ins-remain-top">
-              <b>Current Remaining Time</b>
-              <span id="insRemainText">No active block</span>
-            </div>
-            <div class="ins-remain-track"><div class="ins-remain-fill" id="insRemainFill"></div></div>
-          </div>
         </div>
         <div class="ins-tabs">
           <button class="ins-tab active" id="insWeekBtn" onclick="setInsightsPeriod('week')">Week</button>
@@ -825,16 +829,6 @@ input:focus-visible{
       </div>
       <div class="ins-graph" id="insGraph"></div>
       <p class="auth-help" id="insSummary" style="margin-top:8px;margin-bottom:0">Weekly completion trend.</p>
-      <div class="ins-meta">
-        <div class="ins-chip"><b>Top Activity</b><span id="insTopAct">-</span></div>
-        <div class="ins-chip"><b>Most Missed</b><span id="insMissed">-</span></div>
-        <div class="ins-chip"><b>Best Day</b><span id="insBestDay">-</span></div>
-        <div class="ins-chip"><b>Consistency</b><span id="insConsistency">-</span></div>
-        <div class="ins-chip"><b>Avg Done Time</b><span id="insAvgTime">-</span></div>
-        <div class="ins-chip"><b>Focus Balance</b><span id="insFocus">-</span></div>
-        <div class="ins-chip"><b>On-Time Start</b><span id="insOnTime">-</span></div>
-        <div class="ins-chip"><b>Current Run</b><span id="insRun">-</span></div>
-      </div>
       <div class="actions-row">
         <button class="btn-pill teal" onclick="goPage('stats')">View Full Stats</button>
       </div>
@@ -872,6 +866,17 @@ input:focus-visible{
       <div class="stat-card"><div class="stat-v" id="st-streak">0</div><div class="stat-l">Streak</div><div class="stat-sub" id="st-streak-sub"></div></div>
       <div class="stat-card"><div class="stat-v" id="st-days">0</div><div class="stat-l">Days Logged</div></div>
       <div class="stat-card wide"><div class="stat-v" id="st-best">0</div><div class="stat-l">Best Streak</div></div>
+    </div>
+
+    <div class="ins-meta" style="margin-top:10px">
+      <div class="ins-chip"><b>Top Activity</b><span id="insTopAct">-</span></div>
+      <div class="ins-chip"><b>Most Missed</b><span id="insMissed">-</span></div>
+      <div class="ins-chip"><b>Best Day</b><span id="insBestDay">-</span></div>
+      <div class="ins-chip"><b>Consistency</b><span id="insConsistency">-</span></div>
+      <div class="ins-chip"><b>Avg Done Time</b><span id="insAvgTime">-</span></div>
+      <div class="ins-chip"><b>Focus Balance</b><span id="insFocus">-</span></div>
+      <div class="ins-chip"><b>On-Time Start</b><span id="insOnTime">-</span></div>
+      <div class="ins-chip"><b>Current Run</b><span id="insRun">-</span></div>
     </div>
 
     <p class="eyebrow" style="margin-bottom:8px">History</p>
@@ -1283,41 +1288,91 @@ function renderInsightsGraph(data,N){
   const graph=document.getElementById('insGraph');
   const summary=document.getElementById('insSummary');
   if(!graph)return;
-  const keys=Object.keys(data).sort();
   const isMonth=insightsPeriod==='month';
-  const slice=isMonth?30:7;
-  const sampled=(keys.slice(-slice));
-  const step=isMonth?3:1;
-  const points=[];
-  for(let i=0;i<sampled.length;i+=step){
-    const k=sampled[i];
-    const pct=Math.round(((data[k]?.done?.length||0)/(N||1))*100);
-    points.push({k,p:pct});
-  }
-  const cols=isMonth?10:7;
-  if(!points.length){
-    graph.innerHTML='<div class="auth-help" style="padding:10px">No history yet</div>';
-    if(summary)summary.textContent=isMonth?'Monthly completion trend.':'Weekly completion trend.';
-    return;
-  }
-  const padded=[...points];
-  while(padded.length<cols)padded.unshift({k:'',p:0,empty:true});
+  const periodKeys=isMonth
+    ? lastDateKeys(30).filter((_,i)=>i%3===0) // 10 bars across last 30 days
+    : lastDateKeys(7); // fixed 7 bars (Sun..Sat labels by date key)
+  const points=periodKeys.map(k=>({k,p:Math.round(((data[k]?.done?.length||0)/(N||1))*100)}));
   graph.innerHTML=`
     <div class="ins-bars ${isMonth?'month':'week'}">
-      ${padded.map((x,idx)=>{
-        if(x.empty)return `<div class="ins-col"><span class="ins-val">&nbsp;</span><div class="ins-track"><div class="ins-fill" style="height:0%"></div></div><span class="ins-lbl">&nbsp;</span></div>`;
+      ${points.map((x,idx)=>{
         const d=new Date(x.k+'T00:00:00');
         const day3=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
         const mon3=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
         const lbl=isMonth?`${d.getDate()} ${mon3}`:day3;
         const h=Math.max(4,Math.min(100,x.p));
-        const last=idx===padded.length-1;
+        const last=idx===points.length-1;
         return `<div class="ins-col"><span class="ins-val">${x.p}%</span><div class="ins-track"><div class="ins-fill ${last?'last':''}" style="height:${h}%"></div></div><span class="ins-lbl">${lbl}</span></div>`;
       }).join('')}
     </div>
   `;
   const avg=Math.round(points.reduce((a,b)=>a+b.p,0)/points.length);
   if(summary)summary.textContent=`${isMonth?'Month':'Week'} avg completion: ${avg}%`;
+}
+function renderExtendedInsights(data,N,doneToday){
+  const weekKeys=lastDateKeys(7);
+  const blocksById=Object.fromEntries(schedule.map(s=>[s.id,s]));
+  const doneCountById={};
+  const missedCountById={};
+  const catDone={ 'Deep Work':0,'Support':0,'Recovery':0 };
+  const doneTimes=[];
+  let consistencyHits=0;
+  let bestDay={k:'',p:-1};
+  let onTimeNum=0,onTimeDen=0;
+
+  weekKeys.forEach(wk=>{
+    const d=getDay(data,wk);
+    const p=Math.round(((d.done?.length||0)/(N||1))*100);
+    if(p>=70)consistencyHits++;
+    if(p>bestDay.p)bestDay={k:wk,p};
+    schedule.forEach((s,idx)=>{
+      const id=s.id;
+      const isDone=(d.done||[]).includes(id);
+      if(isDone){
+        doneCountById[id]=(doneCountById[id]||0)+1;
+        catDone[classifyBlock(s)]++;
+        const iso=d.doneAt?.[id];
+        if(iso){
+          const dt=new Date(iso);
+          if(!isNaN(dt))doneTimes.push(dt.getHours()*60+dt.getMinutes());
+        }
+      }else{
+        missedCountById[id]=(missedCountById[id]||0)+1;
+      }
+      if(idx===0&&d.doneAt?.[id]){
+        const dt=new Date(d.doneAt[id]);
+        if(!isNaN(dt)){
+          onTimeDen++;
+          const mins=dt.getHours()*60+dt.getMinutes();
+          if(mins<=s.s+60)onTimeNum++;
+        }
+      }
+    });
+  });
+
+  const topId=Object.keys(doneCountById).sort((a,b)=>(doneCountById[b]-doneCountById[a]))[0];
+  const missId=Object.keys(missedCountById).sort((a,b)=>(missedCountById[b]-missedCountById[a]))[0];
+  const bestDayDate=bestDay.k?new Date(bestDay.k+'T00:00:00'):null;
+  const bestDayLbl=bestDayDate?`${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][bestDayDate.getDay()]} (${bestDay.p}%)`:'-';
+  const avgDoneMin=doneTimes.length?Math.round(doneTimes.reduce((a,b)=>a+b,0)/doneTimes.length):null;
+  const totalCat=catDone['Deep Work']+catDone['Support']+catDone['Recovery'];
+  const bal=totalCat?`D ${Math.round(catDone['Deep Work']*100/totalCat)}% / S ${Math.round(catDone['Support']*100/totalCat)}% / R ${Math.round(catDone['Recovery']*100/totalCat)}%`:'-';
+  const onTime=onTimeDen?`${Math.round(onTimeNum*100/onTimeDen)}% (${onTimeNum}/${onTimeDen})`:'-';
+  let run=0;
+  for(let i=0;i<schedule.length;i++){
+    if((doneToday||[]).includes(schedule[i].id))run++;
+    else break;
+  }
+
+  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setTxt('insTopAct',topId?(blocksById[topId]?.a||topId):'-');
+  setTxt('insMissed',missId?(blocksById[missId]?.a||missId):'-');
+  setTxt('insBestDay',bestDayLbl);
+  setTxt('insConsistency',`${consistencyHits}/7 days >= 70%`);
+  setTxt('insAvgTime',avgDoneMin===null?'-':minsTo12h(avgDoneMin));
+  setTxt('insFocus',bal);
+  setTxt('insOnTime',onTime);
+  setTxt('insRun',`${run} consecutive blocks`);
 }
 function startLocalMode(){
   const ok=confirm('Continue without account?\n\nYour progress stays only on this device and can be lost after reinstall, clearing browser data, or changing device.');
@@ -1751,7 +1806,7 @@ function updateHome(){
     nc.style.display='flex';
     document.getElementById('nextIcon').textContent=ns.i;
     document.getElementById('nextName').textContent=ns.a;
-    document.getElementById('nextTime').textContent=`Starts ${ns.t.split('-')[0]}  Ends ${ns.t.split('-')[1]||'-'}`;
+    document.getElementById('nextTime').innerHTML=`<span>Starts ${ns.t.split('-')[0]}</span><span class="nt-end">Ends ${ns.t.split('-')[1]||'-'}</span>`;
   } else nc.style.display='none';
 
   // Stats
@@ -1764,84 +1819,28 @@ function updateHome(){
   document.getElementById('mStreak').textContent=streak;
   document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
   renderInsightsGraph(data,N);
+  renderExtendedInsights(data,N,done);
   const insRemainText=document.getElementById('insRemainText');
   const insRemainFill=document.getElementById('insRemainFill');
+  const insStartText=document.getElementById('insStartText');
+  const insEndText=document.getElementById('insEndText');
   if(ai>=0&&!done.includes(schedule[ai]?.id)){
     const s=schedule[ai];
     const total=Math.max(1,s.e-s.s);
+    const now=nowMin();
     const rem=Math.max(0,s.e-nowMin());
-    const remPct=Math.round(rem*100/total);
-    if(insRemainText)insRemainText.textContent=`${rem} min left (${remPct}%)`;
-    if(insRemainFill)insRemainFill.style.width=remPct+'%';
+    const elapsed=Math.max(0,Math.min(total,now-s.s));
+    const elapsedPct=Math.round(elapsed*100/total);
+    if(insStartText)insStartText.textContent=`Starts ${minsToTime(s.s)}`;
+    if(insEndText)insEndText.textContent=`Ends ${minsToTime(s.e)}`;
+    if(insRemainText)insRemainText.textContent=`${rem} min left`;
+    if(insRemainFill)insRemainFill.style.width=elapsedPct+'%';
   }else{
+    if(insStartText)insStartText.textContent='Starts --:--';
+    if(insEndText)insEndText.textContent='Ends --:--';
     if(insRemainText)insRemainText.textContent='No active block';
     if(insRemainFill)insRemainFill.style.width='0%';
   }
-
-  // Extended insight chips (weekly)
-  const weekKeys=lastDateKeys(7);
-  const blocksById=Object.fromEntries(schedule.map(s=>[s.id,s]));
-  const doneCountById={};
-  const missedCountById={};
-  const catDone={ 'Deep Work':0,'Support':0,'Recovery':0 };
-  const doneTimes=[];
-  let consistencyHits=0;
-  let bestDay={k:'',p:-1};
-  let onTimeNum=0,onTimeDen=0;
-
-  weekKeys.forEach(wk=>{
-    const d=getDay(data,wk);
-    const p=Math.round(((d.done?.length||0)/(N||1))*100);
-    if(p>=70)consistencyHits++;
-    if(p>bestDay.p)bestDay={k:wk,p};
-    schedule.forEach((s,idx)=>{
-      const id=s.id;
-      const isDone=(d.done||[]).includes(id);
-      if(isDone){
-        doneCountById[id]=(doneCountById[id]||0)+1;
-        catDone[classifyBlock(s)]++;
-        const iso=d.doneAt?.[id];
-        if(iso){
-          const dt=new Date(iso);
-          if(!isNaN(dt)){doneTimes.push(dt.getHours()*60+dt.getMinutes());}
-        }
-      }else{
-        missedCountById[id]=(missedCountById[id]||0)+1;
-      }
-      if(idx===0&&d.doneAt?.[id]){
-        const dt=new Date(d.doneAt[id]);
-        if(!isNaN(dt)){
-          onTimeDen++;
-          const mins=dt.getHours()*60+dt.getMinutes();
-          if(mins<=s.s+60)onTimeNum++;
-        }
-      }
-    });
-  });
-
-  const topId=Object.keys(doneCountById).sort((a,b)=>(doneCountById[b]-doneCountById[a]))[0];
-  const missId=Object.keys(missedCountById).sort((a,b)=>(missedCountById[b]-missedCountById[a]))[0];
-  const bestDayDate=bestDay.k?new Date(bestDay.k+'T00:00:00'):null;
-  const bestDayLbl=bestDayDate?`${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][bestDayDate.getDay()]} (${bestDay.p}%)`:'-';
-  const avgDoneMin=doneTimes.length?Math.round(doneTimes.reduce((a,b)=>a+b,0)/doneTimes.length):null;
-  const totalCat=catDone['Deep Work']+catDone['Support']+catDone['Recovery'];
-  const bal=totalCat?`D ${Math.round(catDone['Deep Work']*100/totalCat)}% / S ${Math.round(catDone['Support']*100/totalCat)}% / R ${Math.round(catDone['Recovery']*100/totalCat)}%`:'-';
-  const onTime=onTimeDen?`${Math.round(onTimeNum*100/onTimeDen)}% (${onTimeNum}/${onTimeDen})`:'-';
-  let run=0;
-  for(let i=0;i<schedule.length;i++){
-    if(done.includes(schedule[i].id))run++;
-    else break;
-  }
-
-  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setTxt('insTopAct',topId?(blocksById[topId]?.a||topId):'-');
-  setTxt('insMissed',missId?(blocksById[missId]?.a||missId):'-');
-  setTxt('insBestDay',bestDayLbl);
-  setTxt('insConsistency',`${consistencyHits}/7 days >= 70%`);
-  setTxt('insAvgTime',avgDoneMin===null?'-':minsTo12h(avgDoneMin));
-  setTxt('insFocus',bal);
-  setTxt('insOnTime',onTime);
-  setTxt('insRun',`${run} consecutive blocks`);
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
@@ -2060,6 +2059,7 @@ function renderStatsPage(){
   document.getElementById('st-streak-sub').textContent=streak>=3?'On a roll!':streak>=1?'Keep going!':'Start today';
   document.getElementById('st-days').textContent=keys.length;
   document.getElementById('st-best').textContent=best;
+  renderExtendedInsights(data,N,day.done||[]);
 
   // History
   const hl=document.getElementById('historyList');
