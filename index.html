@@ -1305,7 +1305,16 @@ function renderInsightsGraph(data,N){
   if(!graph)return;
   const isMonth=insightsPeriod==='month';
   const periodKeys=isMonth
-    ? lastDateKeys(30).filter((_,i)=>i%3===0) // 10 bars across last 30 days
+    ? (() => {
+        const all=lastDateKeys(30);
+        const sample=all.filter((_,i)=>i%3===0);
+        const t=todayKey();
+        if(sample[sample.length-1]!==t){
+          sample.push(t);
+          while(sample.length>10)sample.shift();
+        }
+        return sample;
+      })()
     : lastDateKeys(7); // fixed 7 bars (Sun..Sat labels by date key)
   const points=periodKeys.map(k=>({k,p:Math.round(((data[k]?.done?.length||0)/(N||1))*100)}));
   const today=todayKey();
