@@ -284,9 +284,26 @@ body.onboard-open{overflow:hidden;}
   background:var(--surf);border:1.5px solid var(--b);
   border-radius:14px;padding:12px;box-shadow:var(--sh);
 }
-.home-insights .stats-grid{margin-top:8px;}
-.home-insights .stat-card{min-height:92px;}
-.home-insights .stat-v{font-size:30px;}
+.ins-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.ins-tabs{display:flex;gap:6px;}
+.ins-tab{
+  border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt2);
+  border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;
+}
+.ins-tab.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
+.ins-graph{
+  margin-top:10px;height:126px;border:1px solid var(--b2);border-radius:10px;
+  background:linear-gradient(180deg,var(--surf2),var(--surf));padding:10px;
+  display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;
+}
+.ins-graph.month{grid-template-columns:repeat(10,1fr);}
+.ins-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;}
+.ins-bar{
+  width:100%;max-width:16px;min-height:4px;border-radius:999px;
+  background:linear-gradient(180deg,var(--gold),var(--teal));
+  box-shadow:0 0 8px var(--gold-g);
+}
+.ins-lbl{font-size:9px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .home-insights .actions-row{margin-top:10px;}
 
 /*  SCHEDULE PAGE  */
@@ -617,7 +634,7 @@ input:focus-visible{
   <div class="onb-shell">
     <div class="onb-head">
       <span class="onb-step" id="onbStepLabel">Step 1 of 4</span>
-      <span class="onb-skip">Sign in required</span>
+      <button class="onb-skip" onclick="startLocalMode()">Use Local Only</button>
     </div>
 
     <section class="onb-only onb-step-0">
@@ -676,13 +693,14 @@ input:focus-visible{
 
     <section class="onb-only onb-step-3">
       <h2 class="onb-title">Sign in to sync</h2>
-      <p class="onb-sub">Sign in is required to finish setup and use cloud-backed tracking.</p>
+      <p class="onb-sub">Sign in to keep progress across devices. You can continue without account, but progress may be lost after reinstall, browser reset, or device change.</p>
       <div class="onb-auth">
         <input class="name-inp" id="onbEmail" type="email" placeholder="Email address" autocomplete="email">
         <input class="name-inp" id="onbPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password" style="margin-top:8px;">
         <div class="auth-row">
           <button class="btn-pill" onclick="signIn('onbEmail','onbPass',true)">Sign In</button>
           <button class="btn-pill teal" onclick="signUp('onbEmail','onbPass')">Sign Up</button>
+          <button class="btn-pill" onclick="startLocalMode()">Continue Local</button>
           <button class="btn-pill" onclick="sendReset('onbEmail')">Reset Password</button>
         </div>
       </div>
@@ -758,15 +776,18 @@ input:focus-visible{
     </div>
 
     <div class="home-insights">
-      <p class="eyebrow" style="margin-bottom:2px">Insights</p>
-      <p class="page-title" style="font-size:20px;margin-bottom:8px">Your <em>Stats</em></p>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-v" id="hmToday">0%</div><div class="stat-l">Today</div></div>
-        <div class="stat-card"><div class="stat-v" id="hmAvg">-</div><div class="stat-l">7-Day Avg</div></div>
-        <div class="stat-card"><div class="stat-v" id="hmStreak">0</div><div class="stat-l">Current Streak</div></div>
-        <div class="stat-card"><div class="stat-v" id="hmDays">0</div><div class="stat-l">Days Logged</div></div>
-        <div class="stat-card wide"><div class="stat-v" id="hmBest">0</div><div class="stat-l">Best Streak</div></div>
+      <div class="ins-head">
+        <div>
+          <p class="eyebrow" style="margin-bottom:2px">Insights</p>
+          <p class="page-title" style="font-size:20px;margin-bottom:0">Your <em>Stats</em></p>
+        </div>
+        <div class="ins-tabs">
+          <button class="ins-tab active" id="insWeekBtn" onclick="setInsightsPeriod('week')">Week</button>
+          <button class="ins-tab" id="insMonthBtn" onclick="setInsightsPeriod('month')">Month</button>
+        </div>
       </div>
+      <div class="ins-graph" id="insGraph"></div>
+      <p class="auth-help" id="insSummary" style="margin-top:8px;margin-bottom:0">Weekly completion trend.</p>
       <div class="actions-row">
         <button class="btn-pill teal" onclick="goPage('stats')">View Full Stats</button>
       </div>
@@ -994,6 +1015,7 @@ const APP_NAME_KEY='rdt_app_name';
 const DEFAULT_APP_NAME='Researcher Timetable';
 const STATE_UPDATED_KEY='rdt_state_updated_at';
 const ONBOARD_KEY='rdt_onboarding_done';
+const LOCAL_ONLY_KEY='rdt_local_only_mode';
 const SNAP_KEY='rdt_state_snapshots';
 let supabaseClient=null;
 let currentUser=null;
@@ -1004,6 +1026,7 @@ let suppressCloudSync=false;
 let onboardStep=0;
 let pendingConflictRow=null;
 let lastSnapshotMs=0;
+let insightsPeriod='week';
 
 const saveSchedule=(opts={})=>{
   localStorage.setItem('rdt_sched',JSON.stringify(schedule));
@@ -1166,7 +1189,7 @@ function openOnboarding(){
 function nextOnboarding(){
   if(onboardStep>=3){
     if(currentUser){finishOnboarding();return;}
-    showToast('Sign in is required to continue');
+    showToast('Sign in for cloud sync, or choose Continue Local');
     return;
   }
   onboardStep=Math.min(3,onboardStep+1);
@@ -1181,7 +1204,7 @@ function maybeShowOnboarding(){
     openOnboarding();
     return;
   }
-  if(!currentUser){
+  if(!currentUser&&localStorage.getItem(LOCAL_ONLY_KEY)!=='1'){
     openOnboarding();
     onboardStep=3;
     updateOnboardingStep();
@@ -1189,8 +1212,55 @@ function maybeShowOnboarding(){
 }
 function replayOnboarding(){
   localStorage.removeItem(ONBOARD_KEY);
+  localStorage.removeItem(LOCAL_ONLY_KEY);
   openOnboarding();
   showToast('Onboarding replay started');
+}
+function setInsightsPeriod(p){
+  insightsPeriod=(p==='month')?'month':'week';
+  const wb=document.getElementById('insWeekBtn');
+  const mb=document.getElementById('insMonthBtn');
+  if(wb)wb.classList.toggle('active',insightsPeriod==='week');
+  if(mb)mb.classList.toggle('active',insightsPeriod==='month');
+  updateHome();
+}
+function renderInsightsGraph(data,N){
+  const graph=document.getElementById('insGraph');
+  const summary=document.getElementById('insSummary');
+  if(!graph)return;
+  const keys=Object.keys(data).sort();
+  const isMonth=insightsPeriod==='month';
+  const slice=isMonth?30:7;
+  const sampled=(keys.slice(-slice));
+  const step=isMonth?3:1;
+  const points=[];
+  for(let i=0;i<sampled.length;i+=step){
+    const k=sampled[i];
+    const pct=Math.round(((data[k]?.done?.length||0)/(N||1))*100);
+    points.push({k,p:pct});
+  }
+  graph.classList.toggle('month',isMonth);
+  if(!points.length){
+    graph.innerHTML='<div class="auth-help">No history yet</div>';
+    if(summary)summary.textContent=isMonth?'Monthly completion trend.':'Weekly completion trend.';
+    return;
+  }
+  graph.innerHTML=points.map((x,idx)=>{
+    const d=new Date(x.k+'T00:00:00');
+    const lbl=isMonth?String(d.getDate()):['S','M','T','W','T','F','S'][d.getDay()];
+    const h=Math.max(6,Math.min(100,x.p));
+    return `<div class="ins-bar-wrap"><div class="ins-bar" style="height:${h}%"></div><span class="ins-lbl">${lbl}</span></div>`;
+  }).join('');
+  const avg=Math.round(points.reduce((a,b)=>a+b.p,0)/points.length);
+  if(summary)summary.textContent=`${isMonth?'Month':'Week'} avg completion: ${avg}%`;
+}
+function startLocalMode(){
+  const ok=confirm('Continue without account?\n\nYour progress stays only on this device and can be lost after reinstall, clearing browser data, or changing device.');
+  if(!ok)return;
+  localStorage.setItem(LOCAL_ONLY_KEY,'1');
+  finishOnboarding();
+  setSyncStatus('Cloud sync: local-only mode (no account)');
+  showToast('Local-only mode enabled');
 }
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
@@ -1419,6 +1489,7 @@ async function signIn(emailId='authEmail',passId='authPass',finishAfter=false){
   if(!email||!password){showToast('Enter email and password');return;}
   const {error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error){showToast(error.message||'Sign in failed');return;}
+  localStorage.removeItem(LOCAL_ONLY_KEY);
   if(finishAfter)finishOnboarding();
   showToast('Signed in');
 }
@@ -1591,20 +1662,10 @@ function updateHome(){
   const avgs=last7.map(kk=>(data[kk]?.done?.length||0)/N*100);
   const avg=avgs.length?Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length):null;
   const streak=streakStats.currentStreak;
-  const best=streakStats.bestStreak;
   document.getElementById('mToday').textContent=pct+'%';
   document.getElementById('mStreak').textContent=streak;
   document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
-  const hmToday=document.getElementById('hmToday');
-  const hmAvg=document.getElementById('hmAvg');
-  const hmStreak=document.getElementById('hmStreak');
-  const hmBest=document.getElementById('hmBest');
-  const hmDays=document.getElementById('hmDays');
-  if(hmToday)hmToday.textContent=pct+'%';
-  if(hmAvg)hmAvg.textContent=avg!==null?avg+'%':'-';
-  if(hmStreak)hmStreak.textContent=streak;
-  if(hmBest)hmBest.textContent=best;
-  if(hmDays)hmDays.textContent=keys.length;
+  renderInsightsGraph(data,N);
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
