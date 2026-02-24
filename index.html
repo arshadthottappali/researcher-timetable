@@ -483,6 +483,14 @@ input:focus-visible{
 }
 .name-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-d);}
 .name-btns{display:flex;gap:8px;margin-top:10px;}
+.auth-grid{display:grid;gap:8px;margin-top:8px;}
+.auth-help{font-size:12px;color:var(--txt2);}
+.auth-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.sync-status{
+  margin-top:8px;padding:8px 10px;border-radius:8px;
+  border:1px solid var(--b2);background:var(--surf2);
+  font-size:12px;color:var(--txt2);
+}
 
 /*  UTIL  */
 @media(max-width:380px){
@@ -622,6 +630,27 @@ input:focus-visible{
     </div>
 
     <div class="widget-card">
+      <h3>Cloud Sync</h3>
+      <p>Sign in to sync progress across devices. Local mode still works offline.</p>
+      <div class="auth-grid" id="authOut">
+        <input class="name-inp" id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+        <input class="name-inp" id="authPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password">
+        <div class="auth-row">
+          <button class="btn-pill" onclick="signIn()">Sign In</button>
+          <button class="btn-pill teal" onclick="signUp()">Sign Up</button>
+        </div>
+      </div>
+      <div id="authIn" style="display:none">
+        <p class="auth-help">Signed in as <strong id="authUserEmail">-</strong></p>
+        <div class="auth-row">
+          <button class="btn-pill" onclick="syncNow()">Sync Now</button>
+          <button class="btn-pill danger" onclick="signOut()">Sign Out</button>
+        </div>
+      </div>
+      <div class="sync-status" id="syncStatus">Cloud sync: local only</div>
+    </div>
+
+    <div class="widget-card">
       <h3>Your Widget Data URL</h3>
       <p>Your runtime endpoint serves JSON at this path for external widgets.</p>
       <p style="margin-top:6px">Paste this URL into <strong>app/src/main/java/com/researchertimetable/widget/WidgetRepository.kt</strong>.</p>
@@ -667,6 +696,7 @@ input:focus-visible{
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /*  DATA  */
 const DEFAULT=[
@@ -690,11 +720,40 @@ let lastRenderedMinute=null;
 let toastTimer=null;
 const APP_NAME_KEY='rdt_app_name';
 const DEFAULT_APP_NAME='Researcher Timetable';
+const STATE_UPDATED_KEY='rdt_state_updated_at';
+let supabaseClient=null;
+let currentUser=null;
+let cloudSyncTimer=null;
+let cloudBusy=false;
+let applyingRemote=false;
+let suppressCloudSync=false;
 
-const saveSchedule=()=>localStorage.setItem('rdt_sched',JSON.stringify(schedule));
+const saveSchedule=(opts={})=>{
+  localStorage.setItem('rdt_sched',JSON.stringify(schedule));
+  if(!opts.silent)markLocalStateUpdated();
+};
 const loadData=()=>{try{return JSON.parse(localStorage.getItem('rdt_data')||'{}')}catch{return{}}};
-const saveData=d=>localStorage.setItem('rdt_data',JSON.stringify(d));
+const saveData=(d,opts={})=>{
+  localStorage.setItem('rdt_data',JSON.stringify(d));
+  if(!opts.silent)markLocalStateUpdated();
+};
 const cleanName=v=>(v||'').replace(/\s+/g,' ').trim().slice(0,40);
+function markLocalStateUpdated(){
+  localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
+  if(!applyingRemote)queueCloudPush();
+}
+function localUpdatedMs(){
+  const ts=Date.parse(localStorage.getItem(STATE_UPDATED_KEY)||'');
+  return Number.isFinite(ts)?ts:0;
+}
+function hasMeaningfulLocalState(){
+  const data=loadData();
+  const hasData=Object.keys(data).length>0;
+  const hasName=!!cleanName(localStorage.getItem(APP_NAME_KEY)||'');
+  const hasTheme=(localStorage.getItem('rdt_theme')||'dark')!=='dark';
+  const hasCustomSched=JSON.stringify(schedule)!==JSON.stringify(DEFAULT);
+  return hasData||hasName||hasTheme||hasCustomSched;
+}
 function getAppName(){
   const n=cleanName(localStorage.getItem(APP_NAME_KEY)||'');
   return n||DEFAULT_APP_NAME;
@@ -719,6 +778,7 @@ function saveAppName(){
   const next=cleanName(inp.value);
   if(next)localStorage.setItem(APP_NAME_KEY,next);
   else localStorage.removeItem(APP_NAME_KEY);
+  markLocalStateUpdated();
   applyAppName();
   showToast(next?'App name saved':'App name reset');
 }
@@ -726,6 +786,7 @@ function resetAppName(){
   localStorage.removeItem(APP_NAME_KEY);
   const inp=document.getElementById('appNameInput');
   if(inp)inp.value='';
+  markLocalStateUpdated();
   applyAppName();
   showToast('App name reset');
 }
@@ -774,6 +835,166 @@ function getStreakStats(data,totalBlocks){
   return{keys,currentStreak,bestStreak};
 }
 
+/*  CLOUD SYNC (SUPABASE PHASE 1)  */
+function setSyncStatus(msg){
+  const el=document.getElementById('syncStatus');
+  if(el)el.textContent=msg;
+}
+function renderAuthState(){
+  const out=document.getElementById('authOut');
+  const inn=document.getElementById('authIn');
+  const em=document.getElementById('authUserEmail');
+  if(out)out.style.display=currentUser?'none':'grid';
+  if(inn)inn.style.display=currentUser?'block':'none';
+  if(em)em.textContent=currentUser?.email||'-';
+}
+function collectLocalState(){
+  return {
+    sched:schedule,
+    data:normalizeAllData(),
+    app_name:cleanName(localStorage.getItem(APP_NAME_KEY)||''),
+    theme:localStorage.getItem('rdt_theme')||'dark'
+  };
+}
+function applyRemoteState(row){
+  applyingRemote=true;
+  suppressCloudSync=true;
+  try{
+    schedule=Array.isArray(row.sched)&&row.sched.length?row.sched:JSON.parse(JSON.stringify(DEFAULT));
+    saveSchedule({silent:true});
+    saveData((row.data&&typeof row.data==='object')?row.data:{},{silent:true});
+    const remoteName=cleanName(row.app_name||'');
+    if(remoteName)localStorage.setItem(APP_NAME_KEY,remoteName);else localStorage.removeItem(APP_NAME_KEY);
+    applyTheme(row.theme==='light'?'light':'dark',{silent:true});
+    localStorage.setItem(STATE_UPDATED_KEY,row.updated_at||new Date().toISOString());
+    applyAppName();
+    normalizeAllData();
+    buildTimeline();
+    updateHome();
+    if(currentPage==='stats')renderStatsPage();
+    if(currentPage==='widget')updateWidgetPreview();
+  } finally {
+    suppressCloudSync=false;
+    applyingRemote=false;
+  }
+}
+async function pushCloudState(reason='sync'){
+  if(!supabaseClient||!currentUser||cloudBusy||suppressCloudSync)return;
+  cloudBusy=true;
+  try{
+    const payload=collectLocalState();
+    payload.user_id=currentUser.id;
+    payload.updated_at=new Date().toISOString();
+    const {error}=await supabaseClient.from('user_state').upsert(payload);
+    if(error)throw error;
+    localStorage.setItem(STATE_UPDATED_KEY,payload.updated_at);
+    setSyncStatus(`Cloud sync: saved (${reason})`);
+  }catch(err){
+    setSyncStatus(`Cloud sync error: ${err.message||'failed to save'}`);
+  }finally{
+    cloudBusy=false;
+  }
+}
+async function pullCloudState(reason='sync'){
+  if(!supabaseClient||!currentUser||cloudBusy)return;
+  cloudBusy=true;
+  try{
+    const {data:row,error}=await supabaseClient.from('user_state').select('*').eq('user_id',currentUser.id).maybeSingle();
+    if(error)throw error;
+    if(!row){
+      await pushCloudState('first sync');
+      return;
+    }
+    const remoteMs=Date.parse(row.updated_at||'');
+    const localMs=localUpdatedMs();
+    if(!localMs){
+      if(hasMeaningfulLocalState()&&remoteMs<=0)await pushCloudState(reason);
+      else applyRemoteState(row);
+      setSyncStatus(`Cloud sync: loaded (${reason})`);
+      return;
+    }
+    if(remoteMs>localMs+1000){
+      applyRemoteState(row);
+      setSyncStatus(`Cloud sync: pulled newer data (${reason})`);
+    }else if(localMs>remoteMs+1000){
+      await pushCloudState(reason);
+    }else{
+      setSyncStatus('Cloud sync: up to date');
+    }
+  }catch(err){
+    setSyncStatus(`Cloud sync error: ${err.message||'failed to load'}`);
+  }finally{
+    cloudBusy=false;
+  }
+}
+function queueCloudPush(){
+  if(!currentUser||!supabaseClient||suppressCloudSync||applyingRemote)return;
+  if(cloudSyncTimer)clearTimeout(cloudSyncTimer);
+  cloudSyncTimer=setTimeout(()=>pushCloudState('auto'),700);
+}
+async function initSupabase(){
+  try{
+    if(!window.supabase?.createClient){
+      setSyncStatus('Cloud sync unavailable: library load failed');
+      return;
+    }
+    const r=await fetch('/api/supabase-config',{cache:'no-store'});
+    if(!r.ok)throw new Error('config endpoint unavailable');
+    const cfg=await r.json();
+    if(!cfg.url||!cfg.anonKey){
+      setSyncStatus('Cloud sync unavailable: missing env vars');
+      return;
+    }
+    supabaseClient=window.supabase.createClient(cfg.url,cfg.anonKey);
+    const {data:{session}}=await supabaseClient.auth.getSession();
+    currentUser=session?.user||null;
+    renderAuthState();
+    if(currentUser)await pullCloudState('startup');
+    else setSyncStatus('Cloud sync: signed out');
+    supabaseClient.auth.onAuthStateChange(async(_evt,sessionNow)=>{
+      currentUser=sessionNow?.user||null;
+      renderAuthState();
+      if(currentUser){
+        setSyncStatus('Cloud sync: signed in, syncing...');
+        await pullCloudState('login');
+      }else{
+        setSyncStatus('Cloud sync: signed out');
+      }
+    });
+  }catch(err){
+    setSyncStatus(`Cloud sync unavailable: ${err.message||'init failed'}`);
+  }
+}
+async function signIn(){
+  if(!supabaseClient){showToast('Cloud sync not ready');return;}
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const password=(document.getElementById('authPass')?.value||'').trim();
+  if(!email||!password){showToast('Enter email and password');return;}
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){showToast(error.message||'Sign in failed');return;}
+  showToast('Signed in');
+}
+async function signUp(){
+  if(!supabaseClient){showToast('Cloud sync not ready');return;}
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const password=(document.getElementById('authPass')?.value||'').trim();
+  if(!email||!password){showToast('Enter email and password');return;}
+  const {error}=await supabaseClient.auth.signUp({email,password});
+  if(error){showToast(error.message||'Sign up failed');return;}
+  showToast('Sign up successful. Verify email if prompted.');
+}
+async function signOut(){
+  if(!supabaseClient)return;
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){showToast(error.message||'Sign out failed');return;}
+  showToast('Signed out');
+}
+async function syncNow(){
+  if(!currentUser){showToast('Sign in first');return;}
+  await pullCloudState('manual');
+  showToast('Sync complete');
+}
+
 /*  NAVIGATION  */
 function goPage(name){
   const prev=currentPage;
@@ -794,14 +1015,15 @@ function goPage(name){
 
 /*  THEME  */
 let theme=localStorage.getItem('rdt_theme')||'dark';
-function applyTheme(t){
+function applyTheme(t,opts={}){
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('darkPill').classList.toggle('active',t==='dark');
   document.getElementById('lightPill').classList.toggle('active',t==='light');
   localStorage.setItem('rdt_theme',t);theme=t;
+  if(!opts.silent)markLocalStateUpdated();
 }
 function toggleTheme(){applyTheme(theme==='dark'?'light':'dark');}
-applyTheme(theme);
+applyTheme(theme,{silent:true});
 
 /*  HOME PAGE  */
 function updateHome(){
@@ -1195,6 +1417,10 @@ buildTimeline();
 lastRenderedMinute=nowMin();
 tick();
 setInterval(tick,1000);
+if(!localUpdatedMs()&&hasMeaningfulLocalState()){
+  localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
+}
+initSupabase();
 </script>
 </body>
 </html>
