@@ -1660,6 +1660,9 @@ async function signIn(emailId='authEmail',passId='authPass',finishAfter=false){
   if(!email||!password){showToast('Enter email and password');return;}
   const {error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error){showToast(error.message||'Sign in failed');return;}
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  currentUser=session?.user||currentUser;
+  renderAuthState();
   localStorage.removeItem(LOCAL_ONLY_KEY);
   const onboardOpen=!!document.getElementById('onboard')?.classList.contains('show');
   if(onboardOpen&&!onboardingDone()){
@@ -1670,6 +1673,7 @@ async function signIn(emailId='authEmail',passId='authPass',finishAfter=false){
     seedScheduleFromOnboarding();
     finishOnboarding();
   }
+  setSyncStatus(currentUser?`Cloud sync: signed in as ${currentUser.email}`:'Cloud sync: signed in');
   showToast('Signed in');
 }
 async function signUp(emailId='authEmail',passId='authPass'){
