@@ -285,6 +285,15 @@ body.onboard-open{overflow:hidden;}
   border-radius:14px;padding:12px;box-shadow:var(--sh);
 }
 .ins-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.ins-remain{
+  width:100%;margin-top:4px;
+  background:var(--surf2);border:1px solid var(--b2);border-radius:10px;padding:8px 9px;
+}
+.ins-remain-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ins-remain-top b{font-size:10px;color:var(--txt3);letter-spacing:.05em;text-transform:uppercase;}
+.ins-remain-top span{font-size:12px;color:var(--txt);}
+.ins-remain-track{height:6px;border-radius:999px;background:var(--b2);margin-top:7px;overflow:hidden;}
+.ins-remain-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--teal));}
 .ins-tabs{display:flex;gap:6px;}
 .ins-tab{
   border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt2);
@@ -314,6 +323,18 @@ body.onboard-open{overflow:hidden;}
 }
 .ins-fill.last{background:linear-gradient(180deg,var(--gold),#f2c46a);}
 .ins-lbl{font-size:9px;color:var(--txt3);line-height:1;}
+.ins-bars.month .ins-lbl{font-size:8px;line-height:1.05;white-space:normal;text-align:center;}
+.ins-meta{
+  margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.ins-chip{
+  background:var(--surf2);border:1px solid var(--b2);border-radius:10px;padding:8px 9px;
+}
+.ins-chip b{display:block;font-size:10px;color:var(--txt3);font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.ins-chip span{display:block;margin-top:3px;font-size:12px;color:var(--txt);}
+@media(max-width:540px){
+  .ins-meta{grid-template-columns:1fr;}
+}
 .home-insights .actions-row{margin-top:10px;}
 
 /*  SCHEDULE PAGE  */
@@ -789,7 +810,13 @@ input:focus-visible{
       <div class="ins-head">
         <div>
           <p class="eyebrow" style="margin-bottom:2px">Insights</p>
-          <p class="page-title" style="font-size:20px;margin-bottom:0">Your <em>Stats</em></p>
+          <div class="ins-remain">
+            <div class="ins-remain-top">
+              <b>Current Remaining Time</b>
+              <span id="insRemainText">No active block</span>
+            </div>
+            <div class="ins-remain-track"><div class="ins-remain-fill" id="insRemainFill"></div></div>
+          </div>
         </div>
         <div class="ins-tabs">
           <button class="ins-tab active" id="insWeekBtn" onclick="setInsightsPeriod('week')">Week</button>
@@ -798,6 +825,16 @@ input:focus-visible{
       </div>
       <div class="ins-graph" id="insGraph"></div>
       <p class="auth-help" id="insSummary" style="margin-top:8px;margin-bottom:0">Weekly completion trend.</p>
+      <div class="ins-meta">
+        <div class="ins-chip"><b>Top Activity</b><span id="insTopAct">-</span></div>
+        <div class="ins-chip"><b>Most Missed</b><span id="insMissed">-</span></div>
+        <div class="ins-chip"><b>Best Day</b><span id="insBestDay">-</span></div>
+        <div class="ins-chip"><b>Consistency</b><span id="insConsistency">-</span></div>
+        <div class="ins-chip"><b>Avg Done Time</b><span id="insAvgTime">-</span></div>
+        <div class="ins-chip"><b>Focus Balance</b><span id="insFocus">-</span></div>
+        <div class="ins-chip"><b>On-Time Start</b><span id="insOnTime">-</span></div>
+        <div class="ins-chip"><b>Current Run</b><span id="insRun">-</span></div>
+      </div>
       <div class="actions-row">
         <button class="btn-pill teal" onclick="goPage('stats')">View Full Stats</button>
       </div>
@@ -1270,7 +1307,9 @@ function renderInsightsGraph(data,N){
       ${padded.map((x,idx)=>{
         if(x.empty)return `<div class="ins-col"><span class="ins-val">&nbsp;</span><div class="ins-track"><div class="ins-fill" style="height:0%"></div></div><span class="ins-lbl">&nbsp;</span></div>`;
         const d=new Date(x.k+'T00:00:00');
-        const lbl=isMonth?String(d.getDate()):['S','M','T','W','T','F','S'][d.getDay()];
+        const day3=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+        const mon3=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+        const lbl=isMonth?`${d.getDate()} ${mon3}`:day3;
         const h=Math.max(4,Math.min(100,x.p));
         const last=idx===padded.length-1;
         return `<div class="ins-col"><span class="ins-val">${x.p}%</span><div class="ins-track"><div class="ins-fill ${last?'last':''}" style="height:${h}%"></div></div><span class="ins-lbl">${lbl}</span></div>`;
@@ -1293,15 +1332,48 @@ const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
 const minsToTime=m=>`${String(Math.floor((Math.max(0,Math.min(1439,m)))/60)).padStart(2,'0')}:${String(Math.max(0,Math.min(1439,m))%60).padStart(2,'0')}`;
 const parseTime=v=>{const m=(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],mm=+m[2];if(h>23||mm>59)return null;return h*60+mm;};
 const activeIdx=()=>{const m=nowMin();return schedule.findIndex(s=>m>=s.s&&m<s.e);};
-const getDay=(data,k)=>{if(!data[k])data[k]={done:[],notes:{}};return data[k];};
+const getDay=(data,k)=>{
+  if(!data[k])data[k]={done:[],notes:{},doneAt:{}};
+  if(!Array.isArray(data[k].done))data[k].done=[];
+  if(!data[k].notes||typeof data[k].notes!=='object')data[k].notes={};
+  if(!data[k].doneAt||typeof data[k].doneAt!=='object')data[k].doneAt={};
+  return data[k];
+};
 const validIdSet=()=>new Set(schedule.map(s=>s.id));
 function normalizeDayData(day,validIds){
   day.done=Array.isArray(day.done)?day.done.filter(id=>validIds.has(id)):[];
   const notes=(day.notes&&typeof day.notes==='object')?day.notes:{};
+  const doneAt=(day.doneAt&&typeof day.doneAt==='object')?day.doneAt:{};
   const cleanNotes={};
+  const cleanDoneAt={};
   Object.keys(notes).forEach(id=>{if(validIds.has(id))cleanNotes[id]=notes[id];});
+  Object.keys(doneAt).forEach(id=>{if(validIds.has(id))cleanDoneAt[id]=doneAt[id];});
   day.notes=cleanNotes;
+  day.doneAt=cleanDoneAt;
   return day;
+}
+function dateKeyFromOffset(daysBack){
+  const d=new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-daysBack);
+  return d.toISOString().slice(0,10);
+}
+function lastDateKeys(days){
+  const out=[];
+  for(let i=days-1;i>=0;i--)out.push(dateKeyFromOffset(i));
+  return out;
+}
+function classifyBlock(s){
+  const t=`${s.a||''} ${s.f||''}`.toLowerCase();
+  if(/break|prayer|rest|lunch|sleep/.test(t))return 'Recovery';
+  if(/commute|arrival|call|wrap|admin|log|cleanup/.test(t))return 'Support';
+  return 'Deep Work';
+}
+function minsTo12h(m){
+  const mm=Math.max(0,Math.min(1439,m|0));
+  const h24=Math.floor(mm/60),mn=mm%60,ap=h24>=12?'PM':'AM';
+  const h=((h24+11)%12)+1;
+  return `${h}:${String(mn).padStart(2,'0')} ${ap}`;
 }
 function normalizeAllData(){
   const data=loadData();
@@ -1679,7 +1751,7 @@ function updateHome(){
     nc.style.display='flex';
     document.getElementById('nextIcon').textContent=ns.i;
     document.getElementById('nextName').textContent=ns.a;
-    document.getElementById('nextTime').textContent='Starts '+ns.t.split('-')[0];
+    document.getElementById('nextTime').textContent=`Starts ${ns.t.split('-')[0]}  Ends ${ns.t.split('-')[1]||'-'}`;
   } else nc.style.display='none';
 
   // Stats
@@ -1692,6 +1764,84 @@ function updateHome(){
   document.getElementById('mStreak').textContent=streak;
   document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
   renderInsightsGraph(data,N);
+  const insRemainText=document.getElementById('insRemainText');
+  const insRemainFill=document.getElementById('insRemainFill');
+  if(ai>=0&&!done.includes(schedule[ai]?.id)){
+    const s=schedule[ai];
+    const total=Math.max(1,s.e-s.s);
+    const rem=Math.max(0,s.e-nowMin());
+    const remPct=Math.round(rem*100/total);
+    if(insRemainText)insRemainText.textContent=`${rem} min left (${remPct}%)`;
+    if(insRemainFill)insRemainFill.style.width=remPct+'%';
+  }else{
+    if(insRemainText)insRemainText.textContent='No active block';
+    if(insRemainFill)insRemainFill.style.width='0%';
+  }
+
+  // Extended insight chips (weekly)
+  const weekKeys=lastDateKeys(7);
+  const blocksById=Object.fromEntries(schedule.map(s=>[s.id,s]));
+  const doneCountById={};
+  const missedCountById={};
+  const catDone={ 'Deep Work':0,'Support':0,'Recovery':0 };
+  const doneTimes=[];
+  let consistencyHits=0;
+  let bestDay={k:'',p:-1};
+  let onTimeNum=0,onTimeDen=0;
+
+  weekKeys.forEach(wk=>{
+    const d=getDay(data,wk);
+    const p=Math.round(((d.done?.length||0)/(N||1))*100);
+    if(p>=70)consistencyHits++;
+    if(p>bestDay.p)bestDay={k:wk,p};
+    schedule.forEach((s,idx)=>{
+      const id=s.id;
+      const isDone=(d.done||[]).includes(id);
+      if(isDone){
+        doneCountById[id]=(doneCountById[id]||0)+1;
+        catDone[classifyBlock(s)]++;
+        const iso=d.doneAt?.[id];
+        if(iso){
+          const dt=new Date(iso);
+          if(!isNaN(dt)){doneTimes.push(dt.getHours()*60+dt.getMinutes());}
+        }
+      }else{
+        missedCountById[id]=(missedCountById[id]||0)+1;
+      }
+      if(idx===0&&d.doneAt?.[id]){
+        const dt=new Date(d.doneAt[id]);
+        if(!isNaN(dt)){
+          onTimeDen++;
+          const mins=dt.getHours()*60+dt.getMinutes();
+          if(mins<=s.s+60)onTimeNum++;
+        }
+      }
+    });
+  });
+
+  const topId=Object.keys(doneCountById).sort((a,b)=>(doneCountById[b]-doneCountById[a]))[0];
+  const missId=Object.keys(missedCountById).sort((a,b)=>(missedCountById[b]-missedCountById[a]))[0];
+  const bestDayDate=bestDay.k?new Date(bestDay.k+'T00:00:00'):null;
+  const bestDayLbl=bestDayDate?`${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][bestDayDate.getDay()]} (${bestDay.p}%)`:'-';
+  const avgDoneMin=doneTimes.length?Math.round(doneTimes.reduce((a,b)=>a+b,0)/doneTimes.length):null;
+  const totalCat=catDone['Deep Work']+catDone['Support']+catDone['Recovery'];
+  const bal=totalCat?`D ${Math.round(catDone['Deep Work']*100/totalCat)}% / S ${Math.round(catDone['Support']*100/totalCat)}% / R ${Math.round(catDone['Recovery']*100/totalCat)}%`:'-';
+  const onTime=onTimeDen?`${Math.round(onTimeNum*100/onTimeDen)}% (${onTimeNum}/${onTimeDen})`:'-';
+  let run=0;
+  for(let i=0;i<schedule.length;i++){
+    if(done.includes(schedule[i].id))run++;
+    else break;
+  }
+
+  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setTxt('insTopAct',topId?(blocksById[topId]?.a||topId):'-');
+  setTxt('insMissed',missId?(blocksById[missId]?.a||missId):'-');
+  setTxt('insBestDay',bestDayLbl);
+  setTxt('insConsistency',`${consistencyHits}/7 days >= 70%`);
+  setTxt('insAvgTime',avgDoneMin===null?'-':minsTo12h(avgDoneMin));
+  setTxt('insFocus',bal);
+  setTxt('insOnTime',onTime);
+  setTxt('insRun',`${run} consecutive blocks`);
 
   // Dots
   const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
@@ -1803,7 +1953,13 @@ function autoResize(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'
 function toggleDone(id){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   const idx=day.done.indexOf(id);
-  if(idx>=0)day.done.splice(idx,1);else day.done.push(id);
+  if(idx>=0){
+    day.done.splice(idx,1);
+    delete day.doneAt[id];
+  }else{
+    day.done.push(id);
+    day.doneAt[id]=new Date().toISOString();
+  }
   if(navigator.vibrate)navigator.vibrate(10);
   saveData(data);buildTimeline();updateHome();
 }
@@ -1865,7 +2021,7 @@ function toggleEdit(){
 }
 function resetDay(){
   if(!confirm('Reset today\'s progress?'))return;
-  const data=normalizeAllData();data[todayKey()]={done:[],notes:{}};saveData(data);
+  const data=normalizeAllData();data[todayKey()]={done:[],notes:{},doneAt:{}};saveData(data);
   openNotes={};buildTimeline();updateHome();
   showToast('Today reset');
 }
