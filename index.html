@@ -453,12 +453,18 @@ body.onboard-open{overflow:hidden;}
 .time-inp{
   background:var(--surf2);border:1.5px solid var(--b2);
   border-radius:6px;color:var(--txt);
-  font-family:'DM Sans',sans-serif;font-size:11px;
-  padding:5px 6px;width:48px;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  font-variant-numeric:tabular-nums;
+  padding:6px 8px;width:96px;min-width:96px;outline:none;
   transition:border-color .18s;
-  text-align:center;
+  text-align:left;
 }
 .time-inp:focus{border-color:var(--teal);}
+.time-inp::-webkit-datetime-edit,
+.time-inp::-webkit-datetime-edit-hour-field,
+.time-inp::-webkit-datetime-edit-minute-field{
+  color:var(--txt);
+}
 .tl.edit-mode .slot-content .editable{
   background:var(--surf2);
   border:1px solid var(--b2);
