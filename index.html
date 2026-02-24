@@ -326,12 +326,16 @@ body.onboard-open{overflow:hidden;}
   background:linear-gradient(180deg,var(--gold),var(--teal));
 }
 .ins-fill.last{background:linear-gradient(180deg,var(--gold),#f2c46a);}
-.ins-col.today .ins-track{border:1px solid var(--gold);box-shadow:0 0 0 2px var(--gold-d);}
+.ins-col.today .ins-track{
+  border:1.5px solid var(--gold);
+  box-shadow:0 0 0 3px var(--gold-d), 0 0 12px rgba(212,168,83,.45);
+}
 .ins-col.today .ins-val{color:var(--gold);}
 .ins-col.today .ins-lbl{color:var(--gold);}
 .ins-today-tag{
-  margin-top:2px;font-size:8px;line-height:1;color:var(--gold);
+  margin-top:2px;font-size:8px;line-height:1;color:#1a1200;
   letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  background:var(--gold);border-radius:999px;padding:2px 5px;min-height:12px;
 }
 .ins-lbl{font-size:9px;color:var(--txt3);line-height:1;}
 .ins-bars.month .ins-lbl{font-size:8px;line-height:1.05;white-space:normal;text-align:center;}
@@ -1402,7 +1406,13 @@ function startLocalMode(){
     showToast('Local-only mode enabled');
   }
 }
-const todayKey=()=>new Date().toISOString().slice(0,10);
+function toLocalKey(d){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+const todayKey=()=>toLocalKey(new Date());
 const nowMin=()=>{const n=new Date();return n.getHours()*60+n.getMinutes();};
 const minsToTime=m=>`${String(Math.floor((Math.max(0,Math.min(1439,m)))/60)).padStart(2,'0')}:${String(Math.max(0,Math.min(1439,m))%60).padStart(2,'0')}`;
 const parseTime=v=>{const m=(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],mm=+m[2];if(h>23||mm>59)return null;return h*60+mm;};
@@ -1431,7 +1441,7 @@ function dateKeyFromOffset(daysBack){
   const d=new Date();
   d.setHours(0,0,0,0);
   d.setDate(d.getDate()-daysBack);
-  return d.toISOString().slice(0,10);
+  return toLocalKey(d);
 }
 function lastDateKeys(days){
   const out=[];
