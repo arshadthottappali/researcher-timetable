@@ -1461,12 +1461,11 @@ function blockTimeTyping(e){
   return false;
 }
 function openTimePicker(el,e){
-  if(e)e.preventDefault();
   if(!el)return false;
   if(typeof el.showPicker==='function'){
     try{el.showPicker();}catch{}
   }
-  return false;
+  return true;
 }
 function lastDateKeys(days){
   const out=[];
@@ -1962,14 +1961,14 @@ function buildTimeline(){
       <div class="tc">
         <div class="tc-display">
           <div class="tc-icon">${s.i}</div>
-          <div class="tc-time">${s.t.replace('-','-<br>')}</div>
+          <div class="tc-time">${minsToTime(s.s)}-<br>${minsToTime(s.e)}</div>
         </div>
         <div class="time-inp-wrap">
           <div class="time-edit-ico">${s.i}</div>
           <div class="time-row">
-            <input class="time-inp" type="time" value="${minsToTime(s.s)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" onchange="updateTime(${i},'s',this.value)">
+            <input class="time-inp" type="time" value="${minsToTime(s.s)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" oninput="updateTime(${i},'s',this.value)" onchange="updateTime(${i},'s',this.value)">
             <span class="time-sep">-</span>
-            <input class="time-inp" type="time" value="${minsToTime(s.e)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" onchange="updateTime(${i},'e',this.value)">
+            <input class="time-inp" type="time" value="${minsToTime(s.e)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" oninput="updateTime(${i},'e',this.value)" onchange="updateTime(${i},'e',this.value)">
           </div>
         </div>
       </div>
@@ -2083,7 +2082,18 @@ function deleteBlock(i){
   showToast('Block removed');
 }
 function addBlock(){
-  schedule.push({id:'s'+(++idCtr),t:"09:00-10:00",a:"New Block",f:"Describe the focus of this block.",i:"N",s:540,e:600});
+  let start=540,end=600;
+  if(schedule.length){
+    const last=schedule[schedule.length-1];
+    const lastEnd=Number.isFinite(last?.e)?last.e:600;
+    start=Math.max(0,Math.min(1439,lastEnd));
+    end=Math.min(1439,start+60);
+    if(end<=start){
+      start=Math.max(0,start-60);
+      end=Math.min(1439,start+60);
+    }
+  }
+  schedule.push({id:'s'+(++idCtr),t:`${minsToTime(start)}-${minsToTime(end)}`,a:"New Block",f:"Describe the focus of this block.",i:"N",s:start,e:end});
   saveSchedule();normalizeAllData();buildTimeline();
   showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
