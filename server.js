@@ -2,8 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const DEFAULT_PORT = Number(process.env.PORT) || 3000;
 const ROOT = __dirname;
 const STATE_FILE = path.join(ROOT, 'widget-state.json');
 
@@ -34,17 +33,37 @@ function readWidgetState() {
   }
 }
 
-app.get('/widget-data.json', (_req, res) => {
-  res.set('Cache-Control', 'no-store');
-  res.json(readWidgetState());
-});
+function createServer() {
+  const app = express();
 
-app.use(express.static(ROOT, { extensions: ['html'] }));
+  app.get('/widget-data.json', (_req, res) => {
+    res.set('Cache-Control', 'no-store');
+    res.json(readWidgetState());
+  });
 
-app.get('/', (_req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'));
-});
+  app.use(express.static(ROOT, { extensions: ['html'] }));
 
-app.listen(PORT, () => {
-  console.log(`Researcher timetable server running on http://localhost:${PORT}`);
-});
+  app.get('/', (_req, res) => {
+    res.sendFile(path.join(ROOT, 'index.html'));
+  });
+
+  return app;
+}
+
+function startServer(port = DEFAULT_PORT) {
+  const app = createServer();
+  const server = app.listen(port, () => {
+    console.log(`Researcher timetable server running on http://localhost:${port}`);
+  });
+  return server;
+}
+
+module.exports = {
+  createServer,
+  readWidgetState,
+  startServer
+};
+
+if (require.main === module) {
+  startServer();
+}

@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "description": "Researcher timetable PWA with runtime widget endpoint",
-  "main": "server.js",
+  "main": "electron-main.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "desktop": "electron .",
+    "desktop-dev": "electron ."
   },
   "dependencies": {
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "electron": "^37.2.1",
     "nodemon": "^3.1.4"
   }
 }

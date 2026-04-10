@@ -16,32 +16,32 @@
 <style>
 /*  TOKENS  */
 [data-theme="dark"] {
-  --bg:#0f1117; --surf:#181b24; --surf2:#1e2130;
-  --b:#272c3d; --b2:#313650;
-  --txt:#eae6df; --txt2:#8b91a8; --txt3:#555d78;
-  --gold:#d4a853; --gold-d:rgba(212,168,83,.13); --gold-g:rgba(212,168,83,.28);
-  --teal:#5bb8c4; --teal-d:rgba(91,184,196,.13);
-  --red:#c46b6b; --red-d:rgba(196,107,107,.13);
-  --green:#5aab5a; --green-d:rgba(90,171,90,.13);
+  --bg:#111315; --surf:#17191c; --surf2:#1d2024;
+  --b:#25292d; --b2:#2f343a;
+  --txt:#e6e2d9; --txt2:#98948d; --txt3:#64605a;
+  --gold:#b9ab8e; --gold-d:rgba(185,171,142,.10); --gold-g:rgba(185,171,142,.18);
+  --teal:#879089; --teal-d:rgba(135,144,137,.10);
+  --red:#9d7d7d; --red-d:rgba(157,125,125,.12);
+  --green:#7f9180; --green-d:rgba(127,145,128,.12);
   --done-bg:#111a11; --done-b:#2f5c2f;
-  --active-bg:#13192a;
-  --nav-bg:#13161f;
-  --sh:0 2px 12px rgba(0,0,0,.4);
-  --sh2:0 6px 24px rgba(0,0,0,.5);
+  --active-bg:#171a1d;
+  --nav-bg:#15181b;
+  --sh:0 2px 10px rgba(0,0,0,.22);
+  --sh2:0 8px 20px rgba(0,0,0,.28);
 }
 [data-theme="light"] {
-  --bg:#f0ece3; --surf:#ffffff; --surf2:#f9f6f1;
-  --b:#e4ddd0; --b2:#d5ccc0;
-  --txt:#1a1714; --txt2:#6b5f52; --txt3:#a0948a;
-  --gold:#b8862a; --gold-d:rgba(184,134,42,.1); --gold-g:rgba(184,134,42,.22);
-  --teal:#2a8a96; --teal-d:rgba(42,138,150,.1);
-  --red:#a84040; --red-d:rgba(168,64,64,.1);
-  --green:#3a7a3a; --green-d:rgba(58,122,58,.1);
-  --done-bg:#f0f7f0; --done-b:#5a9a5a;
-  --active-bg:#eef3ff;
-  --nav-bg:#ffffff;
-  --sh:0 2px 12px rgba(0,0,0,.07);
-  --sh2:0 6px 24px rgba(0,0,0,.12);
+  --bg:#f2efe8; --surf:#fcfbf8; --surf2:#f5f1eb;
+  --b:#dfd8cc; --b2:#cfc7ba;
+  --txt:#1f1c18; --txt2:#6f685e; --txt3:#9a9186;
+  --gold:#8f826a; --gold-d:rgba(143,130,106,.10); --gold-g:rgba(143,130,106,.18);
+  --teal:#738076; --teal-d:rgba(115,128,118,.10);
+  --red:#9b7272; --red-d:rgba(155,114,114,.10);
+  --green:#607560; --green-d:rgba(96,117,96,.10);
+  --done-bg:#eef2ec; --done-b:#698069;
+  --active-bg:#f1eee8;
+  --nav-bg:#fcfbf8;
+  --sh:0 2px 10px rgba(0,0,0,.05);
+  --sh2:0 8px 20px rgba(0,0,0,.08);
 }
 
 /*  RESET  */
@@ -214,81 +214,64 @@ body.onboard-open{overflow:hidden;}
 
 /* Active block hero card */
 .hero-card{
-  background:var(--surf); border:2px solid var(--gold);
-  border-radius:18px; padding:16px;
-  margin-bottom:12px;
-  box-shadow:0 0 0 4px var(--gold-d), var(--sh2);
-  animation:pulse-gold 3s ease-in-out infinite;
+  background:var(--surf); border:1.5px solid var(--b2);
+  border-radius:18px; padding:18px;
+  margin-bottom:10px;
+  box-shadow:var(--sh);
 }
-.hero-card.idle{border-color:var(--b);box-shadow:var(--sh);animation:none;}
-@keyframes pulse-gold{
-  0%,100%{box-shadow:0 0 0 3px var(--gold-d),var(--sh);}
-  50%{box-shadow:0 0 0 7px var(--gold-g),var(--sh);}
-}
+.hero-card.idle{border-color:var(--b);box-shadow:var(--sh);}
 .hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.hero-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);}
+.hero-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--txt2);}
 .hero-label.idle-lbl{color:var(--txt3);}
 .hero-time-left{
   font-family:'DM Serif Display',serif;
-  font-size:28px;color:var(--gold);line-height:1;
+  font-size:28px;color:var(--txt);line-height:1;
 }
 .hero-time-left.idle-time{font-size:18px;color:var(--txt3);}
 .hero-block-name{
   font-family:'DM Serif Display',serif;
-  font-size:20px;line-height:1.2;color:var(--txt);
+  font-size:24px;line-height:1.15;color:var(--txt);
   display:flex;align-items:center;gap:8px;
-  margin-bottom:4px;
+  margin-bottom:6px;
 }
-.hero-focus{font-size:12px;color:var(--txt2);margin-bottom:12px;}
+.hero-focus{font-size:13px;color:var(--txt2);margin-bottom:14px;}
 .hero-progress-row{display:flex;align-items:center;gap:10px;}
 .hero-prog-track{flex:1;height:5px;background:var(--b);border-radius:5px;overflow:hidden;}
-.hero-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:5px;transition:width .5s;}
-.hero-prog-pct{font-size:11px;font-weight:600;color:var(--gold);min-width:32px;text-align:right;}
+.hero-prog-fill{height:100%;background:linear-gradient(90deg,var(--txt2),var(--teal));border-radius:5px;transition:width .5s;}
+.hero-prog-pct{font-size:11px;font-weight:600;color:var(--txt2);min-width:32px;text-align:right;}
 
 /* Next block */
 .next-card{
   background:var(--surf); border:1.5px solid var(--b);
-  border-radius:14px; padding:12px 14px;
-  margin-bottom:12px; box-shadow:var(--sh);
+  border-radius:14px; padding:14px;
+  margin-bottom:10px; box-shadow:var(--sh);
   display:flex;align-items:center;gap:12px;
 }
-.next-icon{font-size:22px;flex-shrink:0;}
+.next-icon{font-size:18px;flex-shrink:0;color:var(--txt2);}
 .next-content{flex:1;min-width:0;}
 .next-label{font-size:10px;color:var(--txt3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
-.next-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--txt);margin-top:1px;}
+.next-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--txt);margin-top:2px;}
 .next-time{
-  font-size:11px;color:var(--teal);margin-top:1px;
+  font-size:11px;color:var(--txt2);margin-top:4px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
 .next-time .nt-end{text-align:right;margin-left:auto;}
-
-/* Streak mini */
-.streak-row{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  gap:8px;margin-bottom:12px;
+.home-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
 }
-.mini-stat{
-  background:var(--surf);border:1.5px solid var(--b);
-  border-radius:12px;padding:10px 8px;text-align:center;
-  box-shadow:var(--sh);
+.home-note{
+  background:var(--surf);border:1px solid var(--b);
+  border-radius:12px;padding:12px 14px;color:var(--txt2);
+  font-size:12px;line-height:1.6;box-shadow:var(--sh);
 }
-.mini-stat-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);line-height:1;}
-.mini-stat-lbl{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
-
-/* Streak dots */
-.dots-row{
-  background:var(--surf);border:1.5px solid var(--b);
-  border-radius:12px;padding:10px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:12px;box-shadow:var(--sh);
-}
-.dots-label{font-size:10px;color:var(--txt3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
-.dots-wrap{display:flex;gap:5px;}
-.sdot{width:9px;height:9px;border-radius:50%;background:var(--b2);transition:background .3s;}
-.sdot.lit{background:var(--gold);box-shadow:0 0 6px var(--gold-g);}
+.home-note b{color:var(--txt);font-weight:600;}
 .home-insights{
-  background:var(--surf);border:1.5px solid var(--b);
+  background:var(--surf);border:1px solid var(--b);
   border-radius:14px;padding:12px;box-shadow:var(--sh);
+  margin-top:10px;
 }
 .ins-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
 .ins-remain{
@@ -352,6 +335,9 @@ body.onboard-open{overflow:hidden;}
   .ins-meta{grid-template-columns:1fr;}
 }
 .home-insights .actions-row{margin-top:10px;}
+@media(max-width:540px){
+  .home-actions{grid-template-columns:1fr;}
+}
 
 /*  SCHEDULE PAGE  */
 .toolbar{
@@ -777,6 +763,7 @@ input:focus-visible{
   <!-- HOME -->
   <div class="page active" id="page-home">
     <p class="eyebrow" id="appNameLabel">Researcher Timetable</p>
+    <p class="page-title">Now and <em>Next</em></p>
     <div class="status-bar">
       <div class="date-time-block">
         <div class="date-str" id="dateEl"></div>
@@ -820,23 +807,19 @@ input:focus-visible{
       </div>
     </div>
 
-    <!-- MINI STATS -->
-    <div class="streak-row">
-      <div class="mini-stat"><div class="mini-stat-val" id="mToday">0%</div><div class="mini-stat-lbl">Today</div></div>
-      <div class="mini-stat"><div class="mini-stat-val" id="mStreak">0</div><div class="mini-stat-lbl">Streak</div></div>
-      <div class="mini-stat"><div class="mini-stat-val" id="mAvg">-</div><div class="mini-stat-lbl">7-Day Avg</div></div>
+    <div class="home-note" id="homeSummary">
+      <b>Minimal view.</b> This screen is designed for a quick check so you can see the active block and the next one without digging through stats.
     </div>
 
-    <!-- STREAK DOTS -->
-    <div class="dots-row">
-      <span class="dots-label">Last 7 Days</span>
-      <div class="dots-wrap" id="dotsEl"></div>
+    <div class="home-actions">
+      <button class="btn-pill" onclick="goPage('schedule')">Open Schedule</button>
+      <button class="btn-pill" onclick="goPage('settings')">Open Settings</button>
     </div>
 
     <div class="home-insights">
       <div class="ins-head">
         <div>
-          <p class="eyebrow" style="margin-bottom:2px">Insights</p>
+          <p class="eyebrow" style="margin-bottom:2px">Quiet Summary</p>
         </div>
         <div class="ins-tabs">
           <button class="ins-tab active" id="insWeekBtn" onclick="setInsightsPeriod('week')">Week</button>
@@ -845,9 +828,6 @@ input:focus-visible{
       </div>
       <div class="ins-graph" id="insGraph"></div>
       <p class="auth-help" id="insSummary" style="margin-top:8px;margin-bottom:0">Weekly completion trend.</p>
-      <div class="actions-row">
-        <button class="btn-pill teal" onclick="goPage('stats')">View Full Stats</button>
-      </div>
     </div>
   </div>
 
@@ -1844,6 +1824,7 @@ function updateHome(){
   const N=schedule.length||1,done=day.done;
   const pct=Math.round(done.length/N*100);
   const ai=activeIdx();
+  const summaryEl=document.getElementById('homeSummary');
 
   // Hero card
   const hero=document.getElementById('heroCard');
@@ -1893,15 +1874,23 @@ function updateHome(){
     document.getElementById('nextTime').innerHTML=`<span>Starts ${ns.t.split('-')[0]}</span><span class="nt-end">Ends ${ns.t.split('-')[1]||'-'}</span>`;
   } else nc.style.display='none';
 
-  // Stats
+  // Quiet summary
   const streakStats=getStreakStats(data,N);
   const keys=streakStats.keys,last7=keys.slice(-7);
   const avgs=last7.map(kk=>(data[kk]?.done?.length||0)/N*100);
   const avg=avgs.length?Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length):null;
   const streak=streakStats.currentStreak;
-  document.getElementById('mToday').textContent=pct+'%';
-  document.getElementById('mStreak').textContent=streak;
-  document.getElementById('mAvg').textContent=avg!==null?avg+'%':'-';
+  if(summaryEl){
+    if(ai>=0&&!done.includes(schedule[ai]?.id)){
+      const current=schedule[ai];
+      const afterCurrent=nextIdx>=0?schedule[nextIdx].a:'nothing scheduled after this';
+      summaryEl.innerHTML=`<b>Focus now:</b> ${current.a}. <b>After this:</b> ${afterCurrent}. <b>Done today:</b> ${done.length}/${N}.`;
+    }else if(nextIdx>=0){
+      summaryEl.innerHTML=`<b>Free right now.</b> Next is <b>${schedule[nextIdx].a}</b> at ${minsToTime(schedule[nextIdx].s)}. <b>Done today:</b> ${done.length}/${N}.`;
+    }else{
+      summaryEl.innerHTML=`<b>No active block.</b> Nothing else is scheduled today. <b>Done today:</b> ${done.length}/${N}${avg!==null?` • recent average ${avg}%`:''}.`;
+    }
+  }
   renderInsightsGraph(data,N);
   renderExtendedInsights(data,N,done);
   const insRemainText=document.getElementById('insRemainText');
@@ -1926,13 +1915,6 @@ function updateHome(){
     if(insRemainFill)insRemainFill.style.width='0%';
   }
 
-  // Dots
-  const dotsEl=document.getElementById('dotsEl');dotsEl.innerHTML='';
-  for(let i=0;i<7;i++){
-    const d=document.createElement('div');d.className='sdot';
-    if(last7[i]&&(data[last7[i]]?.done?.length||0)>=Math.ceil(N*.7))d.classList.add('lit');
-    dotsEl.appendChild(d);
-  }
 }
 
 /*  SCHEDULE  */
