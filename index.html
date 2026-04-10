@@ -16,32 +16,32 @@
 <style>
 /*  TOKENS  */
 [data-theme="dark"] {
-  --bg:#111315; --surf:#17191c; --surf2:#1d2024;
-  --b:#25292d; --b2:#2f343a;
-  --txt:#e6e2d9; --txt2:#98948d; --txt3:#64605a;
-  --gold:#b9ab8e; --gold-d:rgba(185,171,142,.10); --gold-g:rgba(185,171,142,.18);
-  --teal:#879089; --teal-d:rgba(135,144,137,.10);
-  --red:#9d7d7d; --red-d:rgba(157,125,125,.12);
-  --green:#7f9180; --green-d:rgba(127,145,128,.12);
-  --done-bg:#111a11; --done-b:#2f5c2f;
-  --active-bg:#171a1d;
-  --nav-bg:#15181b;
-  --sh:0 2px 10px rgba(0,0,0,.22);
-  --sh2:0 8px 20px rgba(0,0,0,.28);
+  --bg:#101112; --surf:#161718; --surf2:#1b1d1f;
+  --b:#25282b; --b2:#303438;
+  --txt:#ece7de; --txt2:#aca49a; --txt3:#766f67;
+  --gold:#b0a28a; --gold-d:rgba(176,162,138,.08); --gold-g:rgba(176,162,138,.14);
+  --teal:#858c84; --teal-d:rgba(133,140,132,.08);
+  --red:#947575; --red-d:rgba(148,117,117,.12);
+  --green:#788a78; --green-d:rgba(120,138,120,.12);
+  --done-bg:#141716; --done-b:#455544;
+  --active-bg:#181a1c;
+  --nav-bg:rgba(19,20,22,.92);
+  --sh:0 10px 30px rgba(0,0,0,.18);
+  --sh2:0 18px 40px rgba(0,0,0,.22);
 }
 [data-theme="light"] {
-  --bg:#f2efe8; --surf:#fcfbf8; --surf2:#f5f1eb;
-  --b:#dfd8cc; --b2:#cfc7ba;
-  --txt:#1f1c18; --txt2:#6f685e; --txt3:#9a9186;
-  --gold:#8f826a; --gold-d:rgba(143,130,106,.10); --gold-g:rgba(143,130,106,.18);
-  --teal:#738076; --teal-d:rgba(115,128,118,.10);
-  --red:#9b7272; --red-d:rgba(155,114,114,.10);
-  --green:#607560; --green-d:rgba(96,117,96,.10);
-  --done-bg:#eef2ec; --done-b:#698069;
-  --active-bg:#f1eee8;
-  --nav-bg:#fcfbf8;
-  --sh:0 2px 10px rgba(0,0,0,.05);
-  --sh2:0 8px 20px rgba(0,0,0,.08);
+  --bg:#f4f0e8; --surf:#fbfaf7; --surf2:#f4f0ea;
+  --b:#e0d8cd; --b2:#d1c8bb;
+  --txt:#1e1b17; --txt2:#72695f; --txt3:#9d9388;
+  --gold:#8f8168; --gold-d:rgba(143,129,104,.08); --gold-g:rgba(143,129,104,.14);
+  --teal:#768175; --teal-d:rgba(118,129,117,.08);
+  --red:#9b7676; --red-d:rgba(155,118,118,.10);
+  --green:#667766; --green-d:rgba(102,119,102,.10);
+  --done-bg:#eff3ee; --done-b:#70826f;
+  --active-bg:#f2efe8;
+  --nav-bg:rgba(251,250,247,.92);
+  --sh:0 10px 30px rgba(0,0,0,.05);
+  --sh2:0 18px 40px rgba(0,0,0,.08);
 }
 
 /*  RESET  */
@@ -49,7 +49,7 @@
 html{height:100%;overflow:hidden;}
 body{
   background:var(--bg); color:var(--txt);
-  font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.5;
+  font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.55;
   height:100%; overflow:hidden;
   display:flex; flex-direction:column;
   transition:background .3s,color .3s;
@@ -152,7 +152,7 @@ body.onboard-open{overflow:hidden;}
 .page{
   position:absolute; inset:0;
   overflow-y:auto; overflow-x:hidden;
-  padding:16px 14px 100px;
+  padding:18px 16px 110px;
   transform:translateX(100%);
   transition:transform .28s cubic-bezier(.4,0,.2,1);
   -webkit-overflow-scrolling:touch;
@@ -166,29 +166,27 @@ body.onboard-open{overflow:hidden;}
   display:flex;
   background:var(--nav-bg);
   border-top:1px solid var(--b);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  box-shadow:0 -4px 20px rgba(0,0,0,.2);
+  padding:6px 8px env(safe-area-inset-bottom,0px);
+  box-shadow:0 -8px 24px rgba(0,0,0,.08);
   z-index:100;
+  backdrop-filter:blur(16px);
 }
 .nav-btn{
   flex:1; display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  gap:3px; padding:10px 4px 8px;
-  background:transparent; border:none;
+  gap:4px; padding:8px 4px 10px;
+  background:transparent; border:none; border-radius:14px;
   color:var(--txt3); cursor:pointer;
-  transition:color .2s;
+  transition:color .2s,background .2s;
   -webkit-tap-highlight-color:transparent;
 }
-.nav-btn.active{color:var(--gold);}
-.nav-icon{font-size:20px; line-height:1;}
-.nav-label{font-size:9px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;}
-.nav-btn.active .nav-icon{
-  filter:drop-shadow(0 0 6px var(--gold-g));
-}
+.nav-btn.active{color:var(--txt);background:var(--gold-d);}
+.nav-icon{font-size:14px; line-height:1;}
+.nav-label{font-size:10px; font-weight:600; letter-spacing:.02em;}
 
 /*  SECTION LABEL  */
-.eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
-.page-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px);line-height:1.1;margin-bottom:16px;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin-bottom:6px;}
+.page-title{font-family:'DM Serif Display',serif;font-size:clamp(24px,6vw,34px);line-height:1.05;margin-bottom:18px;}
 .page-title em{font-style:italic;color:var(--gold);}
 
 /*  HOME PAGE  */
@@ -196,13 +194,14 @@ body.onboard-open{overflow:hidden;}
 /* Status bar */
 .status-bar{
   display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:14px; gap:8px;
+  margin-bottom:16px; gap:8px;
 }
 .date-time-block .date-str{font-size:11px;color:var(--txt3);}
-.date-time-block .clock-str{font-size:22px;font-weight:500;color:var(--teal);letter-spacing:.04em;}
+.date-time-block .clock-str{font-size:24px;font-weight:500;color:var(--txt);letter-spacing:.02em;}
 .theme-toggle{
-  display:flex; background:var(--surf); border:1.5px solid var(--b);
-  border-radius:50px; padding:3px; cursor:pointer; gap:1px;
+  display:flex; background:var(--surf); border:1px solid var(--b);
+  border-radius:999px; padding:3px; cursor:pointer; gap:2px;
+  box-shadow:var(--sh);
 }
 .t-pill{
   width:28px;height:28px;border-radius:50%;
@@ -214,12 +213,12 @@ body.onboard-open{overflow:hidden;}
 
 /* Active block hero card */
 .hero-card{
-  background:var(--surf); border:1.5px solid var(--b2);
-  border-radius:18px; padding:18px;
-  margin-bottom:10px;
+  background:linear-gradient(180deg,var(--surf),var(--surf2)); border:1px solid var(--b2);
+  border-radius:22px; padding:20px;
+  margin-bottom:12px;
   box-shadow:var(--sh);
 }
-.hero-card.idle{border-color:var(--b);box-shadow:var(--sh);}
+.hero-card.idle{border-color:var(--b);}
 .hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .hero-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--txt2);}
 .hero-label.idle-lbl{color:var(--txt3);}
@@ -236,14 +235,14 @@ body.onboard-open{overflow:hidden;}
 }
 .hero-focus{font-size:13px;color:var(--txt2);margin-bottom:14px;}
 .hero-progress-row{display:flex;align-items:center;gap:10px;}
-.hero-prog-track{flex:1;height:5px;background:var(--b);border-radius:5px;overflow:hidden;}
+.hero-prog-track{flex:1;height:4px;background:var(--b);border-radius:999px;overflow:hidden;}
 .hero-prog-fill{height:100%;background:linear-gradient(90deg,var(--txt2),var(--teal));border-radius:5px;transition:width .5s;}
 .hero-prog-pct{font-size:11px;font-weight:600;color:var(--txt2);min-width:32px;text-align:right;}
 
 /* Next block */
 .next-card{
-  background:var(--surf); border:1.5px solid var(--b);
-  border-radius:14px; padding:14px;
+  background:var(--surf); border:1px solid var(--b);
+  border-radius:18px; padding:15px;
   margin-bottom:10px; box-shadow:var(--sh);
   display:flex;align-items:center;gap:12px;
 }
@@ -264,8 +263,8 @@ body.onboard-open{overflow:hidden;}
 }
 .home-note{
   background:var(--surf);border:1px solid var(--b);
-  border-radius:12px;padding:12px 14px;color:var(--txt2);
-  font-size:12px;line-height:1.6;box-shadow:var(--sh);
+  border-radius:16px;padding:14px 15px;color:var(--txt2);
+  font-size:13px;line-height:1.65;box-shadow:var(--sh);
 }
 .home-note b{color:var(--txt);font-weight:600;}
 .home-insights{
@@ -344,32 +343,33 @@ body.onboard-open{overflow:hidden;}
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;gap:8px;
   position:sticky; top:0; z-index:12;
-  background:var(--bg);
-  padding:8px 0 6px;
+  background:linear-gradient(180deg,var(--bg),rgba(0,0,0,0));
+  padding:6px 0 10px;
   backdrop-filter:saturate(120%) blur(6px);
 }
 .toolbar-label{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--txt3);}
 .toolbar-actions{display:flex;gap:6px;}
 .schedule-summary{
   margin:-2px 0 10px;
-  background:var(--surf); border:1.5px solid var(--b);
-  border-radius:10px; padding:8px 10px;
-  font-size:11px; color:var(--txt2);
+  background:var(--surf); border:1px solid var(--b);
+  border-radius:14px; padding:10px 12px;
+  font-size:12px; color:var(--txt2);
   display:flex; align-items:center; justify-content:space-between; gap:8px;
   box-shadow:var(--sh);
 }
 
 /* Buttons */
 .btn-pill{
-  height:34px; padding:0 14px; border-radius:50px;
-  border:1.5px solid var(--b); background:var(--surf);
+  height:38px; padding:0 14px; border-radius:999px;
+  border:1px solid var(--b); background:var(--surf);
   color:var(--txt2); font-family:'DM Sans',sans-serif;
-  font-size:12px;font-weight:500;
+  font-size:12px;font-weight:600;
   display:inline-flex;align-items:center;gap:5px;
   cursor:pointer;transition:all .18s;
   box-shadow:var(--sh); white-space:nowrap;
 }
-.btn-pill:active{transform:scale(.95);}
+.btn-pill:hover{border-color:var(--b2);color:var(--txt);}
+.btn-pill:active{transform:scale(.98);}
 .btn-pill.gold{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
 .btn-pill.teal{border-color:var(--teal);color:var(--teal);background:var(--teal-d);}
 .btn-pill.ghost{border-color:transparent;background:transparent;box-shadow:none;}
@@ -384,8 +384,8 @@ body.onboard-open{overflow:hidden;}
 
 /* Slot */
 .slot{
-  background:var(--surf); border:1.5px solid var(--b);
-  border-radius:14px; padding:12px 12px 12px 12px;
+  background:var(--surf); border:1px solid var(--b);
+  border-radius:18px; padding:14px 14px 13px 14px;
   display:grid; grid-template-columns:52px 1fr auto;
   align-items:start; gap:10px;
   position:relative; transition:all .2s;
@@ -398,7 +398,7 @@ body.onboard-open{overflow:hidden;}
 }
 .slot.done{background:var(--done-bg);border-color:var(--done-b);opacity:.72;}
 .slot.done::after{background:var(--done-b);}
-.slot.active-now{background:var(--active-bg);border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-d),var(--sh);}
+.slot.active-now{background:var(--active-bg);border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-d),var(--sh);}
 .slot.active-now::after{background:var(--gold);}
 .slot.dragging{opacity:.3;transform:scale(.96);}
 .slot.drag-over{border-color:var(--teal);border-style:dashed;box-shadow:0 0 0 3px var(--teal-d);}
@@ -568,8 +568,8 @@ input:focus-visible{
 /*  STATS PAGE  */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .stat-card{
-  background:var(--surf);border:1.5px solid var(--b);
-  border-radius:14px;padding:14px 12px;text-align:center;
+  background:var(--surf);border:1px solid var(--b);
+  border-radius:18px;padding:16px 14px;text-align:center;
   box-shadow:var(--sh);
 }
 .stat-card.wide{grid-column:span 2;}
@@ -579,8 +579,8 @@ input:focus-visible{
 
 .history-list{display:flex;flex-direction:column;gap:6px;}
 .history-row{
-  background:var(--surf);border:1.5px solid var(--b);
-  border-radius:10px;padding:10px 12px;
+  background:var(--surf);border:1px solid var(--b);
+  border-radius:14px;padding:12px 13px;
   display:flex;align-items:center;justify-content:space-between;
   box-shadow:var(--sh);
 }
@@ -591,17 +591,53 @@ input:focus-visible{
 
 /*  WIDGET INFO PAGE  */
 .widget-card{
-  background:var(--surf);border:1.5px solid var(--b);
-  border-radius:16px;padding:16px;
+  background:var(--surf);border:1px solid var(--b);
+  border-radius:18px;padding:16px;
   margin-bottom:12px;box-shadow:var(--sh);
 }
-.widget-card h3{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:8px;}
+.widget-card h3{font-family:'DM Serif Display',serif;font-size:19px;margin-bottom:8px;}
 .widget-card p,.widget-card li{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:6px;}
 .widget-card ol{padding-left:18px;}
 .widget-card li{margin-bottom:4px;}
+.section-intro{
+  margin:-4px 0 14px;
+  color:var(--txt2);
+  font-size:13px;
+  line-height:1.7;
+}
+.quiet-detail summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.quiet-detail summary::-webkit-details-marker{display:none;}
+.quiet-detail summary::after{
+  content:'+';
+  color:var(--txt3);
+  font-size:18px;
+  line-height:1;
+}
+.quiet-detail[open] summary::after{content:'-';}
+.quiet-detail .detail-body{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--b);
+}
+.subtle-note{
+  background:var(--surf2);
+  border:1px solid var(--b2);
+  border-radius:12px;
+  padding:12px 13px;
+  color:var(--txt2);
+  font-size:12px;
+  line-height:1.65;
+}
 .code-block{
-  background:var(--surf2);border:1.5px solid var(--b2);
-  border-radius:8px;padding:10px 12px;
+  background:var(--surf2);border:1px solid var(--b2);
+  border-radius:12px;padding:10px 12px;
   font-family:monospace;font-size:11px;
   color:var(--teal);word-break:break-all;
   margin:8px 0;line-height:1.6;
@@ -617,7 +653,7 @@ input:focus-visible{
 .name-row{margin-top:8px;}
 .name-inp{
   width:100%;padding:10px 12px;border-radius:8px;
-  border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt);
+  border:1px solid var(--b2);background:var(--surf2);color:var(--txt);
   font:500 13px 'DM Sans',sans-serif;outline:none;
 }
 .name-inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-d);}
@@ -658,7 +694,7 @@ input:focus-visible{
 @media(max-width:380px){
   .slot{grid-template-columns:46px 1fr auto;gap:8px;}
   .tl.edit-mode .slot{grid-template-columns:20px minmax(92px,100px) 1fr auto;}
-  .nav-label{font-size:8px;}
+  .nav-label{font-size:9px;}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important;}
@@ -683,8 +719,8 @@ input:focus-visible{
     </div>
 
     <section class="onb-only onb-step-0">
-      <h2 class="onb-title">Track your day in real time</h2>
-      <p class="onb-sub">Researcher Timetable shows what you should do now, what is next, and how much progress you have made today.</p>
+      <h2 class="onb-title">Keep the day clear</h2>
+      <p class="onb-sub">This app is designed for one quick glance: what you should be doing now, what comes next, and how the day is moving.</p>
       <div class="onb-hero">
         <div class="onb-kicker">Now Active</div>
         <div class="onb-hero-top">
@@ -696,8 +732,8 @@ input:focus-visible{
       </div>
       <div class="onb-grid">
         <div class="onb-card">
-          <h4>Live focus guidance</h4>
-          <p>See your active block, remaining time, and next block instantly.</p>
+          <h4>Glance and continue</h4>
+          <p>See your active block, remaining time, and next block in one calm screen.</p>
           <div class="onb-shot">
             <div class="onb-shot-line gold" style="width:64%"></div>
             <div class="onb-shot-line" style="width:85%"></div>
@@ -705,8 +741,8 @@ input:focus-visible{
           </div>
         </div>
         <div class="onb-card">
-          <h4>Simple daily completion</h4>
-          <p>Mark blocks done as you finish to keep accurate progress.</p>
+          <h4>Quiet accountability</h4>
+          <p>Mark blocks done as you finish so the timeline stays honest without becoming noisy.</p>
           <div class="onb-shot">
             <div class="onb-shot-line" style="width:78%"></div>
             <div class="onb-shot-line gold" style="width:35%"></div>
@@ -717,8 +753,8 @@ input:focus-visible{
     </section>
 
     <section class="onb-only onb-step-1">
-      <h2 class="onb-title">Sign in to sync</h2>
-      <p class="onb-sub">Login keeps your progress across devices. You can also continue local-only and sync later.</p>
+      <h2 class="onb-title">Sync only if you need it</h2>
+      <p class="onb-sub">Local mode is enough for most people. Sign in only if you want your timetable on more than one device.</p>
       <div class="onb-auth">
         <input class="name-inp" id="onbEmail" type="email" placeholder="Email address" autocomplete="email">
         <input class="name-inp" id="onbPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password" style="margin-top:8px;">
@@ -732,8 +768,8 @@ input:focus-visible{
     </section>
 
     <section class="onb-only onb-step-2">
-      <h2 class="onb-title">Set your first schedule block</h2>
-      <p class="onb-sub">Use time pickers to create your first block. You can edit all blocks later in Schedule.</p>
+      <h2 class="onb-title">Create the first block</h2>
+      <p class="onb-sub">Start small. You can refine the rest later in the Plan screen.</p>
       <div class="onb-auth">
         <input class="name-inp" id="onbTask" placeholder="First task (e.g., Deep Work)">
         <div class="onb-time-row">
@@ -763,7 +799,7 @@ input:focus-visible{
   <!-- HOME -->
   <div class="page active" id="page-home">
     <p class="eyebrow" id="appNameLabel">Researcher Timetable</p>
-    <p class="page-title">Now and <em>Next</em></p>
+    <p class="page-title">A calm view of <em>today</em></p>
     <div class="status-bar">
       <div class="date-time-block">
         <div class="date-str" id="dateEl"></div>
@@ -808,18 +844,18 @@ input:focus-visible{
     </div>
 
     <div class="home-note" id="homeSummary">
-      <b>Minimal view.</b> This screen is designed for a quick check so you can see the active block and the next one without digging through stats.
+      <b>Quiet mode.</b> Open the app, see what matters, and step away again.
     </div>
 
     <div class="home-actions">
-      <button class="btn-pill" onclick="goPage('schedule')">Open Schedule</button>
-      <button class="btn-pill" onclick="goPage('settings')">Open Settings</button>
+      <button class="btn-pill" onclick="goPage('schedule')">Edit Today</button>
+      <button class="btn-pill" onclick="goPage('stats')">Review Progress</button>
     </div>
 
     <div class="home-insights">
       <div class="ins-head">
         <div>
-          <p class="eyebrow" style="margin-bottom:2px">Quiet Summary</p>
+          <p class="eyebrow" style="margin-bottom:2px">Recent Rhythm</p>
         </div>
         <div class="ins-tabs">
           <button class="ins-tab active" id="insWeekBtn" onclick="setInsightsPeriod('week')">Week</button>
@@ -833,7 +869,8 @@ input:focus-visible{
 
   <!-- SCHEDULE -->
   <div class="page" id="page-schedule">
-    <p class="eyebrow">Daily Schedule</p>
+    <p class="eyebrow">Plan</p>
+    <p class="page-title">Shape your <em>day</em></p>
     <div class="toolbar">
       <span class="toolbar-label" id="toolbarLabel">Blocks</span>
       <div class="toolbar-actions">
@@ -853,8 +890,9 @@ input:focus-visible{
 
   <!-- STATS -->
   <div class="page" id="page-stats">
-    <p class="eyebrow">Analytics</p>
-    <p class="page-title">Your <em>Progress</em></p>
+    <p class="eyebrow">Review</p>
+    <p class="page-title">A gentle look at <em>progress</em></p>
+    <p class="section-intro">Review is meant to help you notice patterns, not judge yourself. Use it for reflection, then move on.</p>
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-v" id="st-today">0%</div><div class="stat-l">Today</div></div>
@@ -881,11 +919,12 @@ input:focus-visible{
 
   <!-- SETTINGS -->
   <div class="page" id="page-settings">
-    <p class="eyebrow">Settings</p>
-    <p class="page-title">App <em>Controls</em></p>
+    <p class="eyebrow">Setup</p>
+    <p class="page-title">Keep it <em>simple</em></p>
+    <p class="section-intro">Everything you need is here, but the advanced pieces stay tucked away unless you deliberately open them.</p>
     <div class="widget-card">
       <h3>App Name</h3>
-      <p>Set a custom name for this device. This updates in-app labels only.</p>
+      <p>Give this device a simple label if you want one.</p>
       <div class="name-row">
         <input class="name-inp" id="appNameInput" maxlength="40" placeholder="Enter app name">
       </div>
@@ -895,54 +934,66 @@ input:focus-visible{
       </div>
     </div>
     <div class="widget-card">
-      <h3>Account</h3>
+      <h3>Sync Status</h3>
       <p class="auth-help" id="settingsAuthState">Not signed in</p>
       <div class="auth-row">
         <button class="btn-pill" onclick="syncNow()">Sync Now</button>
         <button class="btn-pill danger" onclick="signOut()">Sign Out</button>
       </div>
     </div>
-    <div class="widget-card">
-      <h3>Cloud Sync</h3>
-      <p>Sign in to sync progress across devices, updates, and reinstalls.</p>
-      <div class="auth-grid" id="authOut">
-        <input class="name-inp" id="authEmail" type="email" placeholder="Email address" autocomplete="email">
-        <input class="name-inp" id="authPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password">
-        <div class="auth-row">
-          <button class="btn-pill" onclick="signIn()">Sign In</button>
-          <button class="btn-pill teal" onclick="signUp()">Sign Up</button>
-          <button class="btn-pill" onclick="sendReset()">Reset Password</button>
-          <button class="btn-pill" onclick="resendVerification()">Resend Verify</button>
+    <details class="widget-card quiet-detail">
+      <summary>
+        <div>
+          <h3>Optional Cloud Sync</h3>
+          <p>If you want the same timetable across devices, you can sign in here. The app still works locally without it.</p>
+        </div>
+      </summary>
+      <div class="detail-body">
+        <div class="auth-grid" id="authOut">
+          <input class="name-inp" id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+          <input class="name-inp" id="authPass" type="password" placeholder="Password (min 6 chars)" autocomplete="current-password">
+          <div class="auth-row">
+            <button class="btn-pill" onclick="signIn()">Sign In</button>
+            <button class="btn-pill teal" onclick="signUp()">Sign Up</button>
+            <button class="btn-pill" onclick="sendReset()">Reset Password</button>
+            <button class="btn-pill" onclick="resendVerification()">Resend Verify</button>
+          </div>
+        </div>
+        <div id="authIn" style="display:none">
+          <p class="auth-help">Signed in as <strong id="authUserEmail">-</strong></p>
+          <input class="name-inp" id="newPass" type="password" placeholder="New password (optional)" autocomplete="new-password">
+          <div class="auth-row">
+            <button class="btn-pill" onclick="syncNow()">Sync Now</button>
+            <button class="btn-pill" onclick="changePassword()">Update Password</button>
+            <button class="btn-pill danger" onclick="undoLastSnapshot()">Undo Last Local Snapshot</button>
+            <button class="btn-pill danger" onclick="signOut()">Sign Out</button>
+          </div>
+        </div>
+        <div class="sync-status" id="syncStatus">Cloud sync: local only</div>
+        <div class="conflict-box" id="conflictBox" style="display:none">
+          <div class="conflict-title">Sync conflict detected</div>
+          <p class="auth-help" id="conflictMsg">Both local and cloud changed recently.</p>
+          <div class="auth-row">
+            <button class="btn-pill teal" onclick="resolveConflict('cloud')">Use Cloud (Overwrite Local)</button>
+            <button class="btn-pill" onclick="resolveConflict('local')">Upload Local to Cloud</button>
+            <button class="btn-pill danger" onclick="dismissConflict()">Dismiss</button>
+          </div>
         </div>
       </div>
-      <div id="authIn" style="display:none">
-        <p class="auth-help">Signed in as <strong id="authUserEmail">-</strong></p>
-        <input class="name-inp" id="newPass" type="password" placeholder="New password (optional)" autocomplete="new-password">
-        <div class="auth-row">
-          <button class="btn-pill" onclick="syncNow()">Sync Now</button>
-          <button class="btn-pill" onclick="changePassword()">Update Password</button>
-          <button class="btn-pill danger" onclick="undoLastSnapshot()">Undo Last Local Snapshot</button>
-          <button class="btn-pill danger" onclick="signOut()">Sign Out</button>
+    </details>
+    <details class="widget-card quiet-detail">
+      <summary>
+        <div>
+          <h3>Advanced Android Tools</h3>
+          <p>Only needed if you want to experiment with a native Android widget later.</p>
         </div>
-      </div>
-      <div class="sync-status" id="syncStatus">Cloud sync: local only</div>
-      <div class="conflict-box" id="conflictBox" style="display:none">
-        <div class="conflict-title">Sync conflict detected</div>
-        <p class="auth-help" id="conflictMsg">Both local and cloud changed recently.</p>
+      </summary>
+      <div class="detail-body">
+        <div class="subtle-note">This part is optional and separate from the core quiet timetable experience.</div>
         <div class="auth-row">
-          <button class="btn-pill teal" onclick="resolveConflict('cloud')">Use Cloud (Overwrite Local)</button>
-          <button class="btn-pill" onclick="resolveConflict('local')">Upload Local to Cloud</button>
-          <button class="btn-pill danger" onclick="dismissConflict()">Dismiss</button>
+          <button class="btn-pill" onclick="toggleAdvancedWidget()">Show / Hide Widget Tools</button>
         </div>
-      </div>
-    </div>
-    <div class="widget-card">
-      <h3>Advanced Widget Setup</h3>
-      <p>For Android native widget integration only. Not required for normal app usage.</p>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="toggleAdvancedWidget()">Show / Hide Advanced</button>
-      </div>
-      <div id="advancedWidgetWrap" style="display:none">
+        <div id="advancedWidgetWrap" style="display:none">
         <div class="widget-card" style="margin-top:10px">
           <h3>Widget Setup Assistant</h3>
           <p>Native Android widget needs one-time setup in the Android app.</p>
@@ -978,32 +1029,42 @@ input:focus-visible{
           <div class="code-block" id="widgetDataPreview">Loading...</div>
         </div>
       </div>
-    </div>
-    <div class="widget-card">
-      <h3>Onboarding</h3>
-      <p>Replay the guided onboarding anytime.</p>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="replayOnboarding()">Replay Onboarding</button>
+    </details>
+    <details class="widget-card quiet-detail">
+      <summary>
+        <div>
+          <h3>Support Tools</h3>
+          <p>Recovery, diagnostics, and setup replay live here when you need them.</p>
+        </div>
+      </summary>
+      <div class="detail-body">
+        <div class="widget-card" style="margin-top:0">
+          <h3>Start Over</h3>
+          <p>Replay the guided setup anytime.</p>
+          <div class="auth-row">
+            <button class="btn-pill" onclick="replayOnboarding()">Replay Onboarding</button>
+          </div>
+        </div>
+        <div class="widget-card">
+          <h3>Quick Check</h3>
+          <p>Run a lightweight app check if something feels off.</p>
+          <div class="auth-row">
+            <button class="btn-pill teal" onclick="runDiagnostics()">Run Diagnostics</button>
+          </div>
+          <div class="diag-list" id="diagList">
+            <div class="diag-item">Diagnostics not run yet.</div>
+          </div>
+        </div>
+        <div class="widget-card" style="margin-bottom:0">
+          <h3>Local History</h3>
+          <p>Recent saved snapshots for recovery if needed.</p>
+          <div class="code-block" id="snapshotPreview">No snapshots yet.</div>
+          <div class="auth-row">
+            <button class="btn-pill" onclick="refreshSnapshotPreview()">Refresh History</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="widget-card">
-      <h3>QA Diagnostics</h3>
-      <p>Run a quick smoke-check for key app systems.</p>
-      <div class="auth-row">
-        <button class="btn-pill teal" onclick="runDiagnostics()">Run Diagnostics</button>
-      </div>
-      <div class="diag-list" id="diagList">
-        <div class="diag-item">Diagnostics not run yet.</div>
-      </div>
-    </div>
-    <div class="widget-card">
-      <h3>Sync History</h3>
-      <p>Recent local snapshots (for conflict recovery/undo).</p>
-      <div class="code-block" id="snapshotPreview">No snapshots yet.</div>
-      <div class="auth-row">
-        <button class="btn-pill" onclick="refreshSnapshotPreview()">Refresh History</button>
-      </div>
-    </div>
+    </details>
   </div>
 
 </div>
@@ -1011,20 +1072,20 @@ input:focus-visible{
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="goPage('home')" aria-label="Open Home">
-    <span class="nav-icon">H</span>
-    <span class="nav-label">Home</span>
+    <span class="nav-icon">.</span>
+    <span class="nav-label">Today</span>
   </button>
   <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')" aria-label="Open Schedule">
-    <span class="nav-icon">S</span>
-    <span class="nav-label">Schedule</span>
+    <span class="nav-icon">:</span>
+    <span class="nav-label">Plan</span>
   </button>
   <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
-    <span class="nav-icon">T</span>
-    <span class="nav-label">Stats</span>
+    <span class="nav-icon">;</span>
+    <span class="nav-label">Review</span>
   </button>
   <button class="nav-btn" id="nav-settings" onclick="goPage('settings')" aria-label="Open Settings">
-    <span class="nav-icon">E</span>
-    <span class="nav-label">Settings</span>
+    <span class="nav-icon">-</span>
+    <span class="nav-label">Setup</span>
   </button>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
