@@ -130,6 +130,26 @@ body.onboard-open{overflow:hidden;}
 .onb-auth{max-width:430px;}
 .onb-time-row{display:flex;gap:8px;margin-top:8px;}
 .onb-time-row input[type="time"]{flex:1;}
+.onb-field-label{font-size:12px;font-weight:600;color:var(--txt);margin:14px 0 6px;}
+.onb-field-label:first-child{margin-top:0;}
+.onb-field-optional{font-weight:400;color:var(--txt3);text-transform:none;letter-spacing:0;}
+.onb-choice-row{display:flex;flex-wrap:wrap;gap:6px;}
+.onb-choice{
+  height:34px;padding:0 12px;border-radius:999px;
+  border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;
+}
+.onb-choice.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
+.onb-fixed-add{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;margin-top:4px;}
+.onb-fixed-add .name-inp{margin-top:0;}
+@media(max-width:600px){.onb-fixed-add{grid-template-columns:1fr 1fr;}}
+.onb-fixed-list{margin-top:8px;display:flex;flex-direction:column;gap:6px;}
+.onb-fixed-item{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:var(--surf2);border:1px solid var(--b2);border-radius:10px;
+  padding:7px 10px;font-size:12px;color:var(--txt2);
+}
+.onb-fixed-item button{border:none;background:transparent;color:var(--red);font-size:11px;font-weight:700;cursor:pointer;}
 .time-inp,input[type="time"]{cursor:pointer;}
 .onb-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;}
 .onb-dots{display:flex;gap:6px;}
@@ -396,6 +416,7 @@ body.onboard-open{overflow:hidden;}
   width:3px;border-radius:0 3px 3px 0;
   background:var(--b);transition:background .2s;
 }
+.slot.fixed{border-left:3px solid var(--teal);}
 .slot.done{background:var(--done-bg);border-color:var(--done-b);opacity:.72;}
 .slot.done::after{background:var(--done-b);}
 .slot.active-now{background:var(--active-bg);border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-d),var(--sh);}
@@ -768,14 +789,37 @@ input:focus-visible{
     </section>
 
     <section class="onb-only onb-step-2">
-      <h2 class="onb-title">Create the first block</h2>
-      <p class="onb-sub">Start small. You can refine the rest later in the Plan screen.</p>
+      <h2 class="onb-title">Build today in three taps</h2>
+      <p class="onb-sub">Answer these and we'll lay out a realistic day for you — nothing to type unless you want to.</p>
       <div class="onb-auth">
-        <input class="name-inp" id="onbTask" placeholder="First task (e.g., Deep Work)">
-        <div class="onb-time-row">
-          <input class="name-inp" id="onbStart" type="time" value="09:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
-          <input class="name-inp" id="onbEnd" type="time" value="10:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+        <p class="onb-field-label">What are you working on?</p>
+        <div class="onb-choice-row" id="onbFocusRow">
+          <button type="button" class="onb-choice" data-field="focus" data-val="writing" onclick="selectOnbChoice(this)">Writing</button>
+          <button type="button" class="onb-choice" data-field="focus" data-val="lab" onclick="selectOnbChoice(this)">Lab / Experiments</button>
+          <button type="button" class="onb-choice" data-field="focus" data-val="reading" onclick="selectOnbChoice(this)">Reading</button>
+          <button type="button" class="onb-choice active" data-field="focus" data-val="mixed" onclick="selectOnbChoice(this)">Mixed</button>
         </div>
+        <p class="onb-field-label">When's your focus best?</p>
+        <div class="onb-choice-row" id="onbEnergyRow">
+          <button type="button" class="onb-choice active" data-field="energy" data-val="morning" onclick="selectOnbChoice(this)">Morning</button>
+          <button type="button" class="onb-choice" data-field="energy" data-val="afternoon" onclick="selectOnbChoice(this)">Afternoon</button>
+          <button type="button" class="onb-choice" data-field="energy" data-val="night" onclick="selectOnbChoice(this)">Night</button>
+        </div>
+        <p class="onb-field-label">Hours available today?</p>
+        <div class="onb-choice-row" id="onbHoursRow">
+          <button type="button" class="onb-choice" data-field="hours" data-val="2-4" onclick="selectOnbChoice(this)">2-4</button>
+          <button type="button" class="onb-choice active" data-field="hours" data-val="4-6" onclick="selectOnbChoice(this)">4-6</button>
+          <button type="button" class="onb-choice" data-field="hours" data-val="6-8" onclick="selectOnbChoice(this)">6-8</button>
+          <button type="button" class="onb-choice" data-field="hours" data-val="8+" onclick="selectOnbChoice(this)">8+</button>
+        </div>
+        <p class="onb-field-label">Any fixed times today? <span class="onb-field-optional">(optional — meetings, classes, lab slots)</span></p>
+        <div class="onb-fixed-add">
+          <input class="name-inp" id="onbFixedLabel" placeholder="e.g., Lab meeting" maxlength="40">
+          <input class="name-inp" id="onbFixedStart" type="time" value="10:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+          <input class="name-inp" id="onbFixedEnd" type="time" value="11:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+          <button type="button" class="btn-pill" onclick="addOnbFixed()">+ Add</button>
+        </div>
+        <div id="onbFixedList" class="onb-fixed-list"></div>
       </div>
     </section>
 
@@ -1095,6 +1139,139 @@ input:focus-visible{
 /*  DATA  */
 const DEFAULT=[];
 
+/*  BLOCK TYPES / PROFILE / GENERATED DAY  */
+const BLOCK_TYPES={
+  deep:{label:'Deep Work',icon:'D',focus:'Focused, uninterrupted research work.'},
+  writing:{label:'Writing',icon:'W',focus:'Draft, revise, or edit your writing.'},
+  reading:{label:'Reading',icon:'R',focus:'Read papers and take notes.'},
+  lab:{label:'Lab / Experiment',icon:'L',focus:'Run experiments or collect data.'},
+  analysis:{label:'Data Analysis',icon:'A',focus:'Analyze results and figures.'},
+  admin:{label:'Admin',icon:'M',focus:'Emails, formatting, logistics.'},
+  break:{label:'Break',icon:'B',focus:'Rest and recharge.'},
+  meeting:{label:'Meeting',icon:'#',focus:'Fixed commitment.'},
+  custom:{label:'Block',icon:'N',focus:'Describe the focus of this block.'}
+};
+// 'break' is intentionally not a rotation member — it's only ever inserted
+// by the sinceBreak>=2 override below, so the rotation always keeps advancing.
+const FOCUS_PRIORITY={
+  writing:['writing','reading','admin'],
+  lab:['lab','analysis','admin'],
+  reading:['reading','writing','admin'],
+  mixed:['deep','reading','writing','admin']
+};
+const ENERGY_WINDOWS={morning:[9*60,12*60],afternoon:[13*60,17*60],night:[19*60,22*60]};
+const HOURS_BUDGET={'2-4':180,'4-6':300,'6-8':420,'8+':540};
+const PROFILE_KEY='rdt_profile';
+const WEIGHTS_KEY='rdt_weights';
+function loadProfile(){try{const p=JSON.parse(localStorage.getItem(PROFILE_KEY));return(p&&typeof p==='object')?p:null;}catch{return null;}}
+function saveProfile(p){localStorage.setItem(PROFILE_KEY,JSON.stringify(p));}
+function loadWeights(){try{const w=JSON.parse(localStorage.getItem(WEIGHTS_KEY));return(w&&typeof w==='object')?w:{};}catch{return{};}}
+function saveWeights(w){localStorage.setItem(WEIGHTS_KEY,JSON.stringify(w));}
+function bumpWeight(type,delta){
+  if(!type||!BLOCK_TYPES[type]||type==='meeting'||type==='custom')return;
+  const w=loadWeights();
+  w[type]=Math.max(-3,Math.min(10,(w[type]||0)+delta));
+  saveWeights(w);
+}
+function escapeHtml(str){
+  return String(str==null?'':str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+// Greedy day builder: anchors fixed commitments at their times, fills the gaps
+// between them with flexible blocks ordered by focus-type priority (reordered
+// by locally-learned weights), favoring the stated energy window for the
+// first/biggest block, and stops once the stated hour budget is used up.
+function generateDay(profile,fixedList){
+  const clean=(fixedList||[])
+    .filter(f=>f&&f.label&&Number.isFinite(f.s)&&Number.isFinite(f.e)&&f.e>f.s)
+    .sort((a,b)=>a.s-b.s);
+  const budget=HOURS_BUDGET[profile.hours]||300;
+  const weights=loadWeights();
+  const order=(FOCUS_PRIORITY[profile.focus]||FOCUS_PRIORITY.mixed).slice()
+    .sort((a,b)=>(weights[b]||0)-(weights[a]||0));
+  const energyWin=ENERGY_WINDOWS[profile.energy]||ENERGY_WINDOWS.morning;
+
+  const dayStart=Math.min(9*60,clean[0]?.s??9*60);
+  const dayEnd=Math.max(21*60,clean[clean.length-1]?.e??21*60);
+
+  const gaps=[];
+  let cursor=dayStart;
+  clean.forEach(f=>{
+    if(f.s>cursor)gaps.push([cursor,f.s]);
+    cursor=Math.max(cursor,f.e);
+  });
+  if(cursor<dayEnd)gaps.push([cursor,dayEnd]);
+
+  const out=[];
+  let remaining=budget;
+  let typeIdx=0;
+  let sinceBreak=0;
+  const pushBlock=(type,s,e)=>{
+    const meta=BLOCK_TYPES[type]||BLOCK_TYPES.custom;
+    out.push({id:'s'+(++idCtr),t:`${minsToTime(s)}-${minsToTime(e)}`,a:meta.label,f:meta.focus,i:meta.icon,s,e,fixed:false,type});
+  };
+
+  gaps.forEach(([gs,ge])=>{
+    let pos=gs;
+    while(pos<ge&&remaining>0){
+      const overlapsEnergy=pos<energyWin[1]&&ge>energyWin[0];
+      let type=order[typeIdx%order.length];
+      if(sinceBreak>=2&&type!=='break')type='break';
+      const dur=type==='break'?15:(overlapsEnergy&&sinceBreak===0?90:60);
+      const blockEnd=Math.min(ge,pos+Math.min(dur,type==='break'?15:remaining));
+      if(blockEnd-pos<15)break;
+      pushBlock(type,pos,blockEnd);
+      if(type!=='break'){remaining-=(blockEnd-pos);typeIdx++;sinceBreak++;}
+      else sinceBreak=0;
+      pos=blockEnd;
+    }
+  });
+
+  clean.forEach(f=>{
+    out.push({id:'s'+(++idCtr),t:`${minsToTime(f.s)}-${minsToTime(f.e)}`,a:f.label,f:'Fixed commitment.',i:BLOCK_TYPES.meeting.icon,s:f.s,e:f.e,fixed:true,type:'meeting'});
+  });
+
+  out.sort((a,b)=>a.s-b.s);
+  return out;
+}
+function shiftFlexibleBlocksAfter(index,overrun){
+  for(let i=index+1;i<schedule.length;i++){
+    if(schedule[i].fixed)continue;
+    schedule[i].s+=overrun;
+    schedule[i].e+=overrun;
+    schedule[i].t=`${minsToTime(schedule[i].s)}-${minsToTime(schedule[i].e)}`;
+  }
+  resolveFixedOverlaps();
+}
+// Walks flexible blocks in chronological order, keeping a "free from" cursor
+// and pushing each one past both the previous flexible block AND any fixed
+// (protected) range it would land inside — fixed ranges are checked directly
+// rather than via sort position, so a block shifted deep into a fixed range
+// still gets carved around it correctly.
+function resolveFixedOverlaps(){
+  const fixedRanges=schedule.filter(b=>b.fixed).map(b=>({s:b.s,e:b.e})).sort((a,b)=>a.s-b.s);
+  const pushPastFixed=(s,e)=>{
+    const dur=e-s;
+    let moved=true;
+    while(moved){
+      moved=false;
+      for(const f of fixedRanges){
+        if(s<f.e&&e>f.s){s=f.e;e=s+dur;moved=true;}
+      }
+    }
+    return{s,e};
+  };
+  let cursor=0;
+  schedule.slice().sort((a,b)=>a.s-b.s).forEach(b=>{
+    if(b.fixed)return;
+    const dur=b.e-b.s;
+    let s=Math.max(b.s,cursor),e=s+dur;
+    ({s,e}=pushPastFixed(s,e));
+    b.s=s;b.e=Math.min(1439,e);
+    b.t=`${minsToTime(b.s)}-${minsToTime(b.e)}`;
+    cursor=b.e;
+  });
+}
+
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
 let editMode=false,dragSrc=null,openNotes={},idCtr=200;
 let currentPage='home';
@@ -1283,7 +1460,7 @@ function nextOnboarding(){
   }
   if(onboardStep>=2){
     if(!seedScheduleFromOnboarding()){
-      showToast('Add first task and time to continue');
+      showToast('Could not build a day from those answers — try again');
       return;
     }
     finishOnboarding();
@@ -1313,17 +1490,39 @@ function replayOnboarding(){
   openOnboarding();
   showToast('Onboarding replay started');
 }
+let onbProfileSel={focus:'mixed',energy:'morning',hours:'4-6'};
+let onbFixedItems=[];
+function selectOnbChoice(btn){
+  const field=btn.dataset.field;
+  onbProfileSel[field]=btn.dataset.val;
+  btn.parentElement.querySelectorAll('.onb-choice').forEach(b=>b.classList.toggle('active',b===btn));
+}
+function addOnbFixed(){
+  const label=(document.getElementById('onbFixedLabel')?.value||'').trim().slice(0,40);
+  const s=parseTime(document.getElementById('onbFixedStart')?.value||'');
+  const e=parseTime(document.getElementById('onbFixedEnd')?.value||'');
+  if(!label||s===null||e===null||e<=s){showToast('Add a label and a valid time range');return;}
+  onbFixedItems.push({label,s,e});
+  const inp=document.getElementById('onbFixedLabel');
+  if(inp)inp.value='';
+  renderOnbFixedList();
+}
+function removeOnbFixed(idx){
+  onbFixedItems.splice(idx,1);
+  renderOnbFixedList();
+}
+function renderOnbFixedList(){
+  const el=document.getElementById('onbFixedList');
+  if(!el)return;
+  el.innerHTML=onbFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)}</span><button type="button" onclick="removeOnbFixed(${i})">Remove</button></div>`).join('');
+}
 function seedScheduleFromOnboarding(){
   if(schedule.length>0)return true;
-  const name=(document.getElementById('onbTask')?.value||'').trim();
-  if(!name)return false;
-  const s=parseTime(document.getElementById('onbStart')?.value||'');
-  const e=parseTime(document.getElementById('onbEnd')?.value||'');
-  if(s===null||e===null)return false;
-  const ss=Math.min(s,e);
-  const ee=(e<=s)?Math.min(1439,ss+60):e;
-  const ico=(name[0]||'N').toUpperCase();
-  schedule=[{id:'s'+(++idCtr),t:`${minsToTime(ss)}-${minsToTime(ee)}`,a:name,f:'Focus session',i:ico,s:ss,e:ee}];
+  const profile={focus:onbProfileSel.focus,energy:onbProfileSel.energy,hours:onbProfileSel.hours};
+  const day=generateDay(profile,onbFixedItems);
+  if(!day.length)return false;
+  saveProfile(profile);
+  schedule=day;
   saveSchedule();
   normalizeAllData();
   buildTimeline();
@@ -1462,7 +1661,7 @@ function startLocalMode(){
   if(onboardOpen){
     onboardStep=2;
     updateOnboardingStep();
-    showToast('Local-only mode enabled. Set first schedule block.');
+    showToast('Local-only mode enabled. A few quick questions, then you\'re set.');
   }else{
     finishOnboarding();
     setSyncStatus('Cloud sync: local-only mode (no account)');
@@ -1944,10 +2143,10 @@ function updateHome(){
   if(summaryEl){
     if(ai>=0&&!done.includes(schedule[ai]?.id)){
       const current=schedule[ai];
-      const afterCurrent=nextIdx>=0?schedule[nextIdx].a:'nothing scheduled after this';
-      summaryEl.innerHTML=`<b>Focus now:</b> ${current.a}. <b>After this:</b> ${afterCurrent}. <b>Done today:</b> ${done.length}/${N}.`;
+      const afterCurrent=nextIdx>=0?escapeHtml(schedule[nextIdx].a):'nothing scheduled after this';
+      summaryEl.innerHTML=`<b>Focus now:</b> ${escapeHtml(current.a)}. <b>After this:</b> ${afterCurrent}. <b>Done today:</b> ${done.length}/${N}.`;
     }else if(nextIdx>=0){
-      summaryEl.innerHTML=`<b>Free right now.</b> Next is <b>${schedule[nextIdx].a}</b> at ${minsToTime(schedule[nextIdx].s)}. <b>Done today:</b> ${done.length}/${N}.`;
+      summaryEl.innerHTML=`<b>Free right now.</b> Next is <b>${escapeHtml(schedule[nextIdx].a)}</b> at ${minsToTime(schedule[nextIdx].s)}. <b>Done today:</b> ${done.length}/${N}.`;
     }else{
       summaryEl.innerHTML=`<b>No active block.</b> Nothing else is scheduled today. <b>Done today:</b> ${done.length}/${N}${avg!==null?` • recent average ${avg}%`:''}.`;
     }
@@ -2004,7 +2203,7 @@ function buildTimeline(){
     const isOpen=openNotes[s.id]||false;
 
     const el=document.createElement('div');
-    el.className='slot'+(isDone&&!editMode?' done':'')+(isActive?' active-now':'');
+    el.className='slot'+(isDone&&!editMode?' done':'')+(isActive?' active-now':'')+(s.fixed?' fixed':'');
     el.classList.add('reveal');
     el.style.animationDelay=`${Math.min(i*20,180)}ms`;
     el.dataset.idx=i;
@@ -2031,16 +2230,16 @@ function buildTimeline(){
         <div class="act-row">
           <textarea class="editable act-inp" rows="1"
             ${editMode?'':'readonly'}
-            oninput="autoResize(this);updateField(${i},'a',this.value)">${s.a}</textarea>
+            oninput="autoResize(this);updateField(${i},'a',this.value)">${escapeHtml(s.a)}</textarea>
           <span class="now-badge">Now</span>
         </div>
         <textarea class="editable foc-inp" rows="1"
           ${editMode?'':'readonly'}
-          oninput="autoResize(this);updateField(${i},'f',this.value)">${s.f}</textarea>
+          oninput="autoResize(this);updateField(${i},'f',this.value)">${escapeHtml(s.f)}</textarea>
         <div class="note-area${isOpen?' open':''}" id="na-${s.id}">
           <textarea class="note-inp" rows="2" placeholder="Add a note..."
             onfocus="openNotes['${s.id}']=true"
-            oninput="saveNote('${s.id}',this.value)">${note}</textarea>
+            oninput="saveNote('${s.id}',this.value)">${escapeHtml(note)}</textarea>
         </div>
       </div>
       <div class="slot-ctrl">
@@ -2095,6 +2294,16 @@ function toggleDone(id){
   }else{
     day.done.push(id);
     day.doneAt[id]=new Date().toISOString();
+    const blockIdx=schedule.findIndex(s=>s.id===id);
+    if(blockIdx>=0){
+      const blk=schedule[blockIdx];
+      bumpWeight(blk.type,1);
+      const overrun=nowMin()-blk.e;
+      if(overrun>0&&!blk.fixed){
+        shiftFlexibleBlocksAfter(blockIdx,overrun);
+        saveSchedule({silent:true});
+      }
+    }
   }
   if(navigator.vibrate)navigator.vibrate(10);
   saveData(data);buildTimeline();updateHome();
@@ -2133,6 +2342,7 @@ function updateTime(i,which,val){
 }
 function deleteBlock(i){
   if(!confirm(`Remove "${schedule[i].a}"?`))return;
+  bumpWeight(schedule[i].type,-1);
   schedule.splice(i,1);saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
   showToast('Block removed');
 }
@@ -2148,7 +2358,7 @@ function addBlock(){
       end=Math.min(1439,start+60);
     }
   }
-  schedule.push({id:'s'+(++idCtr),t:`${minsToTime(start)}-${minsToTime(end)}`,a:"New Block",f:"Describe the focus of this block.",i:"N",s:start,e:end});
+  schedule.push({id:'s'+(++idCtr),t:`${minsToTime(start)}-${minsToTime(end)}`,a:"New Block",f:"Describe the focus of this block.",i:"N",s:start,e:end,fixed:false,type:'custom'});
   saveSchedule();normalizeAllData();buildTimeline();
   showToast('New block added');
   setTimeout(()=>{const els=document.querySelectorAll('.slot');els[els.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});},80);
@@ -2303,7 +2513,66 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 
+/*  AMBIENT PRESENCE (badge / favicon / desktop tray) — glanceable status
+    instead of push notifications, see project discussion on why. */
+function updateAmbientBadge(){
+  if(!('setAppBadge' in navigator))return;
+  try{
+    const ai=activeIdx();
+    if(ai>=0){
+      const rem=Math.max(0,schedule[ai].e-nowMin());
+      navigator.setAppBadge(rem).catch(()=>{});
+    }else{
+      navigator.clearAppBadge().catch(()=>{});
+    }
+  }catch{}
+}
+function updateAmbientFavicon(){
+  try{
+    const ai=activeIdx();
+    const canvas=document.createElement('canvas');
+    canvas.width=64;canvas.height=64;
+    const ctx=canvas.getContext('2d');
+    if(!ctx)return;
+    if(ai>=0){
+      const s=schedule[ai];
+      const total=Math.max(1,s.e-s.s);
+      const elapsed=Math.max(0,Math.min(total,nowMin()-s.s));
+      const frac=elapsed/total;
+      ctx.strokeStyle='#3a3d40';ctx.lineWidth=9;
+      ctx.beginPath();ctx.arc(32,32,25,0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle='#d4a853';ctx.lineWidth=9;ctx.lineCap='round';
+      ctx.beginPath();ctx.arc(32,32,25,-Math.PI/2,-Math.PI/2+frac*Math.PI*2);ctx.stroke();
+    }else{
+      ctx.fillStyle='#766f67';
+      ctx.beginPath();ctx.arc(32,32,9,0,Math.PI*2);ctx.fill();
+    }
+    let link=document.querySelector('link[rel="icon"]');
+    if(!link){link=document.createElement('link');link.rel='icon';document.head.appendChild(link);}
+    link.href=canvas.toDataURL('image/png');
+  }catch{}
+}
+function updateElectronTray(){
+  if(!window.electronAPI||typeof window.electronAPI.updateStatus!=='function')return;
+  try{
+    const ai=activeIdx();
+    if(ai>=0){
+      const s=schedule[ai];
+      const rem=Math.max(0,s.e-nowMin());
+      window.electronAPI.updateStatus(`${s.a} — ${rem} min left`);
+    }else{
+      window.electronAPI.updateStatus('No active block');
+    }
+  }catch{}
+}
+function updateAmbientPresence(){
+  updateAmbientBadge();
+  updateAmbientFavicon();
+  updateElectronTray();
+}
+
 /*  TICK  */
+let lastAmbientMinute=null;
 function tick(){
   const now=new Date();
   const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -2316,6 +2585,10 @@ function tick(){
     buildTimeline();
     lastRenderedMinute=minuteStamp;
   }
+  if(minuteStamp!==lastAmbientMinute){
+    updateAmbientPresence();
+    lastAmbientMinute=minuteStamp;
+  }
 }
 
 normalizeAllData();
@@ -2324,6 +2597,7 @@ buildTimeline();
 lastRenderedMinute=nowMin();
 tick();
 setInterval(tick,1000);
+maybeShowOnboarding();
 if(!localUpdatedMs()&&hasMeaningfulLocalState()){
   localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
 }
