@@ -82,6 +82,21 @@ body.onboard-open{overflow:hidden;}
   background:linear-gradient(180deg,rgba(6,9,16,.86),rgba(8,12,22,.96));
 }
 #onboard.show{display:flex;}
+
+/*  CONFIRM MODAL  */
+.confirm-overlay{
+  position:fixed;inset:0;z-index:400;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(10,10,8,.5);
+}
+.confirm-overlay.show{display:flex;}
+.confirm-box{
+  width:min(360px,100%);
+  background:var(--surf);border:1px solid var(--b2);border-radius:16px;
+  padding:20px;box-shadow:var(--sh2);
+}
+.confirm-msg{font-size:14px;line-height:1.6;color:var(--txt);margin-bottom:16px;white-space:pre-line;}
+.confirm-actions{display:flex;justify-content:flex-end;gap:8px;}
 .onb-shell{
   width:min(940px,100%);max-height:92vh;overflow:auto;
   background:linear-gradient(180deg,var(--surf),var(--surf2));
@@ -202,7 +217,7 @@ body.onboard-open{overflow:hidden;}
   -webkit-tap-highlight-color:transparent;
 }
 .nav-btn.active{color:var(--txt);background:var(--gold-d);}
-.nav-icon{font-size:14px; line-height:1;}
+.nav-icon{width:20px;height:20px;display:block;}
 .nav-label{font-size:10px; font-weight:600; letter-spacing:.02em;}
 
 /*  SECTION LABEL  */
@@ -471,6 +486,11 @@ body.onboard-open{overflow:hidden;}
 .tl.edit-mode .tc .tc-display{display:none;}
 .tl.edit-mode .tc .time-inp-wrap{display:block;}
 .time-edit-ico{font-size:14px;color:var(--txt2);margin-bottom:4px;}
+.type-sel{
+  font-family:'Public Sans',sans-serif;font-size:10px;font-weight:600;
+  color:var(--txt2);background:var(--surf2);border:1px solid var(--b2);
+  border-radius:6px;padding:3px 4px;margin-bottom:4px;max-width:64px;cursor:pointer;
+}
 .time-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:4px;width:100%;}
 .time-sep{font-size:10px;color:var(--txt3);}
 .tl.edit-mode .time-row{grid-template-columns:1fr;gap:6px;}
@@ -1144,23 +1164,33 @@ input:focus-visible{
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="goPage('home')" aria-label="Open Home">
-    <span class="nav-icon">.</span>
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><circle cx="10" cy="10" r="1.6" fill="currentColor" stroke="none"/></svg>
     <span class="nav-label">Today</span>
   </button>
   <button class="nav-btn" id="nav-schedule" onclick="goPage('schedule')" aria-label="Open Schedule">
-    <span class="nav-icon">:</span>
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M7.5 5.2h9M7.5 10h9M7.5 14.8h9"/><path d="M3 5l.7.7L5 4.2"/><path d="M3 9.8l.7.7 1.3-1.5"/><path d="M3 14.6l.7.7 1.3-1.5"/></svg>
     <span class="nav-label">Plan</span>
   </button>
   <button class="nav-btn" id="nav-stats" onclick="goPage('stats')" aria-label="Open Stats">
-    <span class="nav-icon">;</span>
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 15V11M10 15V7M15.8 15V4"/></svg>
     <span class="nav-label">Review</span>
   </button>
   <button class="nav-btn" id="nav-settings" onclick="goPage('settings')" aria-label="Open Settings">
-    <span class="nav-icon">-</span>
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="2.6"/><path d="M10 3v2M10 15v2M17 10h-2M5 10H3M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4M14.9 14.9l-1.4-1.4M6.5 6.5 5.1 5.1"/></svg>
     <span class="nav-label">Setup</span>
   </button>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
+
+<div id="confirmModal" class="confirm-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmMsg">
+  <div class="confirm-box">
+    <p class="confirm-msg" id="confirmMsg"></p>
+    <div class="confirm-actions">
+      <button class="btn-pill" onclick="resolveConfirm(false)">Cancel</button>
+      <button class="btn-pill danger" id="confirmOkBtn" onclick="resolveConfirm(true)">Confirm</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1741,8 +1771,8 @@ function renderExtendedInsights(data,N,doneToday){
   setTxt('insOnTime',onTime);
   setTxt('insRun',`${run} consecutive blocks`);
 }
-function startLocalMode(){
-  const ok=confirm('Continue without account?\n\nYour progress stays only on this device and can be lost after reinstall, clearing browser data, or changing device.');
+async function startLocalMode(){
+  const ok=await showConfirm('Continue without account?\n\nYour progress stays only on this device and can be lost after reinstall, clearing browser data, or changing device.',{okLabel:'Continue Local',danger:false});
   if(!ok)return;
   localStorage.setItem(LOCAL_ONLY_KEY,'1');
   const onboardOpen=!!document.getElementById('onboard')?.classList.contains('show');
@@ -2137,10 +2167,11 @@ async function runDiagnostics(){
 }
 
 /*  NAVIGATION  */
-function goPage(name){
+function goPage(name,opts={}){
   const prev=currentPage;
-  if(prev===name)return;
   const pages=['home','schedule','stats','settings'];
+  if(!pages.includes(name))return;
+  if(prev===name)return;
   const pi=pages.indexOf(prev),ni=pages.indexOf(name);
   document.getElementById('page-'+prev).classList.remove('active');
   document.getElementById('page-'+prev).classList.toggle('left',pi<ni);
@@ -2149,11 +2180,19 @@ function goPage(name){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+name).classList.add('active');
   currentPage=name;
+  if(!opts.fromPopstate){
+    const hash='#'+name;
+    if(location.hash!==hash)history.pushState(null,'',hash);
+  }
   if(name==='home')maybeShowDailyPrompt();
   if(name==='stats')renderStatsPage();
   if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
   if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();}
 }
+window.addEventListener('popstate',()=>{
+  const p=(location.hash||'#home').slice(1);
+  goPage(p||'home',{fromPopstate:true});
+});
 
 /*  THEME  */
 let theme=localStorage.getItem('rdt_theme')||'dark';
@@ -2296,6 +2335,8 @@ function buildTimeline(){
     el.classList.add('reveal');
     el.style.animationDelay=`${Math.min(i*20,180)}ms`;
     el.dataset.idx=i;
+    const typeOptions=s.fixed?'':Object.keys(BLOCK_TYPES).filter(k=>k!=='meeting')
+      .map(k=>`<option value="${k}"${(s.type||'custom')===k?' selected':''}>${BLOCK_TYPES[k].label}</option>`).join('');
 
     el.innerHTML=`
       <div class="drag-grip" title="Drag to reorder">
@@ -2307,7 +2348,9 @@ function buildTimeline(){
           <div class="tc-time">${minsToTime(s.s)}-<br>${minsToTime(s.e)}</div>
         </div>
         <div class="time-inp-wrap">
-          <div class="time-edit-ico">${s.i}</div>
+          ${s.fixed
+            ?`<div class="time-edit-ico">${s.i}</div>`
+            :`<select class="type-sel" aria-label="Block type" onchange="updateBlockType(${i},this.value)">${typeOptions}</select>`}
           <div class="time-row">
             <input class="time-inp" type="time" value="${minsToTime(s.s)}" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)" oninput="updateTime(${i},'s',this.value)" onchange="updateTime(${i},'s',this.value)">
             <span class="time-sep">-</span>
@@ -2406,6 +2449,13 @@ function saveNote(id,val){
   const data=normalizeAllData(),k=todayKey(),day=getDay(data,k);
   day.notes[id]=val;saveData(data);
 }
+function updateBlockType(i,type){
+  const meta=BLOCK_TYPES[type]||BLOCK_TYPES.custom;
+  schedule[i].type=type;
+  schedule[i].i=meta.icon;
+  saveSchedule();
+  buildTimeline();
+}
 function updateField(i,field,val){
   schedule[i][field]=val;
   if(field==='t'){
@@ -2429,8 +2479,9 @@ function updateTime(i,which,val){
   updateHome();
   if(currentPage==='stats')renderStatsPage();
 }
-function deleteBlock(i){
-  if(!confirm(`Remove "${schedule[i].a}"?`))return;
+async function deleteBlock(i){
+  const ok=await showConfirm(`Remove "${schedule[i].a}"?`,{okLabel:'Remove'});
+  if(!ok)return;
   bumpWeight(schedule[i].type,-1);
   schedule.splice(i,1);saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
   showToast('Block removed');
@@ -2464,14 +2515,16 @@ function toggleEdit(){
   showToast(editMode?'Edit mode on: choose times with pickers':'Edit mode saved');
   buildTimeline();
 }
-function resetDay(){
-  if(!confirm('Reset today\'s progress?'))return;
+async function resetDay(){
+  const ok=await showConfirm('Reset today\'s progress?',{okLabel:'Reset'});
+  if(!ok)return;
   const data=normalizeAllData();data[todayKey()]={done:[],notes:{},doneAt:{}};saveData(data);
   openNotes={};buildTimeline();updateHome();
   showToast('Today reset');
 }
-function resetSchedule(){
-  if(!confirm('Clear schedule and start fresh?'))return;
+async function resetSchedule(){
+  const ok=await showConfirm('Clear schedule and start fresh?',{okLabel:'Clear'});
+  if(!ok)return;
   schedule=JSON.parse(JSON.stringify(DEFAULT));saveSchedule();normalizeAllData();buildTimeline();updateHome();if(currentPage==='stats')renderStatsPage();
   showToast('Schedule cleared');
 }
@@ -2565,6 +2618,21 @@ function updateWidgetPreview(){
   const d=getWidgetData();
   const el=document.getElementById('widgetDataPreview');
   if(el)el.textContent=JSON.stringify(d,null,2);
+}
+let confirmResolver=null;
+function showConfirm(message,opts={}){
+  return new Promise(resolve=>{
+    confirmResolver=resolve;
+    document.getElementById('confirmMsg').textContent=message;
+    const okBtn=document.getElementById('confirmOkBtn');
+    okBtn.textContent=opts.okLabel||'Confirm';
+    okBtn.className='btn-pill '+(opts.danger===false?'gold':'danger');
+    document.getElementById('confirmModal').classList.add('show');
+  });
+}
+function resolveConfirm(v){
+  document.getElementById('confirmModal').classList.remove('show');
+  if(confirmResolver){const r=confirmResolver;confirmResolver=null;r(v);}
 }
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -2703,6 +2771,10 @@ tick();
 setInterval(tick,1000);
 maybeShowOnboarding();
 maybeShowDailyPrompt();
+{
+  const initialHash=(location.hash||'').slice(1);
+  if(initialHash&&initialHash!=='home')goPage(initialHash,{fromPopstate:true});
+}
 if(!localUpdatedMs()&&hasMeaningfulLocalState()){
   localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
 }

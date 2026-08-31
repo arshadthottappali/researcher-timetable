@@ -1,8 +1,11 @@
-const CACHE = 'researcher-timetable-v3';
+const CACHE = 'researcher-timetable-v4';
 const ASSETS = [
   '/',
   '/index.html',
-  'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap'
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
+  'https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Fira+Code:wght@400;500;600&display=swap'
 ];
 
 self.addEventListener('install', e => {
