@@ -15,7 +15,7 @@ function createWindow() {
     height: 860,
     minWidth: 360,
     minHeight: 640,
-    backgroundColor: '#0f1117',
+    backgroundColor: '#182620',
     title: "Researcher's Timetable",
     autoHideMenuBar: true,
     icon: icon.isEmpty() ? undefined : icon,
