@@ -283,6 +283,14 @@ body.onboard-open{overflow:hidden;}
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
 .next-time .nt-end{text-align:right;margin-left:auto;}
+.daily-prompt{
+  background:var(--surf2); border:1px dashed var(--b2);
+  border-radius:14px; padding:14px 15px;
+  margin-bottom:10px;
+}
+.daily-prompt-label{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:2px;}
+.daily-prompt-sub{font-size:12px;color:var(--txt2);margin-bottom:10px;}
+.daily-prompt-row{display:flex;flex-wrap:wrap;gap:6px;}
 .home-actions{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -895,6 +903,18 @@ input:focus-visible{
       </div>
     </div>
 
+    <div class="daily-prompt" id="dailyPrompt" style="display:none">
+      <p class="daily-prompt-label">New day — today's plan is ready.</p>
+      <p class="daily-prompt-sub">Same as usual, or a different focus today?</p>
+      <div class="daily-prompt-row">
+        <button class="onb-choice" onclick="applyDailyFocus('writing')">Writing</button>
+        <button class="onb-choice" onclick="applyDailyFocus('lab')">Lab</button>
+        <button class="onb-choice" onclick="applyDailyFocus('reading')">Reading</button>
+        <button class="onb-choice" onclick="applyDailyFocus('mixed')">Mixed</button>
+        <button class="btn-pill ghost" onclick="dismissDailyPrompt()">Same as usual</button>
+      </div>
+    </div>
+
     <div class="home-note" id="homeSummary">
       <b>Quiet mode.</b> Open the app, see what matters, and step away again.
     </div>
@@ -1171,10 +1191,18 @@ const ENERGY_WINDOWS={morning:[9*60,12*60],afternoon:[13*60,17*60],night:[19*60,
 const HOURS_BUDGET={'2-4':180,'4-6':300,'6-8':420,'8+':540};
 const PROFILE_KEY='rdt_profile';
 const WEIGHTS_KEY='rdt_weights';
+const FIXED_KEY='rdt_fixed';
+const SCHED_DATE_KEY='rdt_sched_date';
+const DAILY_PROMPT_KEY='rdt_daily_prompt_date';
 function loadProfile(){try{const p=JSON.parse(localStorage.getItem(PROFILE_KEY));return(p&&typeof p==='object')?p:null;}catch{return null;}}
 function saveProfile(p){localStorage.setItem(PROFILE_KEY,JSON.stringify(p));}
 function loadWeights(){try{const w=JSON.parse(localStorage.getItem(WEIGHTS_KEY));return(w&&typeof w==='object')?w:{};}catch{return{};}}
 function saveWeights(w){localStorage.setItem(WEIGHTS_KEY,JSON.stringify(w));}
+// Recurring fixed commitments (meetings/classes) carried forward into every
+// day's regenerated plan — separate from `schedule` itself, which is just
+// today's rendering of profile + these fixed commitments.
+function loadFixed(){try{const f=JSON.parse(localStorage.getItem(FIXED_KEY));return Array.isArray(f)?f:[];}catch{return[];}}
+function saveFixed(f){localStorage.setItem(FIXED_KEY,JSON.stringify(f));}
 function bumpWeight(type,delta){
   if(!type||!BLOCK_TYPES[type]||type==='meeting'||type==='custom')return;
   const w=loadWeights();
@@ -1278,6 +1306,55 @@ function resolveFixedOverlaps(){
     b.t=`${minsToTime(b.s)}-${minsToTime(b.e)}`;
     cursor=b.e;
   });
+}
+// Regenerates today's plan from the stable profile + fixed commitments
+// whenever the calendar date has moved on, so a day's mid-day time-shifts
+// never bleed into tomorrow and the daily effort stays at zero by default.
+// A schedule with no saved profile (manual-only users, or pre-existing
+// installs) is left completely untouched.
+function refreshDailyPlan(){
+  const profile=loadProfile();
+  if(!profile)return false;
+  const today=todayKey();
+  const lastDate=localStorage.getItem(SCHED_DATE_KEY);
+  if(lastDate===null){
+    // Upgrading from before this feature existed — adopt today as the
+    // baseline without discarding whatever schedule is already there.
+    localStorage.setItem(SCHED_DATE_KEY,today);
+    return false;
+  }
+  if(lastDate===today)return false;
+  schedule=generateDay(profile,loadFixed());
+  saveSchedule({silent:true});
+  localStorage.setItem(SCHED_DATE_KEY,today);
+  return true;
+}
+function applyDailyFocus(focus){
+  const profile=loadProfile();
+  if(!profile)return;
+  schedule=generateDay({...profile,focus},loadFixed());
+  saveSchedule();
+  localStorage.setItem(SCHED_DATE_KEY,todayKey());
+  normalizeAllData();
+  buildTimeline();
+  updateHome();
+  dismissDailyPrompt();
+  showToast('Today re-planned around '+(BLOCK_TYPES[focus]?.label||focus));
+}
+function dismissDailyPrompt(){
+  localStorage.setItem(DAILY_PROMPT_KEY,todayKey());
+  const el=document.getElementById('dailyPrompt');
+  if(el)el.style.display='none';
+}
+function maybeShowDailyPrompt(){
+  const el=document.getElementById('dailyPrompt');
+  if(!el)return;
+  const profile=loadProfile();
+  if(!profile||localStorage.getItem(DAILY_PROMPT_KEY)===todayKey()){
+    el.style.display='none';
+    return;
+  }
+  el.style.display='block';
 }
 
 let schedule=(()=>{try{const s=JSON.parse(localStorage.getItem('rdt_sched'));return s?.length?s:JSON.parse(JSON.stringify(DEFAULT));}catch{return JSON.parse(JSON.stringify(DEFAULT));}})();
@@ -1530,6 +1607,9 @@ function seedScheduleFromOnboarding(){
   const day=generateDay(profile,onbFixedItems);
   if(!day.length)return false;
   saveProfile(profile);
+  saveFixed(onbFixedItems);
+  localStorage.setItem(SCHED_DATE_KEY,todayKey());
+  localStorage.setItem(DAILY_PROMPT_KEY,todayKey());
   schedule=day;
   saveSchedule();
   normalizeAllData();
@@ -2069,6 +2149,7 @@ function goPage(name){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+name).classList.add('active');
   currentPage=name;
+  if(name==='home')maybeShowDailyPrompt();
   if(name==='stats')renderStatsPage();
   if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
   if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();}
@@ -2601,15 +2682,27 @@ function tick(){
     updateAmbientPresence();
     lastAmbientMinute=minuteStamp;
   }
+  // Tab left open across midnight — catch the date change and regenerate.
+  if(minuteStamp!==lastDayCheckMinute){
+    lastDayCheckMinute=minuteStamp;
+    if(refreshDailyPlan()){
+      normalizeAllData();
+      if(currentPage==='home'){buildTimeline();updateHome();maybeShowDailyPrompt();}
+      else if(currentPage==='schedule')buildTimeline();
+    }
+  }
 }
 
+let lastDayCheckMinute=null;
 normalizeAllData();
 applyAppName();
+refreshDailyPlan();
 buildTimeline();
 lastRenderedMinute=nowMin();
 tick();
 setInterval(tick,1000);
 maybeShowOnboarding();
+maybeShowDailyPrompt();
 if(!localUpdatedMs()&&hasMeaningfulLocalState()){
   localStorage.setItem(STATE_UPDATED_KEY,new Date().toISOString());
 }
