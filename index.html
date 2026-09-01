@@ -2965,6 +2965,19 @@ function tick(){
   }
 }
 
+// Compassionate re-entry: after a real gap (not just "didn't open it
+// yesterday"), a quiet one-time welcome instead of silence or any
+// broken-streak framing. Never fires for a first-ever run.
+const LAST_OPEN_KEY='rdt_last_open_date';
+function checkReturnAfterGap(){
+  const today=todayKey();
+  const last=localStorage.getItem(LAST_OPEN_KEY);
+  localStorage.setItem(LAST_OPEN_KEY,today);
+  if(!last||last===today)return;
+  const gapDays=Math.round((new Date(today+'T00:00:00')-new Date(last+'T00:00:00'))/86400000);
+  if(gapDays>=2)showToast("Welcome back — here's today.");
+}
+
 let lastDayCheckMinute=null;
 normalizeAllData();
 applyAppName();
@@ -2975,6 +2988,7 @@ tick();
 setInterval(tick,1000);
 maybeShowOnboarding();
 maybeShowDailyPrompt();
+if(loadProfile())checkReturnAfterGap();
 {
   const initialHash=(location.hash||'').slice(1);
   if(initialHash&&initialHash!=='home')goPage(initialHash,{fromPopstate:true});
