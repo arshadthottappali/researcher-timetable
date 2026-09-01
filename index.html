@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#182620" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>The Researcher's Timetable</title>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1015,6 +1016,42 @@ input:focus-visible{
     <p class="page-title">Keep it <em>simple</em></p>
     <p class="section-intro">Everything you need is here, but the advanced pieces stay tucked away unless you deliberately open them.</p>
     <div class="widget-card">
+      <h3>Your Profile</h3>
+      <p>What generates your day. Changes here shape tomorrow's plan — use "Replan Today" if you want them to apply right now too.</p>
+      <p class="onb-field-label" style="margin-top:12px">What are you working on?</p>
+      <div class="onb-choice-row" id="setFocusRow">
+        <button type="button" class="onb-choice" data-field="focus" data-val="writing" onclick="selectSetChoice(this)">Writing</button>
+        <button type="button" class="onb-choice" data-field="focus" data-val="lab" onclick="selectSetChoice(this)">Lab / Experiments</button>
+        <button type="button" class="onb-choice" data-field="focus" data-val="reading" onclick="selectSetChoice(this)">Reading</button>
+        <button type="button" class="onb-choice" data-field="focus" data-val="mixed" onclick="selectSetChoice(this)">Mixed</button>
+      </div>
+      <p class="onb-field-label">When's your focus best?</p>
+      <div class="onb-choice-row" id="setEnergyRow">
+        <button type="button" class="onb-choice" data-field="energy" data-val="morning" onclick="selectSetChoice(this)">Morning</button>
+        <button type="button" class="onb-choice" data-field="energy" data-val="afternoon" onclick="selectSetChoice(this)">Afternoon</button>
+        <button type="button" class="onb-choice" data-field="energy" data-val="night" onclick="selectSetChoice(this)">Night</button>
+      </div>
+      <p class="onb-field-label">Hours available on a typical day?</p>
+      <div class="onb-choice-row" id="setHoursRow">
+        <button type="button" class="onb-choice" data-field="hours" data-val="2-4" onclick="selectSetChoice(this)">2-4</button>
+        <button type="button" class="onb-choice" data-field="hours" data-val="4-6" onclick="selectSetChoice(this)">4-6</button>
+        <button type="button" class="onb-choice" data-field="hours" data-val="6-8" onclick="selectSetChoice(this)">6-8</button>
+        <button type="button" class="onb-choice" data-field="hours" data-val="8+" onclick="selectSetChoice(this)">8+</button>
+      </div>
+      <p class="onb-field-label">Recurring fixed times <span class="onb-field-optional">(meetings, classes, lab slots)</span></p>
+      <div class="onb-fixed-add">
+        <input class="name-inp" id="setFixedLabel" placeholder="e.g., Lab meeting" maxlength="40">
+        <input class="name-inp" id="setFixedStart" type="time" value="10:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+        <input class="name-inp" id="setFixedEnd" type="time" value="11:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
+        <button type="button" class="btn-pill" onclick="addSetFixed()">+ Add</button>
+      </div>
+      <div id="setFixedList" class="onb-fixed-list"></div>
+      <div class="name-btns" style="margin-top:14px">
+        <button class="btn-pill gold" onclick="saveProfileFromSettings()">Save Profile</button>
+        <button class="btn-pill teal" onclick="replanTodayFromSettings()">Replan Today With This</button>
+      </div>
+    </div>
+    <div class="widget-card">
       <h3>App Name</h3>
       <p>Give this device a simple label if you want one.</p>
       <div class="name-row">
@@ -1631,6 +1668,64 @@ function renderOnbFixedList(){
   if(!el)return;
   el.innerHTML=onbFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)}</span><button type="button" onclick="removeOnbFixed(${i})">Remove</button></div>`).join('');
 }
+
+/*  SETTINGS: PROFILE EDITOR — same shape as onboarding's, but editing the
+    already-saved profile instead of creating one for the first time. */
+let setProfileSel={focus:'mixed',energy:'morning',hours:'4-6'};
+let setFixedItems=[];
+function selectSetChoice(btn){
+  const field=btn.dataset.field;
+  setProfileSel[field]=btn.dataset.val;
+  btn.parentElement.querySelectorAll('.onb-choice').forEach(b=>b.classList.toggle('active',b===btn));
+}
+function addSetFixed(){
+  const label=(document.getElementById('setFixedLabel')?.value||'').trim().slice(0,40);
+  const s=parseTime(document.getElementById('setFixedStart')?.value||'');
+  const e=parseTime(document.getElementById('setFixedEnd')?.value||'');
+  if(!label||s===null||e===null||e<=s){showToast('Add a label and a valid time range');return;}
+  setFixedItems.push({label,s,e});
+  const inp=document.getElementById('setFixedLabel');
+  if(inp)inp.value='';
+  renderSetFixedList();
+}
+function removeSetFixed(idx){
+  setFixedItems.splice(idx,1);
+  renderSetFixedList();
+}
+function renderSetFixedList(){
+  const el=document.getElementById('setFixedList');
+  if(!el)return;
+  el.innerHTML=setFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)}</span><button type="button" onclick="removeSetFixed(${i})">Remove</button></div>`).join('');
+}
+function renderSettingsProfile(){
+  const profile=loadProfile()||{focus:'mixed',energy:'morning',hours:'4-6'};
+  setProfileSel={...profile};
+  setFixedItems=loadFixed().map(f=>({...f}));
+  ['setFocusRow','setEnergyRow','setHoursRow'].forEach(rowId=>{
+    const row=document.getElementById(rowId);
+    if(!row)return;
+    row.querySelectorAll('.onb-choice').forEach(b=>{
+      b.classList.toggle('active',b.dataset.val===setProfileSel[b.dataset.field]);
+    });
+  });
+  renderSetFixedList();
+}
+function saveProfileFromSettings(){
+  saveProfile({...setProfileSel});
+  saveFixed(setFixedItems);
+  showToast('Profile saved — applies from tomorrow (or tap Replan Today)');
+}
+function replanTodayFromSettings(){
+  saveProfile({...setProfileSel});
+  saveFixed(setFixedItems);
+  schedule=generateDay({...setProfileSel},setFixedItems);
+  saveSchedule();
+  localStorage.setItem(SCHED_DATE_KEY,todayKey());
+  normalizeAllData();
+  buildTimeline();
+  updateHome();
+  showToast('Today replanned with your updated profile');
+}
 function seedScheduleFromOnboarding(){
   if(schedule.length>0)return true;
   const profile={focus:onbProfileSel.focus,energy:onbProfileSel.energy,hours:onbProfileSel.hours};
@@ -2187,7 +2282,7 @@ function goPage(name,opts={}){
   if(name==='home')maybeShowDailyPrompt();
   if(name==='stats')renderStatsPage();
   if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
-  if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();}
+  if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();renderSettingsProfile();}
 }
 window.addEventListener('popstate',()=>{
   const p=(location.hash||'#home').slice(1);
