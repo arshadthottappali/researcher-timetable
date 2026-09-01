@@ -176,6 +176,7 @@ body.onboard-open{overflow:hidden;}
 }
 .day-toggle.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
 .week-glance{background:var(--surf);border:1px solid var(--b);border-radius:14px;padding:10px 12px;margin-bottom:10px;box-shadow:var(--sh);}
+.week-glance-caption{font-size:11px;color:var(--txt3);margin:0 0 8px;line-height:1.4;}
 .week-glance-row{display:flex;gap:5px;}
 .week-chip{flex:1;height:32px;border-radius:8px;border:1px solid var(--b2);background:var(--surf2);color:var(--txt3);font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
 .week-chip.today{border-color:var(--teal);color:var(--teal);}
@@ -992,6 +993,7 @@ input:focus-visible{
     </div>
     <div class="edit-hint" id="editHint">Drag to reorder | Choose start/end times | Tap text to edit</div>
     <div class="week-glance" id="weekGlance">
+      <p class="week-glance-caption">Fixed commitments by day — a preview, not a switcher. Your actual plan below is always today's.</p>
       <div class="week-glance-row" id="weekGlanceRow"></div>
       <div class="week-glance-detail" id="weekGlanceDetail"></div>
     </div>
@@ -1795,10 +1797,35 @@ function renderSettingsProfile(){
   renderDayToggleRow('setFixedDaysRow',setFixedDaysSel);
   renderSetFixedList();
 }
+// Merges today's applicable fixed commitments into the live schedule without
+// touching flexible blocks' ids — so already-completed work stays completed.
+// Stale fixed blocks are dropped and replaced fresh; resolveFixedOverlaps()
+// then carries any flexible block out of a newly-added fixed range's way.
+function applyFixedToToday(fixedList){
+  const weekday=new Date().getDay();
+  const applicable=(fixedList||[])
+    .filter(f=>f&&f.label&&Number.isFinite(f.s)&&Number.isFinite(f.e)&&f.e>f.s)
+    .filter(f=>!Array.isArray(f.days)||f.days.length===7||f.days.includes(weekday));
+  schedule=schedule.filter(b=>!b.fixed);
+  applicable.forEach(f=>{
+    schedule.push({id:'s'+(++idCtr),t:`${minsToTime(f.s)}-${minsToTime(f.e)}`,a:f.label,f:'Fixed commitment.',i:BLOCK_TYPES.meeting.icon,s:f.s,e:f.e,fixed:true,type:'meeting'});
+  });
+  resolveFixedOverlaps();
+  schedule.sort((a,b)=>a.s-b.s);
+  saveSchedule();
+  normalizeAllData();
+  buildTimeline();
+  updateHome();
+}
 function saveProfileFromSettings(){
   saveProfile({...setProfileSel});
   saveFixed(setFixedItems);
-  showToast('Profile saved — applies from tomorrow (or tap Replan Today)');
+  if(schedule.length){
+    applyFixedToToday(setFixedItems);
+    showToast('Fixed commitments applied to today · profile changes shape tomorrow (or tap Replan Today)');
+  }else{
+    showToast('Profile saved — applies from tomorrow (or tap Replan Today)');
+  }
 }
 function replanTodayFromSettings(){
   saveProfile({...setProfileSel});
@@ -1812,7 +1839,6 @@ function replanTodayFromSettings(){
   showToast('Today replanned with your updated profile');
 }
 function seedScheduleFromOnboarding(){
-  if(schedule.length>0)return true;
   const profile={focus:onbProfileSel.focus,energy:onbProfileSel.energy,hours:onbProfileSel.hours};
   const day=generateDay(profile,onbFixedItems);
   if(!day.length)return false;
@@ -2366,7 +2392,7 @@ function goPage(name,opts={}){
   }
   if(name==='home')maybeShowDailyPrompt();
   if(name==='stats')renderStatsPage();
-  if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();renderWeekGlance();}
+  if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();weekGlanceSelectedDay=new Date().getDay();renderWeekGlance();}
   if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();renderSettingsProfile();}
 }
 window.addEventListener('popstate',()=>{
