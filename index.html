@@ -1137,6 +1137,25 @@ input:focus-visible{
     <details class="widget-card quiet-detail">
       <summary>
         <div>
+          <h3>Focus Pairing</h3>
+          <p>Pair your phone's own Focus Mode with your blocks — real, OS-enforced, and always under your control.</p>
+        </div>
+      </summary>
+      <div class="detail-body">
+        <div class="subtle-note">This app can't lock your phone or block other apps — no website can, by design. What it can do is remind you when a protected block starts. The actual enforcement, if you want it, comes from your phone's own Focus Mode, which you set up and can turn off any time.</div>
+        <div class="widget-card" style="margin-top:10px">
+          <h3>iPhone</h3>
+          <p>Settings → Focus → create a Focus (e.g. "Deep Work") that mutes notifications from distracting apps. Turn it on manually when a protected block starts, or set it to a schedule matching your usual focus hours.</p>
+        </div>
+        <div class="widget-card" style="margin-top:10px; margin-bottom:0">
+          <h3>Android</h3>
+          <p>Settings → Digital Wellbeing → Focus Mode — pick the apps to pause, then turn it on manually when a block starts, or schedule it for your usual hours.</p>
+        </div>
+      </div>
+    </details>
+    <details class="widget-card quiet-detail">
+      <summary>
+        <div>
           <h3>Advanced Android Tools</h3>
           <p>Only needed if you want to experiment with a native Android widget later.</p>
         </div>
@@ -2389,6 +2408,7 @@ function updateHome(){
     document.getElementById('heroIcon').textContent=s.i;
     document.getElementById('heroTitle').textContent=s.a;
     document.getElementById('heroFocus').textContent=s.f;
+    maybeNudgeFocusMode(s);
   } else {
     hero.classList.add('idle');
     document.getElementById('heroLabel').textContent='NO ACTIVE BLOCK';
@@ -2643,6 +2663,16 @@ function completionMessage(blk){
   return PROTECTED_TYPES.includes(blk.type)
     ? `Nice — you protected ${name}.`
     : `Done — ${name} is out of the way.`;
+}
+// A suggestion, not a lock: this app can't enforce focus (no website can),
+// so it nudges toward the phone's own Focus Mode instead — once per block,
+// not repeated every second it stays active.
+let lastFocusNudgeBlockId=null;
+function maybeNudgeFocusMode(blk){
+  if(!PROTECTED_TYPES.includes(blk.type))return;
+  if(lastFocusNudgeBlockId===blk.id)return;
+  lastFocusNudgeBlockId=blk.id;
+  showToast(`${blk.a} started — good moment for Focus Mode, if that helps.`);
 }
 function toggleNote(id){
   openNotes[id]=!openNotes[id];
