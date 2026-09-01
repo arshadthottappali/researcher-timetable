@@ -167,6 +167,24 @@ body.onboard-open{overflow:hidden;}
   padding:7px 10px;font-size:12px;color:var(--txt2);
 }
 .onb-fixed-item button{border:none;background:transparent;color:var(--red);font-size:11px;font-weight:700;cursor:pointer;}
+.onb-fixed-item .fx-days{color:var(--txt3);font-weight:400;}
+.day-toggle-row{display:flex;gap:4px;margin-top:8px;}
+.day-toggle{
+  flex:1;height:30px;border-radius:8px;
+  border:1.5px solid var(--b2);background:var(--surf2);color:var(--txt3);
+  font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;
+}
+.day-toggle.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
+.week-glance{background:var(--surf);border:1px solid var(--b);border-radius:14px;padding:10px 12px;margin-bottom:10px;box-shadow:var(--sh);}
+.week-glance-row{display:flex;gap:5px;}
+.week-chip{flex:1;height:32px;border-radius:8px;border:1px solid var(--b2);background:var(--surf2);color:var(--txt3);font-family:'Public Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.week-chip.today{border-color:var(--teal);color:var(--teal);}
+.week-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-d);}
+.week-glance-detail{margin-top:10px;}
+.week-glance-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);font-weight:700;margin-bottom:6px;}
+.week-glance-empty{font-size:12px;color:var(--txt3);}
+.week-glance-item{display:flex;justify-content:space-between;font-size:12px;color:var(--txt2);padding:5px 0;border-top:1px solid var(--b);}
+.week-glance-item:first-of-type{border-top:none;}
 .time-inp,input[type="time"]{cursor:pointer;}
 .onb-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;}
 .onb-dots{display:flex;gap:6px;}
@@ -849,13 +867,14 @@ input:focus-visible{
           <button type="button" class="onb-choice" data-field="hours" data-val="6-8" onclick="selectOnbChoice(this)">6-8</button>
           <button type="button" class="onb-choice" data-field="hours" data-val="8+" onclick="selectOnbChoice(this)">8+</button>
         </div>
-        <p class="onb-field-label">Any fixed times today? <span class="onb-field-optional">(optional — meetings, classes, lab slots)</span></p>
+        <p class="onb-field-label">Any recurring fixed times? <span class="onb-field-optional">(optional — meetings, classes, lab slots)</span></p>
         <div class="onb-fixed-add">
           <input class="name-inp" id="onbFixedLabel" placeholder="e.g., Lab meeting" maxlength="40">
           <input class="name-inp" id="onbFixedStart" type="time" value="10:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
           <input class="name-inp" id="onbFixedEnd" type="time" value="11:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
           <button type="button" class="btn-pill" onclick="addOnbFixed()">+ Add</button>
         </div>
+        <div class="day-toggle-row" id="onbFixedDaysRow"></div>
         <div id="onbFixedList" class="onb-fixed-list"></div>
       </div>
     </section>
@@ -972,6 +991,10 @@ input:focus-visible{
       </div>
     </div>
     <div class="edit-hint" id="editHint">Drag to reorder | Choose start/end times | Tap text to edit</div>
+    <div class="week-glance" id="weekGlance">
+      <div class="week-glance-row" id="weekGlanceRow"></div>
+      <div class="week-glance-detail" id="weekGlanceDetail"></div>
+    </div>
     <div class="schedule-summary" id="scheduleSummary">Done 0/0 <span>Idle</span></div>
     <div class="tl" id="tl"></div>
     <div class="actions-row">
@@ -1045,6 +1068,7 @@ input:focus-visible{
         <input class="name-inp" id="setFixedEnd" type="time" value="11:00" inputmode="none" onkeydown="return blockTimeTyping(event)" onfocus="openTimePicker(this,event)" onclick="openTimePicker(this,event)">
         <button type="button" class="btn-pill" onclick="addSetFixed()">+ Add</button>
       </div>
+      <div class="day-toggle-row" id="setFixedDaysRow"></div>
       <div id="setFixedList" class="onb-fixed-list"></div>
       <div class="name-btns" style="margin-top:14px">
         <button class="btn-pill gold" onclick="saveProfileFromSettings()">Save Profile</button>
@@ -1283,9 +1307,13 @@ function escapeHtml(str){
 // between them with flexible blocks ordered by focus-type priority (reordered
 // by locally-learned weights), favoring the stated energy window for the
 // first/biggest block, and stops once the stated hour budget is used up.
-function generateDay(profile,fixedList){
+function generateDay(profile,fixedList,weekday){
+  if(weekday===undefined||weekday===null)weekday=new Date().getDay();
+  // A fixed commitment with no `days` (or all 7) applies every day, matching
+  // pre-day-of-week behavior; otherwise it only counts on its chosen days.
   const clean=(fixedList||[])
     .filter(f=>f&&f.label&&Number.isFinite(f.s)&&Number.isFinite(f.e)&&f.e>f.s)
+    .filter(f=>!Array.isArray(f.days)||f.days.length===7||f.days.includes(weekday))
     .sort((a,b)=>a.s-b.s);
   const budget=HOURS_BUDGET[profile.hours]||300;
   const weights=loadWeights();
@@ -1604,6 +1632,8 @@ function openOnboarding(){
   root.classList.add('show');
   document.body.classList.add('onboard-open');
   updateOnboardingStep();
+  onbFixedDaysSel=[0,1,2,3,4,5,6];
+  renderDayToggleRow('onbFixedDaysRow',onbFixedDaysSel);
 }
 function nextOnboarding(){
   if(onboardStep===1&&!currentUser&&localStorage.getItem(LOCAL_ONLY_KEY)!=='1'){
@@ -1642,8 +1672,35 @@ function replayOnboarding(){
   openOnboarding();
   showToast('Onboarding replay started');
 }
+/*  DAY-OF-WEEK PICKER — shared by onboarding's and Settings' fixed-commitment
+    forms. Each row keeps its own selected-days array; a fresh add defaults
+    to every day, matching pre-day-of-week behavior until narrowed down. */
+const DAY_LETTERS=['S','M','T','W','T','F','S'];
+function renderDayToggleRow(rowId,selArr){
+  const row=document.getElementById(rowId);
+  if(!row)return;
+  row.innerHTML=DAY_LETTERS.map((l,i)=>`<button type="button" class="day-toggle${selArr.includes(i)?' active':''}" data-day="${i}" onclick="toggleDayInRow('${rowId}',${i})">${l}</button>`).join('');
+}
+function toggleDayInRow(rowId,day){
+  const arr=rowId==='onbFixedDaysRow'?onbFixedDaysSel:setFixedDaysSel;
+  const idx=arr.indexOf(day);
+  if(idx>=0)arr.splice(idx,1);else arr.push(day);
+  renderDayToggleRow(rowId,arr);
+}
+function formatDays(days){
+  if(!Array.isArray(days)||days.length===7)return'Every day';
+  if(!days.length)return'No days selected';
+  const short=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const sorted=days.slice().sort((a,b)=>a-b);
+  const key=sorted.join(',');
+  if(key==='1,2,3,4,5')return'Weekdays';
+  if(key==='0,6')return'Weekends';
+  return sorted.map(d=>short[d]).join(', ');
+}
+
 let onbProfileSel={focus:'mixed',energy:'morning',hours:'4-6'};
 let onbFixedItems=[];
+let onbFixedDaysSel=[0,1,2,3,4,5,6];
 function selectOnbChoice(btn){
   const field=btn.dataset.field;
   onbProfileSel[field]=btn.dataset.val;
@@ -1654,9 +1711,12 @@ function addOnbFixed(){
   const s=parseTime(document.getElementById('onbFixedStart')?.value||'');
   const e=parseTime(document.getElementById('onbFixedEnd')?.value||'');
   if(!label||s===null||e===null||e<=s){showToast('Add a label and a valid time range');return;}
-  onbFixedItems.push({label,s,e});
+  if(!onbFixedDaysSel.length){showToast('Pick at least one day');return;}
+  onbFixedItems.push({label,s,e,days:onbFixedDaysSel.slice().sort((a,b)=>a-b)});
   const inp=document.getElementById('onbFixedLabel');
   if(inp)inp.value='';
+  onbFixedDaysSel=[0,1,2,3,4,5,6];
+  renderDayToggleRow('onbFixedDaysRow',onbFixedDaysSel);
   renderOnbFixedList();
 }
 function removeOnbFixed(idx){
@@ -1666,13 +1726,14 @@ function removeOnbFixed(idx){
 function renderOnbFixedList(){
   const el=document.getElementById('onbFixedList');
   if(!el)return;
-  el.innerHTML=onbFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)}</span><button type="button" onclick="removeOnbFixed(${i})">Remove</button></div>`).join('');
+  el.innerHTML=onbFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)} <span class="fx-days">· ${formatDays(f.days)}</span></span><button type="button" onclick="removeOnbFixed(${i})">Remove</button></div>`).join('');
 }
 
 /*  SETTINGS: PROFILE EDITOR — same shape as onboarding's, but editing the
     already-saved profile instead of creating one for the first time. */
 let setProfileSel={focus:'mixed',energy:'morning',hours:'4-6'};
 let setFixedItems=[];
+let setFixedDaysSel=[0,1,2,3,4,5,6];
 function selectSetChoice(btn){
   const field=btn.dataset.field;
   setProfileSel[field]=btn.dataset.val;
@@ -1683,9 +1744,12 @@ function addSetFixed(){
   const s=parseTime(document.getElementById('setFixedStart')?.value||'');
   const e=parseTime(document.getElementById('setFixedEnd')?.value||'');
   if(!label||s===null||e===null||e<=s){showToast('Add a label and a valid time range');return;}
-  setFixedItems.push({label,s,e});
+  if(!setFixedDaysSel.length){showToast('Pick at least one day');return;}
+  setFixedItems.push({label,s,e,days:setFixedDaysSel.slice().sort((a,b)=>a-b)});
   const inp=document.getElementById('setFixedLabel');
   if(inp)inp.value='';
+  setFixedDaysSel=[0,1,2,3,4,5,6];
+  renderDayToggleRow('setFixedDaysRow',setFixedDaysSel);
   renderSetFixedList();
 }
 function removeSetFixed(idx){
@@ -1695,7 +1759,7 @@ function removeSetFixed(idx){
 function renderSetFixedList(){
   const el=document.getElementById('setFixedList');
   if(!el)return;
-  el.innerHTML=setFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)}</span><button type="button" onclick="removeSetFixed(${i})">Remove</button></div>`).join('');
+  el.innerHTML=setFixedItems.map((f,i)=>`<div class="onb-fixed-item"><span>${escapeHtml(f.label)} · ${minsToTime(f.s)}-${minsToTime(f.e)} <span class="fx-days">· ${formatDays(f.days)}</span></span><button type="button" onclick="removeSetFixed(${i})">Remove</button></div>`).join('');
 }
 function renderSettingsProfile(){
   const profile=loadProfile()||{focus:'mixed',energy:'morning',hours:'4-6'};
@@ -1708,6 +1772,8 @@ function renderSettingsProfile(){
       b.classList.toggle('active',b.dataset.val===setProfileSel[b.dataset.field]);
     });
   });
+  setFixedDaysSel=[0,1,2,3,4,5,6];
+  renderDayToggleRow('setFixedDaysRow',setFixedDaysSel);
   renderSetFixedList();
 }
 function saveProfileFromSettings(){
@@ -2281,7 +2347,7 @@ function goPage(name,opts={}){
   }
   if(name==='home')maybeShowDailyPrompt();
   if(name==='stats')renderStatsPage();
-  if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();}
+  if(name==='schedule'){buildTimeline();lastRenderedMinute=nowMin();renderWeekGlance();}
   if(name==='settings'){refreshSnapshotPreview();renderAdvancedWidget();renderSettingsProfile();}
 }
 window.addEventListener('popstate',()=>{
@@ -2398,6 +2464,38 @@ function updateHome(){
     if(insRemainFill)insRemainFill.style.width='0%';
   }
 
+}
+
+/*  WEEK-AHEAD GLANCE — a small, secondary strip on Plan, not a calendar.
+    Shows only the KNOWN, deterministic thing about a future day (its fixed
+    commitments) — never a fabricated preview of flexible blocks, since
+    those don't exist until that day actually regenerates. */
+let weekGlanceSelectedDay=new Date().getDay();
+function renderWeekGlance(){
+  const row=document.getElementById('weekGlanceRow');
+  if(!row)return;
+  const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const todayDow=new Date().getDay();
+  row.innerHTML=DS.map((l,i)=>`<button type="button" class="week-chip${i===todayDow?' today':''}${i===weekGlanceSelectedDay?' active':''}" onclick="selectWeekGlanceDay(${i})">${l}</button>`).join('');
+  renderWeekGlanceDetail();
+}
+function selectWeekGlanceDay(d){
+  weekGlanceSelectedDay=d;
+  renderWeekGlance();
+}
+function renderWeekGlanceDetail(){
+  const el=document.getElementById('weekGlanceDetail');
+  if(!el)return;
+  const DFULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const items=loadFixed()
+    .filter(f=>!Array.isArray(f.days)||f.days.length===7||f.days.includes(weekGlanceSelectedDay))
+    .sort((a,b)=>a.s-b.s);
+  if(!items.length){
+    el.innerHTML=`<p class="week-glance-empty">${DFULL[weekGlanceSelectedDay]}: no fixed commitments.</p>`;
+    return;
+  }
+  el.innerHTML=`<p class="week-glance-label">${DFULL[weekGlanceSelectedDay]}</p>`+
+    items.map(f=>`<div class="week-glance-item"><span>${escapeHtml(f.label)}</span><span>${minsToTime(f.s)}-${minsToTime(f.e)}</span></div>`).join('');
 }
 
 /*  SCHEDULE  */
