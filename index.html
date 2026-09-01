@@ -1013,9 +1013,9 @@ input:focus-visible{
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-v" id="st-today">0%</div><div class="stat-l">Today</div></div>
       <div class="stat-card"><div class="stat-v" id="st-avg">-</div><div class="stat-l">7-Day Avg</div></div>
-      <div class="stat-card"><div class="stat-v" id="st-streak">0</div><div class="stat-l">Streak</div><div class="stat-sub" id="st-streak-sub"></div></div>
+      <div class="stat-card"><div class="stat-v" id="st-streak">0</div><div class="stat-l">Rhythm</div><div class="stat-sub" id="st-streak-sub"></div></div>
       <div class="stat-card"><div class="stat-v" id="st-days">0</div><div class="stat-l">Days Logged</div></div>
-      <div class="stat-card wide"><div class="stat-v" id="st-best">0</div><div class="stat-l">Best Streak</div></div>
+      <div class="stat-card wide"><div class="stat-v" id="st-best">0</div><div class="stat-l">Best Rhythm</div></div>
     </div>
 
     <div class="ins-meta" style="margin-top:10px">
@@ -2628,10 +2628,21 @@ function toggleDone(id){
         shiftFlexibleBlocksAfter(blockIdx,overrun);
         saveSchedule({silent:true});
       }
+      showToast(completionMessage(blk));
     }
   }
   if(navigator.vibrate)navigator.vibrate(10);
   saveData(data);buildTimeline();updateHome();
+}
+// Identity-framed, not task-framed ("you protected X" beats "X complete") —
+// a quiet acknowledgment, not a celebration. Only fires on completing, never
+// on un-marking a block.
+const PROTECTED_TYPES=['deep','writing','lab','reading','analysis'];
+function completionMessage(blk){
+  const name=blk.a||'that block';
+  return PROTECTED_TYPES.includes(blk.type)
+    ? `Nice — you protected ${name}.`
+    : `Done — ${name} is out of the way.`;
 }
 function toggleNote(id){
   openNotes[id]=!openNotes[id];
