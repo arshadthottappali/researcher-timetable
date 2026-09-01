@@ -918,14 +918,14 @@ input:focus-visible{
         <span class="hero-time-left idle-time" id="heroTimeLeft">-</span>
       </div>
       <div class="hero-block-name" id="heroName"><span id="heroIcon">-</span><span id="heroTitle">Rest time</span></div>
-      <div class="hero-focus" id="heroFocus">No scheduled block right now.</div>
+      <div class="hero-focus" id="heroFocus"></div>
       <div class="ins-remain" style="margin-top:0">
         <div class="ins-remain-top">
           <span id="insStartText">Starts --:--</span>
           <span id="insEndText">Ends --:--</span>
         </div>
         <div class="ins-remain-track"><div class="ins-remain-fill" id="insRemainFill"></div></div>
-        <div class="ins-remain-now" id="insRemainText">No active block</div>
+        <div class="ins-remain-now" id="insRemainText">Nothing scheduled right now</div>
       </div>
       <div class="hero-progress-row" style="margin-top:10px">
         <div class="hero-prog-track"><div class="hero-prog-fill" id="heroProg" style="width:0%"></div></div>
@@ -2397,7 +2397,7 @@ function updateHome(){
     document.getElementById('heroTimeLeft').className='hero-time-left idle-time';
     document.getElementById('heroIcon').textContent='-';
     document.getElementById('heroTitle').textContent='Free time';
-    document.getElementById('heroFocus').textContent='No scheduled block right now.';
+    document.getElementById('heroFocus').textContent='';
   }
   document.getElementById('heroProg').style.width=pct+'%';
   document.getElementById('heroPct').textContent=pct+'%';
@@ -2437,7 +2437,7 @@ function updateHome(){
     }else if(nextIdx>=0){
       summaryEl.innerHTML=`<b>Free right now.</b> Next is <b>${escapeHtml(schedule[nextIdx].a)}</b> at ${minsToTime(schedule[nextIdx].s)}. <b>Done today:</b> ${done.length}/${N}.`;
     }else{
-      summaryEl.innerHTML=`<b>No active block.</b> Nothing else is scheduled today. <b>Done today:</b> ${done.length}/${N}${avg!==null?` • recent average ${avg}%`:''}.`;
+      summaryEl.innerHTML=`<b>Done today:</b> ${done.length}/${N}${avg!==null?` • recent average ${avg}%`:''}.`;
     }
   }
   renderInsightsGraph(data,N);
@@ -2460,7 +2460,7 @@ function updateHome(){
   }else{
     if(insStartText)insStartText.textContent='Starts --:--';
     if(insEndText)insEndText.textContent='Ends --:--';
-    if(insRemainText)insRemainText.textContent='No active block';
+    if(insRemainText)insRemainText.textContent='Nothing scheduled right now';
     if(insRemainFill)insRemainFill.style.width='0%';
   }
 
